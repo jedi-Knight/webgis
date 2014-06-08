@@ -18,7 +18,7 @@
     <script src="http://trac.osgeo.org/openlayers/export/12468/addins/loadingPanel/trunk/lib/OpenLayers/Control/LoadingPanel.js"></script>
 	<!--<script src="filereader.js" type="text/javascript"></script>-->
 	
-<script type="text/javascript" src="js/actions.js">
+<script type="text/javascript" src="js/test5.js">
 		
 	
 	</script>
