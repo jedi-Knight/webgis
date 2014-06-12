@@ -40,6 +40,13 @@ $(document).ready(function(){
         });
         /****/
         
+        /**import polygon**/
+        $("a.trigger.inputTrigger").click(function(){
+           toggleControl(this);
+           
+        });
+        /****/
+        
         /**switch off all tools on double-clicking on map**/
         $(document).dblclick(function(){
            $(".tool").removeClass("active");

@@ -26,7 +26,7 @@
 
 	<body onload="init()">
 	<!-- Map Container -->
-		<div id="map" style="height:200px"></div>
+		<div id="map" style="height:500px"></div>
 		Click on "Draw Polygon" to start drawing the polygon boundary. Then left-click on the map to start drawing. Double-click to end drawing.
 		<ul id="controlToggle">
 			<li>
