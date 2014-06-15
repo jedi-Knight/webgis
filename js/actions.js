@@ -614,6 +614,7 @@ function toggleControl(element) {
                 placeHolder = document.getElementById("exportStatus");
                 placeHolder.appendChild(myButton);
 					callAJAXCSV(index+1);
+                                        myButton.click();
             }
         }
         var query = "CSVwriter.php";
@@ -657,6 +658,7 @@ function toggleControl(element) {
                 placeHolder = document.getElementById("exportStatus");
                 placeHolder.appendChild(myButton);
 					callAJAXGeoJSON(index+1);
+                                        myButton.click();
             }
         }
         var query = "GeoJSONwriter.php";
