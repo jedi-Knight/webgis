@@ -1,5 +1,4 @@
-//$(document).ready(function() {
-////OpenLayers.ProxyHost= "/cgi-bin/proxy.cgi?url=";	
+//OpenLayers.ProxyHost= "/cgi-bin/proxy.cgi?url=";	
 //global variables
 var map,
         selector1,
@@ -18,18 +17,18 @@ var map,
         field,
         text,
         geom;
-var markers = new OpenLayers.Layer.Markers("Markers", {displayInLayerSwitcher: false});
+		//var markers = new OpenLayers.Layer.Markers( "Markers",{displayInLayerSwitcher:false} );
 
 var centerX = 85.33141;//491213.721224323//-123.1684986291807;//9497800;
 var centerY = 27.72223;//5456645.24607268//49.245339757767844;//3212000;
 var center = new OpenLayers.LonLat(centerX, centerY);
-if (sessvars.center)
+		if(sessvars.center)
 {
-    center = new OpenLayers.LonLat(sessvars.center.lon, sessvars.center.lat);
+			center=new OpenLayers.LonLat(sessvars.center.lon, sessvars.center.lat);
 }
 var ranger = 0.015;//10000000//.5;//10000;
-var map_bound = [centerX - ranger, centerY - ranger, centerX + ranger, centerY + ranger];
-var extent = new OpenLayers.Bounds(map_bound[0], map_bound[1], map_bound[2], map_bound[3]);
+		var map_bound = [centerX-ranger,centerY-ranger,centerX+ranger,centerY+ranger];
+		var extent = new OpenLayers.Bounds(map_bound[0],map_bound[1],map_bound[2],map_bound[3]);
 var zoom = 17;
 var zoom_data_limit = 18; // vector data will load only in this level or above
 
@@ -37,7 +36,7 @@ var zoom_data_limit = 18; // vector data will load only in this level or above
 var proj4326 = new OpenLayers.Projection("EPSG:4326");
 var proj900913 = new OpenLayers.Projection("EPSG:900913");
 var popup;
-var attr = ["name", "amenity", "building"];
+		var attr = ["name","amenity","building"];
 
 var layers = new Array();		//contains all current layers on the map
 var csvs = new Array();		//contains a csv text body for each layer in 'layers' array above
@@ -50,8 +49,8 @@ var clonedLayers = new Array();
 //for polygon layer
 var polygonLayer,
         polygonControl,
-        drawControls,
-        polyCoords;
+			polyCoords,
+			selectControlClicks;
 
 //var mapProjectionObject;
 var fileInputControl;
@@ -82,23 +81,48 @@ function init() {
     osm = new OpenLayers.Layer.OSM("OSM", null, {sphericalMercator: false, attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors (ODbL)"});
     //wmsLayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
 
-    polygonLayer = new OpenLayers.Layer.Vector("Polygon Layer", {
+		OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '2';
+		
+		// allow testing of specific renderers via "?renderer=Canvas", etc
+        var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+        renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+		
+		polygonLayer = new OpenLayers.Layer.Vector("Polygon Layer",{
+			renderers: renderer,
         projection: "EPSG:4326",
         strategies: [new OpenLayers.Strategy.Refresh({force: true})]
+			//strategies: [new OpenLayers.Strategy.Fixed()]
     });
 
     map.addLayer(osm);
     //map.addLayer(wmsLayer);
     map.addLayer(bing);
-    map.addLayer(markers);
+		//map.addLayer(markers);
     map.addLayer(polygonLayer);
-    map.setCenter(center.transform(proj4326, proj900913), zoom);
-
-
+		map.setCenter(center.transform(proj4326,proj900913),zoom);
 
     polygonControl = new OpenLayers.Control.DrawFeature(polygonLayer, OpenLayers.Handler.Polygon);
     map.addControl(polygonControl);
 
+		//to modify polygons using polygonControl
+		polygonControlModifier = new OpenLayers.Control.ModifyFeature(polygonLayer);
+		map.addControl(polygonControlModifier);
+		
+		if (console && console.log) {
+                function report(event) {
+                    console.log(event.type, event.feature ? event.feature.id : event.components);
+                }
+                polygonLayer.events.on({
+                    "beforefeaturemodified": report,
+                    "featuremodified": report,
+                    "afterfeaturemodified": report,
+                    "vertexmodified": report,
+                    "sketchmodified": report,
+                    "sketchstarted": report,
+                    "sketchcomplete": report
+                });
+            }
+			
     //map.setCenter(new OpenLayers.LonLat(0,0),3);
     //document.getElementById('noneToggle').checked=true;
 
@@ -138,15 +162,24 @@ function init() {
     }
 
     //get the polygon vertices when the polygon is complete
-    polygonControl.events.register("featureadded", polygonControl, function(obj) {
-        if (!polygonLayer)
-            alert("No polygonLayer found");
+		polygonControl.events.register("featureadded", polygonControl, function(obj){
+		alert("inside polygonControl.events.featureadded()");
+				if(!polygonLayer)
+					alert ("No polygonLayer found");
         //deactivate polygon drawing control
         polygonControl.deactivate();
         arrVerticesInPoints = new Array();
         arrVerticesInLonLat = new Array();
-        //get all vertices from the polygon
-        arrVerticesInPoints = polygonLayer.features[0].geometry.getVertices();
+				//polygonLayerIn4326
+				var polygonLayerIn4326 = new OpenLayers.Layer.Vector("Polygon Layer In 4326",{
+					renderers: renderer,
+					projection: "EPSG:4326",
+					strategies: [new OpenLayers.Strategy.Refresh({force: true})]
+					//strategies: [new OpenLayers.Strategy.Fixed()]
+				});
+				polygonLayerIn4326 = polygonLayer.clone();
+				debugger;
+				arrVerticesInPoints = polygonLayerIn4326.features[0].geometry.getVertices();
         //alert(arrVerticesInPoints);
 
         //for geoJSON output
@@ -179,6 +212,11 @@ function init() {
         //alert(polyCoords);
     });
 
+		polygonLayer.events.register("afterfeaturemodified", polygonControlModifier, function(obj){
+				polygonControlModifier.deactivate();
+				alert("feature modified");
+				polygonControl.events.triggerEvent('featureadded');
+			});
 
 
 
@@ -224,9 +262,23 @@ function fetchData(selected) {
 //                selected.push(ob.options[i].value);
 //            }
 
-    for (sel in selected) {
+//create new select boxes for each item in 'selected' array inside 'tagsSelector' div
+		for (key in selected){
+			//create and append Amenity Name
+			var title = document.createElement("h3");
+			title.innerHTML = selected[key];
+			title.style.display = "inline"; 
+			myTagsSelector.appendChild(title);
+			//Create and append select list
+			var selectList = document.createElement("select");
+			selectList.id = "tagsIn"+selected[key];
+			selectList.multiple = "multiple"
+			myTagsSelector.appendChild(selectList);
+		}
+
+		for (sel in selected){
         //debugger;
-        switch (selected[sel]) {
+			switch(selected[sel]){
             case 'school':
                 //facility_url = "http://overpass-api.de/api/interpreter?data=(way['amenity'~'kindergarten|school|college|hospital|clinic|nursing_home|dentist|health$|health_post'](bbox);node(w);node['amenity'~'kindergarten|school|college|hospital|clinic|nursing_home|dentist|health_post'](bbox););out meta qt;";
 
@@ -236,9 +288,9 @@ function fetchData(selected) {
                     //strategies: [new OpenLayers.Strategy.BBOX({ratio:1.0}),new OpenLayers.Strategy.Refresh()],
                     strategies: [new OpenLayers.Strategy.Fixed()],
                     protocol: new OpenLayers.Protocol.HTTP({
-                        url: facility_url, //<-- relative or absolute URL to your .osm file
-                        params: {
-                            "data": "(way['amenity'~'kindergarten|school'](poly: '" + polyCoords + "');node(w);node['amenity'~'kindergarten|school'](poly: '" + polyCoords + "'););out meta qt;"
+						url: facility_url,   //<-- relative or absolute URL to your .osm file
+						params:{
+							"data":"(way['amenity'~'kindergarten|school'](poly: '" +polyCoords+ "');node(w);node['amenity'~'kindergarten|school'](poly: '" +polyCoords+ "'););out meta qt;"
                         },
                         format: new OpenLayers.Format.OSMMeta(),
                         readWithPOST: true
@@ -318,6 +370,11 @@ function toggleControl(element) {
         //document.getElementById('file-input').disabled = true;
         control.activate();
     }
+    /*new code*/ 
+    else if(element.value=="modify" && element.checked){
+			polygonControlModifier.activate();
+		}
+                /**/
     else if ($(element).hasClass("importPolygon")) {
         //console.log("hellooooo");
         //activate the file-input
@@ -333,33 +390,33 @@ function toggleControl(element) {
                 //console.log("Type: " + files[i].type);
                 //console.log("Size: " + files[i].size + " bytes");
             }
-            if (fileInputControl.files.length != 0) {
+				if(fileInputControl.files.length!=0){
                 fx(fileInputControl);
             }
         }, false);
         fileInputControl.addEventListener("close", function(event) {
             alert("aborted");
-            polyCoords = "";
+				polyCoords="";
         }, false);
         fileInputControl.click();
     }
 }
 
 //for polygon
-function allowPan(element) {
+	function allowPan(element){
     var stop = !element.checked;
     polygonControl.handler.stopDown = stop;
     polygonControl.handler.stopUp = stop;
 }
 
-function exportToCSV() {
+	function exportToCSV(){
     csvs.length = 0;				//empty the 'csvs' array
-    for (i = 0; i < layers.length; ++i)
+		for (i=0; i<layers.length; ++i)
     {
         headers = new Array();			//get all keys from the key=value pairs
         csv_filename = layers[i].name; 	//name of CSV file. One CSV will be created per entry in the global 'layer' array
         csv_text = "";					//csv string. this is the final content of the csv file
-        for (j = 0; j < layers[i].features.length; ++j)
+			for (j=0; j<layers[i].features.length; ++j)
         {
             for (key in layers[i].features[j].attributes)
             {
@@ -372,9 +429,9 @@ function exportToCSV() {
                 for (entry in headers)
                 {
                     if (headers[entry] == key)
-                        flagUnique = 1; //means it is NOT unique. don't add it to 'headers' array
+							flagUnique=1; //means it is NOT unique. don't add it to 'headers' array
                 }
-                if (flagUnique == 0)
+					if (flagUnique==0)
                     //append this 'unique' key to 'headers' array
                     headers.push(key)
             }
@@ -392,7 +449,7 @@ function exportToCSV() {
         csv_text += "\n";
 
         //check if a key or key-value exists for each of the feature
-        for (j = 0; j < layers[i].features.length; ++j) //for each feature in the current layer...
+			for (j=0; j<layers[i].features.length; ++j) //for each feature in the current layer...
         {
             {
                 //check if each key enlisted in 'headers' array has a corresponding value for this (current) feature
@@ -402,7 +459,7 @@ function exportToCSV() {
             }
 
             //for this feature
-            var thisfeature = "";
+				var thisfeature="";
 
             //get centroid of this (current) feature and transform it onto EPSG:4326
             var centroid = layers[i].features[j].geometry.getCentroid();
@@ -419,43 +476,42 @@ function exportToCSV() {
                 if (layers[i].features[j].attributes[headers[keyHeaders]])
                 {
                     //means the value exists in the current Feature. So this value has to be added to the csv file
-                    //csv_text += '\"'+layers[i].features[j].attributes[headers[keyHeaders]]+'\"' +",";
-                    csv_text += layers[i].features[j].attributes[headers[keyHeaders]] + ",";
-                    //thisfeature += '\"'+layers[i].features[j].attributes[headers[keyHeaders]]+'\"' +",";
-                    thisfeature += layers[i].features[j].attributes[headers[keyHeaders]] + ",";
+						csv_text += '\"'+layers[i].features[j].attributes[headers[keyHeaders]]+'\"' +",";
+						//csv_text += layers[i].features[j].attributes[headers[keyHeaders]] +",";
+						thisfeature += '\"'+layers[i].features[j].attributes[headers[keyHeaders]]+'\"' +",";
+						//thisfeature += layers[i].features[j].attributes[headers[keyHeaders]] +",";
                 }
-                else if (headers[keyHeaders] == 'lon')
+					else if (headers[keyHeaders]=='lon')
                 {
                     /*boundsLon = bounds.getCenterLonLat()['lon'];
                      csv_text += boundsLon + ",";*/
-                    //csv_text += '\"'+clonedCentroid.x+'\"'  +",";
-                    csv_text += clonedCentroid.x + ",";
-                    //thisfeature += '\"'+clonedCentroid.x+'\"'  +",";
-                    thisfeature += clonedCentroid.x + ",";
+						csv_text += '\"'+clonedCentroid.x+'\"'  +",";
+						//csv_text += clonedCentroid.x +",";
+						thisfeature += '\"'+clonedCentroid.x+'\"'  +",";
+						//thisfeature += clonedCentroid.x +",";
                 }
-                else if (headers[keyHeaders] == 'lat')
+					else if (headers[keyHeaders]=='lat')
                 {
                     /*boundsLat = bounds.getCenterLonLat()['lat'];
                      csv_text += boundsLat + ",";*/
-                    //csv_text += '\"'+clonedCentroid.y+'\"'  +",";
-                    csv_text += clonedCentroid.y + ",";
-                    //thisfeature += '\"'+clonedCentroid.y+'\"'  +",";
-                    thisfeature += clonedCentroid.y + ",";
+						csv_text += '\"'+clonedCentroid.y+'\"'  +",";
+						//csv_text += clonedCentroid.y +",";
+						thisfeature += '\"'+clonedCentroid.y+'\"'  +",";
+						//thisfeature += clonedCentroid.y +",";
                 }
                 else if (headers[keyHeaders] == 'geometry')
                 {
                     //var geometry = layers[i].features[j].geometry.toString();
+						csv_text += '\"' + clonedGeometry.toString() + '\"';
                     //csv_text += '\"' + clonedGeometry.toString() + '\"';
-                    csv_text += '\"' + clonedGeometry.toString() + '\"';
+						//thisfeature += '\"' + clonedGeometry.toString() + '\"';
                     thisfeature += '\"' + clonedGeometry.toString() + '\"';
-                    //thisfeature += '\"' + clonedGeometry.toString() + '\"';
                 }
                 else //means the value does not exist in the current Feature. So add a 'nothing' value to the csv file
                 {	//csv_text += ",";
                     csv_text += ",";
-                    thisfeature += ",";
+						thisfeature += ",";}
                 }
-            }
             csv_text += "\n"; //add a carriage return at the end of each Feature
             thisfeature += "\n";
             //alert(csv_text);
@@ -472,7 +528,7 @@ function exportToCSV() {
     }
     //Engaging AJAX
     //call AJAXCSV only if data exists
-    if (csvs.length > 0)
+		if(csvs.length>0)
         callAJAXCSV(0);
     else
         alert("No data to export!");
@@ -482,128 +538,140 @@ function exportToCSV() {
 
 //////////////***********Possible Spoiler***************/////////////////
 // I changed all clonedLayers to tempLayers inside this function :D//
-function exportToGeoJSON() {
+	function exportToGeoJSON(){
     geoJSONs.length = 0;				//empty the 'geoJSONs' array
     tempLayers = new Array();			//to hold clones of each layer from 'Layers' array
-    for (i = 0; i < layers.length; ++i) 	//for each layer
+		for (i=0; i<layers.length; ++i) 	//for each layer
     {
         tempLayers[i] = layers[i].clone();
-        if (layers[i].features.length > 0) //for each layer with at least one feature in it
+				if(layers[i].features.length>0) //for each layer with at least one feature in it
         {
-            for (j = 0; j < layers[i].features.length; ++j) //for each feature in the current layer...
+					for (j=0; j<layers[i].features.length; ++j) //for each feature in the current layer...
             {
                 //get geometry of this (current) feature and transform it onto EPSG:4326
                 var clonedGeometry = tempLayers[i].features[j].geometry;
                 clonedGeometry = clonedGeometry.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+						
+						//////////
+						{
+							centroidX=tempLayers[i].features[j].geometry.getCentroid().x;
+							tempLayers[i].features[j].attributes.lon=centroidX;
             }
+						{
+							centroidY=tempLayers[i].features[j].geometry.getCentroid().y;
+							tempLayers[i].features[j].attributes.lat=centroidY;
+						}
+						//////////
+					}	
             var geoJSON = new OpenLayers.Format.GeoJSON();
             geoJSON = geoJSON.write(tempLayers[i].features, true);
             geoJSON = encodeURIComponent(geoJSON);
             geoJSONs.push(geoJSON);
+					console.log(geoJSON);
+					//return;
         }
-        else
-            geoJSONs.push("\n");
+				else geoJSONs.push("\n");
     }
     //Engaging AJAX
     if (geoJSONs.length > 0)
         callAJAXGeoJSON(0);
     else
-        alert("No data to export!");
+				alert ("No data to export!");
     //Disengaging MANAUL AJAX 
 
 }
 
-function callAJAXCSV(index) {
+	function callAJAXCSV(index){
     //alert(index + "," + layers[index].name + "," + csvs[index]);
-    if (index == layers.length)
+		if (index==layers.length)
         return;//do nothing. we are done here.
-    if (csvs[index] === "\n")
-        callAJAXCSV(index + 1);	//do not make a csv file if does not have any data. move on to the next item in 'csvs' array.
+		if (csvs[index]==="\n")
+			callAJAXCSV(index+1);	//do not make a csv file if does not have any data. move on to the next item in 'csvs' array.
     else
     {
         var xmlhttp;
         if (window.XMLHttpRequest)
         {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
+				xmlhttp=new XMLHttpRequest();
         }
         else
         {// code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function(myFile)
+			xmlhttp.onreadystatechange=function(myFile)
         {
-            if (xmlhttp.readyState == 3 || xmlhttp.readyState == 2 || xmlhttp.readyState == 1 || xmlhttp.readyState == 0)
+				if(xmlhttp.readyState==3||xmlhttp.readyState==2||xmlhttp.readyState==1||xmlhttp.readyState==0)
             {
 
             }
-            if (xmlhttp.readyState == 4)
+				if(xmlhttp.readyState==4)
             {
                 //window.open(xmlhttp.response);
                 myButton = document.createElement("input");
                 myButton.type = "button";
                 myButton.value = xmlhttp.response;
-                myButton.onclick = function() {
-                    window.open(xmlhttp.response)
-                };
+					myButton.onclick = function(){window.open(xmlhttp.response)};
                 placeHolder = document.getElementById("exportStatus");
                 placeHolder.appendChild(myButton);
-                callAJAXCSV(index + 1);
+					callAJAXCSV(index+1);
             }
         }
         var query = "CSVwriter.php";
-        xmlhttp.open("POST", query, true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("name=" + layers[index].name + "&payload=" + csvs[index]);
+			xmlhttp.open("POST",query,true);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			xmlhttp.send("name="+layers[index].name+"&payload="+csvs[index]);
         //alert(layers[i].name + " AJAX sent.\n Current xmlhttp index is: "+i +"\n");
     }
 }
 
-function callAJAXGeoJSON(index) {
-    if (index == layers.length) {
+	function callAJAXGeoJSON(index){
+		if (index==layers.length){
         return; //do nothing. we are done here.
     }
-    if (geoJSONs[index] === "\n")
-        callAJAXGeoJSON(index + 1);	//do not make a csv file if does not have any data. move on to the next item in 'csvs' array.
+		if (geoJSONs[index]==="\n")
+			callAJAXGeoJSON(index+1);	//do not make a csv file if does not have any data. move on to the next item in 'csvs' array.
     else
     {
         var xmlhttp;
         if (window.XMLHttpRequest)
         {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
+				xmlhttp=new XMLHttpRequest();
         }
         else
         {// code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function(myFile)
+			xmlhttp.onreadystatechange=function(myFile)
         {
-            if (xmlhttp.readyState == 3 || xmlhttp.readyState == 2 || xmlhttp.readyState == 1 || xmlhttp.readyState == 0)
+				if(xmlhttp.readyState==3||xmlhttp.readyState==2||xmlhttp.readyState==1||xmlhttp.readyState==0)
             {
 
             }
-            if (xmlhttp.readyState == 4)
+				if(xmlhttp.readyState==4)
             {
                 //window.open(xmlhttp.response);
                 myButton = document.createElement("input");
                 myButton.type = "button";
                 myButton.value = xmlhttp.response;
-                myButton.onclick = function() {
-                    window.open(xmlhttp.response)
-                };
+					myButton.onclick = function(){window.open(xmlhttp.response)};
                 placeHolder = document.getElementById("exportStatus");
                 placeHolder.appendChild(myButton);
-                callAJAXGeoJSON(index + 1);
+					callAJAXGeoJSON(index+1);
             }
         }
         var query = "GeoJSONwriter.php";
-        xmlhttp.open("POST", query, true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("name=" + layers[index].name + "&payload=" + geoJSONs[index]);
+			var params = "name="+layers[index].name+"&payload="+geoJSONs[index];
+			xmlhttp.open("POST",query,true);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			//xmlhttp.setRequestHeader("Content-length",params.length);
+			//xmlhttp.setRequestHeader("Connection","close");
+			xmlhttp.send(params);
         //alert(layers[i].name + " AJAX sent.\n Current xmlhttp index is: "+i +"\n");
     }
 }
 
-function fx(fileInputControl) {
+	function fx(fileInputControl){
+		alert("inside fx()");
     // create a form with a couple of values
     var form = new FormData();
     form.append("name", "GeoJSON File");
@@ -615,23 +683,22 @@ function fx(fileInputControl) {
 
         var reader = new FileReader();
         reader.onload = function(event) {
-
             var contents = event.target.result;
             //console.log("File contents: " + contents);
             geoJSONString = contents;
 
-            var boundaryGeoJSON = new OpenLayers.Format.GeoJSON({'externalProjection': proj4326, 'internalProjection': proj900913});
+				var boundaryGeoJSON = new OpenLayers.Format.GeoJSON({'externalProjection':proj4326,'internalProjection':proj900913});
             //var boundaryGeoJSON = new OpenLayers.Format.GeoJSON();
             polygonLayer.removeAllFeatures();
             polygonLayer.destroyFeatures();
-            polygonLayer.addFeatures([]);
+				//polygonLayer.addFeatures([]);
 
             polygonLayer.addFeatures(boundaryGeoJSON.read(geoJSONString));
 
-            /*
+				/*yaha bata ho*/
              // Use this if you have to draw a polygon out of linear ring
              var geo = polygonLayer.features[0].geometry;
-             var geo2 = geo.transform(proj4326, proj900913);
+				//var geo2 = geo.transform(proj4326, proj900913);
              var sitePoints = polygonLayer.features[0].geometry.getVertices();
              var linearRing = new OpenLayers.Geometry.LinearRing(sitePoints);
              var geometry = new OpenLayers.Geometry.Polygon([linearRing]);
@@ -639,14 +706,16 @@ function fx(fileInputControl) {
              
              polygonLayer.removeAllFeatures();
              polygonLayer.destroyFeatures();
-             polygonLayer.addFeatures([]);
+				//polygonLayer.addFeatures([]);
+				debugger;
              //polygonLayer.addFeatures(boundaryGeoJSON.read(geoJSONString));
-             polygonLayer.addFeatures([boundaryFeature]);*/
+				polygonLayer.addFeatures([boundaryFeature]);
+				/*yaha samma ho*/
 
             polygonControl.events.triggerEvent('featureadded');
 
             //empty fileInputControl.files when done
-            fileInputControl.files.length = 0;
+				fileInputControl.files.length=0;
             //alert(fileInputControl.files.length+ "from la la land");
 
         };
@@ -654,23 +723,19 @@ function fx(fileInputControl) {
             console.error("File could not be read! Code " + event.target.error.code);
         };
         reader.readAsText(fileInputControl.files[0]);
-
-
-
     };
     xhr.open("post", "/entrypoint", true);
     xhr.send(form);
 
-
 }
 
-function populateTagsSelector(amenity) {
+	function populateTagsSelector(amenity){
     //var clonedAmenity = amenity.clone();
     //clonedLayers.push(clonedAmenity);
     var myDiv = document.getElementById("tagsSelector");
     var heads = new Array();
 
-    for (j = 0; j < amenity.features.length; ++j)
+		for (j=0; j<amenity.features.length; ++j)
     {
         for (key in amenity.features[j].attributes)
         {
@@ -700,50 +765,56 @@ function populateTagsSelector(amenity) {
     /////
 
     //create and append Amenity Name
-    var title = document.createElement("h3");
+		/*var title = document.createElement("h3");
     title.innerHTML = amenity.name;
-    title.style.display = "inline";
-    myDiv.appendChild(title);
+		title.style.display = "inline"; 
+		myDiv.appendChild(title);*/
 
     //Create and append select list
-    var selectList = document.createElement("select");
-    selectList.id = "tagsIn" + amenity.name;
+		/*var selectList = document.createElement("select");
+		selectList.id = "tagsIn"+amenity.name;
     selectList.multiple = "multiple"
-    myDiv.appendChild(selectList);
+		myDiv.appendChild(selectList);*/
 
     //Create and append the options
     for (var i = 0; i < heads.length; i++) {
         var option = document.createElement("option");
         option.value = heads[i];
         option.text = heads[i];
+			var selectList = document.getElementById("tagsIn"+amenity.name);
         selectList.appendChild(option);
     }
 
 
 }
 
-function customExportToCSV() {
+	function customExportToType(type){
+            /**jedi code**/
+            console.log("customExportToType(type) called with type = "+type);
+            console.log("customExportToType(type) called with type.value = "+type.value);
+            /****/
     //for every 'tagsInAmenity' inside div 'tagsSelector'
     //get selected 'tags' items
     //remove unselected 'tags' items from this cloned layer in clonedLayers
     //call ExportToCSV() on clonedLayers
+		var selectedHeads = new Array();
     for (key in layers)
-        clonedLayers[key] = layers[key].clone();
+			clonedLayers[key]=layers[key].clone();
     var selectBoxes = document.getElementById('tagsSelector').getElementsByTagName('select');
-    for (i = 0; i < selectBoxes.length; ++i)	//for each 'select' element
+		for (i=0; i<selectBoxes.length;++i)	//for each 'select' element
     {
-        var currAmenityName = selectBoxes[i].id.replace("tagsIn", "");
+			var currAmenityName = selectBoxes[i].id.replace("tagsIn","");
         var currKey;
         for (key in clonedLayers)
         {
-            if (clonedLayers[key].name == currAmenityName)
+				if (clonedLayers[key].name==currAmenityName)
             {
-                currKey = key;
+					currKey=key;
                 break;
             }
         }
 
-        var selectedHeads = new Array();
+			selectedHeads = new Array();
         var ob = selectBoxes[i];
 
         for (var j = 0; j < ob.options.length; j++)	//for each 'heads' in this (current) 'select' box
@@ -755,11 +826,11 @@ function customExportToCSV() {
         }
 
         //for each feature in the current (this) amenity in clonedLayers
-        for (var j = 0; j < clonedLayers[currKey].features.length; ++j) {
+			for (var j=0; j<clonedLayers[currKey].features.length;++j){
             //for each attribute in the current (this) feature in (this) amenity in clonedLayers
-            for (attrKey in clonedLayers[currKey].features[j].attributes) {
+				for (attrKey in clonedLayers[currKey].features[j].attributes){
                 //delete the key-value pair that is NOT in selectedHeads array
-                if (selectedHeads.indexOf(attrKey) < 0)
+					if(selectedHeads.indexOf(attrKey)<0)
                     delete clonedLayers[currKey].features[j].attributes[attrKey];
             }
         }
@@ -767,17 +838,30 @@ function customExportToCSV() {
     }
 
     //call exportToCSV to work on clonedLayers
-    exportToCSV2();
+		//exportToCSV2();
+		
+		//determine export type and call appropriate exportTo... function
+                /**jedicode**/
+		switch(type.value)
+		{
+			case "csv":
+				exportToCSV2(selectedHeads);
+				break;
+			case "geojson":
+				exportToGeoJSON2(selectedHeads);
+				break;
 }
+/****/
+	}
 
-function exportToCSV2() {
+	function exportToCSV2(selectedHeads){
     csvs.length = 0;				//empty the 'csvs' array
-    for (i = 0; i < clonedLayers.length; ++i)
+		for (i=0; i<clonedLayers.length; ++i)
     {
         headers = new Array();			//get all keys from the key=value pairs
         csv_filename = clonedLayers[i].name; 	//name of CSV file. One CSV will be created per entry in the global 'layer' array
         csv_text = "";					//csv string. this is the final content of the csv file
-        for (j = 0; j < clonedLayers[i].features.length; ++j)
+			for (j=0; j<clonedLayers[i].features.length; ++j)
         {
             for (key in clonedLayers[i].features[j].attributes)
             {
@@ -790,15 +874,15 @@ function exportToCSV2() {
                 for (entry in headers)
                 {
                     if (headers[entry] == key)
-                        flagUnique = 1; //means it is NOT unique. don't add it to 'headers' array
+							flagUnique=1; //means it is NOT unique. don't add it to 'headers' array
                 }
-                if (flagUnique == 0)
+					if (flagUnique==0)
                     //append this 'unique' key to 'headers' array
                     headers.push(key)
             }
         }
         //add these only if there are other keys, i.e. add these only if the current layer is NOT empty
-        if (headers.length > 0)
+			if (selectedHeads.length > 0)
         {
             headers.push("lon"); //to hold x coordinate of the centroid
             headers.push("lat"); //to hold y coordinate of the centroid
@@ -810,7 +894,7 @@ function exportToCSV2() {
         csv_text += "\n";
 
         //check if a key or key-value exists for each of the feature
-        for (j = 0; j < clonedLayers[i].features.length; ++j) //for each feature in the current layer...
+			for (j=0; j<clonedLayers[i].features.length; ++j) //for each feature in the current layer...
         {
             {
                 //check if each key enlisted in 'headers' array has a corresponding value for this (current) feature
@@ -820,7 +904,7 @@ function exportToCSV2() {
             }
 
             //for this feature
-            var thisfeature = "";
+				var thisfeature="";
 
             //get centroid of this (current) feature and transform it onto EPSG:4326
             var centroid = clonedLayers[i].features[j].geometry.getCentroid();
@@ -837,43 +921,42 @@ function exportToCSV2() {
                 if (clonedLayers[i].features[j].attributes[headers[keyHeaders]])
                 {
                     //means the value exists in the current Feature. So this value has to be added to the csv file
-                    //csv_text += '\"'+clonedLayers[i].features[j].attributes[headers[keyHeaders]]+'\"' +",";
-                    csv_text += clonedLayers[i].features[j].attributes[headers[keyHeaders]] + ",";
-                    //thisfeature += '\"'+clonedLayers[i].features[j].attributes[headers[keyHeaders]]+'\"' +",";
-                    thisfeature += clonedLayers[i].features[j].attributes[headers[keyHeaders]] + ",";
+						csv_text += '\"'+clonedLayers[i].features[j].attributes[headers[keyHeaders]]+'\"' +",";
+						//csv_text += clonedLayers[i].features[j].attributes[headers[keyHeaders]] +",";
+						thisfeature += '\"'+clonedLayers[i].features[j].attributes[headers[keyHeaders]]+'\"' +",";
+						//thisfeature += clonedLayers[i].features[j].attributes[headers[keyHeaders]] +",";
                 }
-                else if (headers[keyHeaders] == 'lon')
+					else if (headers[keyHeaders]=='lon')
                 {
                     /*boundsLon = bounds.getCenterLonLat()['lon'];
                      csv_text += boundsLon + ",";*/
-                    //csv_text += '\"'+clonedCentroid.x+'\"'  +",";
-                    csv_text += clonedCentroid.x + ",";
-                    //thisfeature += '\"'+clonedCentroid.x+'\"'  +",";
-                    thisfeature += clonedCentroid.x + ",";
+						csv_text += '\"'+clonedCentroid.x+'\"'  +",";
+						//csv_text += clonedCentroid.x +",";
+						thisfeature += '\"'+clonedCentroid.x+'\"'  +",";
+						//thisfeature += clonedCentroid.x +",";
                 }
-                else if (headers[keyHeaders] == 'lat')
+					else if (headers[keyHeaders]=='lat')
                 {
                     /*boundsLat = bounds.getCenterLonLat()['lat'];
                      csv_text += boundsLat + ",";*/
-                    //csv_text += '\"'+clonedCentroid.y+'\"'  +",";
-                    csv_text += clonedCentroid.y + ",";
-                    //thisfeature += '\"'+clonedCentroid.y+'\"'  +",";
-                    thisfeature += clonedCentroid.y + ",";
+						csv_text += '\"'+clonedCentroid.y+'\"'  +",";
+						//csv_text += clonedCentroid.y +",";
+						thisfeature += '\"'+clonedCentroid.y+'\"'  +",";
+						//thisfeature += clonedCentroid.y +",";
                 }
-                else if (headers[keyHeaders] == 'geometry')
+					else if (headers[keyHeaders]=='geometry')
                 {
                     //var geometry = clonedLayers[i].features[j].geometry.toString();
+						csv_text += '\"' + clonedGeometry.toString() + '\"';
                     //csv_text += '\"' + clonedGeometry.toString() + '\"';
-                    csv_text += '\"' + clonedGeometry.toString() + '\"';
+						//thisfeature += '\"' + clonedGeometry.toString() + '\"';
                     thisfeature += '\"' + clonedGeometry.toString() + '\"';
-                    //thisfeature += '\"' + clonedGeometry.toString() + '\"';
                 }
                 else //means the value does not exist in the current Feature. So add a 'nothing' value to the csv file
                 {	//csv_text += ",";
                     csv_text += ",";
-                    thisfeature += ",";
+						thisfeature += ",";}
                 }
-            }
             csv_text += "\n"; //add a carriage return at the end of each Feature
             thisfeature += "\n";
             //alert(csv_text);
@@ -890,7 +973,7 @@ function exportToCSV2() {
     }
     //Engaging AJAX
     //call AJAXCSV only if data exists
-    if (csvs.length > 0)
+		if(csvs.length>0)
         callAJAXCSV(0);
     else
         alert("No data to export!");
@@ -898,23 +981,23 @@ function exportToCSV2() {
 
 }
 
-function customExportToGeoJSON() {
+	function customExportToGeoJSON(){
     //for every 'tagsInAmenity' inside div 'tagsSelector'
     //get selected 'tags' items
     //remove unselected 'tags' items from this cloned layer in clonedLayers
     //call ExportToCSV() on clonedLayers
     for (key in layers)
-        clonedLayers[key] = layers[key].clone();
+			clonedLayers[key]=layers[key].clone();
     var selectBoxes = document.getElementById('tagsSelector').getElementsByTagName('select');
-    for (i = 0; i < selectBoxes.length; ++i)	//for each 'select' element
+		for (i=0; i<selectBoxes.length;++i)	//for each 'select' element
     {
-        var currAmenityName = selectBoxes[i].id.replace("tagsIn", "");
+			var currAmenityName = selectBoxes[i].id.replace("tagsIn","");
         var currKey;
         for (key in clonedLayers)
         {
-            if (clonedLayers[key].name == currAmenityName)
+				if (clonedLayers[key].name==currAmenityName)
             {
-                currKey = key;
+					currKey=key;
                 break;
             }
         }
@@ -931,11 +1014,11 @@ function customExportToGeoJSON() {
         }
 
         //for each feature in the current (this) amenity in clonedLayers
-        for (var j = 0; j < clonedLayers[currKey].features.length; ++j) {
+			for (var j=0; j<clonedLayers[currKey].features.length;++j){
             //for each attribute in the current (this) feature in (this) amenity in clonedLayers
-            for (attrKey in clonedLayers[currKey].features[j].attributes) {
+				for (attrKey in clonedLayers[currKey].features[j].attributes){
                 //delete the key-value pair that is NOT in selectedHeads array
-                if (selectedHeads.indexOf(attrKey) < 0)
+					if(selectedHeads.indexOf(attrKey)<0)
                     delete clonedLayers[currKey].features[j].attributes[attrKey];
             }
         }
@@ -945,35 +1028,81 @@ function customExportToGeoJSON() {
     exportToGeoJSON2();
 }
 
-function exportToGeoJSON2() {
+	function exportToGeoJSON2(selectedHeads){
+		if(selectedHeads.length==0){
+			alert("No tags selected! Please select at least one tag.");
+			return;
+		}
+				
     geoJSONs.length = 0;				//empty the 'geoJSONs' array
     tempLayers = new Array();			//to hold clones of each layer from 'Layers' array
-    for (i = 0; i < clonedLayers.length; ++i) 	//for each layer
+		for (i=0; i<clonedLayers.length; ++i) 	//for each layer
     {
         tempLayers[i] = clonedLayers[i].clone();
-        if (clonedLayers[i].features.length > 0) //for each layer with at least one feature in it
+				if(clonedLayers[i].features.length>0) //for each layer with at least one feature in it
         {
-            for (j = 0; j < clonedLayers[i].features.length; ++j) //for each feature in the current layer...
+					for (j=0; j<clonedLayers[i].features.length; ++j) //for each feature in the current layer...
             {
                 //get geometry of this (current) feature and transform it onto EPSG:4326
                 var clonedGeometry = tempLayers[i].features[j].geometry;
                 clonedGeometry = clonedGeometry.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+						
+						//////////
+						if(selectedHeads.indexOf("lon")>=0){
+							centroidX=tempLayers[i].features[j].geometry.getCentroid().x;
+							tempLayers[i].features[j].attributes.lon=centroidX;
             }
+						if(selectedHeads.indexOf("lat")>=0){
+							centroidY=tempLayers[i].features[j].geometry.getCentroid().y;
+							tempLayers[i].features[j].attributes.lat=centroidY;
+						}
+						//////////
+					}	
             var geoJSON = new OpenLayers.Format.GeoJSON();
             geoJSON = geoJSON.write(tempLayers[i].features, true);
             geoJSON = encodeURIComponent(geoJSON);
             geoJSONs.push(geoJSON);
         }
-        else
-            geoJSONs.push("\n");
+				else geoJSONs.push("\n");
     }
     //Engaging AJAX
     if (geoJSONs.length > 0)
         callAJAXGeoJSON(0);
     else
-        alert("No data to export!");
+				alert ("No data to export!");
     //Disengaging MANAUL AJAX 
 
 
 }
-//});
+	
+	function update() {
+			alert("inside update()");
+            // reset modification mode
+            polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+			var rotate = document.getElementById("rotate").checked;
+            if(rotate) {
+               	polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
+				
+            }
+            var resize = document.getElementById("resize").checked;
+            if(resize) {
+                polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
+                var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+                if (keepAspectRatio) {
+                    polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+                }
+            }
+            var drag = document.getElementById("drag").checked;
+            if(drag) {
+                polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;
+            }
+            if (rotate || drag) {
+                polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+            }
+            polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
+            //var sides = parseInt(document.getElementById("sides").value);
+           // sides = Math.max(3, isNaN(sides) ? 0 : sides);
+           // controls.regular.handler.sides = sides;
+          //  var irregular =  document.getElementById("irregular").checked;
+          //  controls.regular.handler.irregular = irregular;
+        }

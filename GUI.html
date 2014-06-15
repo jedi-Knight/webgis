@@ -1,93 +1,105 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>WebGIS</title>
-<link rel="stylesheet" href="css/panelstyle.css" type="text/css" media="screen" />
-<link rel="stylesheet" href="css/menustyle.css" type="text/css" media="screen" />
-<!--<link rel="stylesheet" href="http://www.openlayers.org/api/2.11/theme/default/style.css" type="text/css"/>-->
-<!--<script src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&amp;mkt=en-us"></script> <!--This is required wrapper for the bing images-->
-<!--<script src="http://trac.osgeo.org/openlayers/export/12468/addins/loadingPanel/trunk/lib/OpenLayers/Control/LoadingPanel.js"></script> -->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>WebGIS</title>
+        <link rel="stylesheet" href="css/panelstyle.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="css/menustyle.css" type="text/css" media="screen" />
+        <!--<link rel="stylesheet" href="http://www.openlayers.org/api/2.11/theme/default/style.css" type="text/css"/>-->
+        <!--<script src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&amp;mkt=en-us"></script> <!--This is required wrapper for the bing images-->
+        <!--<script src="http://trac.osgeo.org/openlayers/export/12468/addins/loadingPanel/trunk/lib/OpenLayers/Control/LoadingPanel.js"></script> -->
 
-<!--from home.php-->
-<script src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&amp;mkt=en-us"></script> <!--This is required wrapper for the bing images-->
-<!--<script type="text/javascript" src="js/OSMMeta.js"></script>-->
-<script src="sessvars.js"></script>
-<!--<script src="http://trac.osgeo.org/openlayers/export/12468/addins/loadingPanel/trunk/lib/OpenLayers/Control/LoadingPanel.js"></script>-->
-<!---->
+        <!--from home.php-->
+        <script src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&amp;mkt=en-us"></script> <!--This is required wrapper for the bing images-->
+        <!--<script type="text/javascript" src="js/OSMMeta.js"></script>-->
+        <script src="sessvars.js"></script>
+        <!--<script src="http://trac.osgeo.org/openlayers/export/12468/addins/loadingPanel/trunk/lib/OpenLayers/Control/LoadingPanel.js"></script>-->
+        <!---->
 
-<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="http://openlayers.org/api/2.13/OpenLayers.js"></script>
-<script type="text/javascript" src="js/OSMMeta.js"></script>
-<script type="text/javascript" src="js/actions.js"></script>
-<script type="text/javascript" src="js/interactivity.js"></script>
-<!--<script type="text/javascript" src="js/basemap.js"></script> -->
-
-
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script type='text/javascript' src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="http://openlayers.org/api/2.13/OpenLayers.js"></script>
+        <script type="text/javascript" src="js/OSMMeta.js"></script>
+        <script type="text/javascript" src="js/actions.js"></script>
+        <script type="text/javascript" src="js/interactivity.js"></script>
+        <!--<script type="text/javascript" src="js/basemap.js"></script> -->
 
 
+        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+            <script type='text/javascript' src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-</head>
-<body>
-<style>
-html, body {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-</style>
-<div id="map"></div>
-<div class="panel" style="z-index:2;"><div id="glass">
-  <div class="panelContent">
-    <h3>Presets</h3><br/>
-    <div class="presets">
-        <ul id="selectedPresets">
-        </ul>
-        <input id="selectFrom" value="Add a preset"></input>
-    </div>
-    <div style="clear:both;"></div>
-    <div class="columns">
-      <div class="colleft"> </div>
-    </div>
-  </div>
-<div class="panelControls">
-  <a class="trigger panelTrigger" id="collapsePanel" href="#">
-      <img class="icon arrow" src="img/arrow.png"/>
-  </a>
-  
-  <a class="tool pen passive" id="penToggle">
-      <img  class="icon" src="img/pen.png"/>
-  </a>
-  
-    <a class="trigger inputTrigger importPolygon active" id="importPolygonTrigger">
-        
-            <div class="inputDiv fileInputDiv">
-                <input type="file" class="fileInput" id="file-input" name="file-input"/><img class="icon" src="img/polygon.png"/>
-            </div>
-            
-            
-        
-        
-    </a>
-    
-  <a class ="trigger download fetchData active" id="fetchDataTrigger">
-      <img class="icon" src="img/fetch.png"</img>
-  </a>
-  
-</div>
-    </div></div>
-<a class="trigger panelTrigger" id="expandPanel" href="#">
-    <img class="icon arrow" src="img/arrow.png"/>
-</a>
-<div id="tagsSelector">hey there</div>
-    <div id="aggregate" sytle="margin-right:0px">
-			<label>Aggregate</label><br>
-			<span id='schoolCount'></span><br>
-			<span id='hospitalCount'></span><br>
-			<span id='collegeCount'></span><br>
-		</div>
-</body>
-</html>
+
+
+    </head>
+    <body>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+        <div id="map"></div>
+        <div class="panel" style="z-index:2;"><div id="glass">
+                <div class="panelContent">
+                    <h3>Presets</h3><br/>
+                    <div class="presets">
+                        <ul id="selectedPresets">
+                        </ul>
+                        <input id="selectFrom" value="Add a preset"></input>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div class="columns">
+                        <div class="colleft"> </div>
+                    </div>
+                </div>
+                <div class="panelControls">
+                    <a class="trigger panelTrigger" id="collapsePanel" href="#">
+                        <img class="icon arrow" src="img/arrow.png"/>
+                    </a>
+
+                    <a class="tool pen passive" id="penToggle">
+                        <img  class="icon" src="img/pen.png"/>
+                    </a>
+
+                    <a class="trigger inputTrigger importPolygon active" id="importPolygonTrigger">
+
+                        <div class="inputDiv fileInputDiv">
+                            <input type="file" class="fileInput hiddenObjects" id="file-input" name="file-input"/><img class="icon" src="img/polygon.png"/>
+                        </div>
+                    </a>
+
+                    <a class = "trigger download fetchData active" id="fetchDataTrigger">
+                        <img class="icon" src="img/fetch.png"</img>
+                    </a>
+
+                    <a class = "trigger exportData active" id="exportDataTrigger">
+                        <img class="icon" src = "img/export.png"><img>
+                                </a>
+
+                                </div>
+                                </div></div>
+                                <a class="trigger panelTrigger" id="expandPanel" href="#">
+                                    <img class="icon arrow" src="img/arrow.png"/>
+                                </a>
+                                <div class="splashContainerBase passive">
+                                    <div class="splashContainer export">
+                                    <div id="tagsSelector">
+                                        hey there
+                                    </div>
+                                    <div class="label checkbox"><input type="radio" name="exportType" value="csv">CSV
+                                    <input type="radio" name="exportType" value="geojson">GeoJson</div>
+                                        <a class="trigger download active">
+                                        <img src="img/download.png" class="icon"/>
+                                            </a>
+                                    </div>
+                                </div>
+                                <div id="aggregate" sytle="margin-right:0px">
+                                    <label>Aggregate</label><br>
+                                        <span id='schoolCount'></span><br>
+                                            <span id='hospitalCount'></span><br>
+                                                <span id='collegeCount'></span><br>
+                                                    </div>
+        <div class="hiddenObjects" id="exportStatus"></div>
+                                                    </body>
+                                                    </html>

@@ -43,7 +43,18 @@ $(document).ready(function(){
         /**import polygon**/
         $("a.trigger.inputTrigger").click(function(){
            toggleControl(this);
-           
+        });
+        /****/
+        
+        /**export data**/
+        $("a.trigger.exportData").click(function(){
+            $(this).toggleClass("passive active"); //class switch for active/passive state actions and css 
+            $(".splashContainerBase").toggleClass("passive active"); //class switch for active/passive state actions and css
+        });
+        
+        $(".splashContainer.export a.download.trigger.active").click(function(){
+            customExportToType($(".splashContainer.export .checkbox>input:checked")[0]);
+            $(".splashContainerBase").toggleClass("active passive");
         });
         /****/
         
