@@ -120,7 +120,7 @@ $(document).ready(function(){
                 $("#selectedPresets li").each(function(i){
                     selected.push($(this).text());
                 });
-                alert(selected);
+                console.log(selected);
                 fetchData(selected);
         });
         /****/

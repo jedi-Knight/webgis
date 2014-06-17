@@ -673,7 +673,7 @@ function toggleControl(element) {
 }
 
 	function fx(fileInputControl){
-		alert("inside fx()");
+		console.log("inside fx()");
     // create a form with a couple of values
     var form = new FormData();
     form.append("name", "GeoJSON File");
