@@ -24,7 +24,7 @@
 
         <!--geosjon-->
         <script src="tagChanger.js"></script>
-        <script src="js/action.js"></script>
+        <script src="js/actions.js"></script>
             
        
     </head>
@@ -51,15 +51,35 @@
             </ul>
 
             <li>
-                <input type="radio" name="type" value="modify" id="modifyToggle"
-                       onclick="toggleControl(this);" />
+                <!--<input type="radio" name="type" value="modify" id="modifyToggle"
+                       onclick="toggleControl(this);" />-->
                 <label for="modifyToggle">Modify Boundary Polygon</label>
                 <ul>
+                    <input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" hidden="hidden" />
+                    <li>
+                        <input id="createVertices" type="radio" name="modifyType" onclick="update()" />
+                        <label for="createVertices">Add vertices</label>
+                    </li>
+                    <li>
+                        <input id="rotate" type="radio" name="modifyType" onclick="update()" />
+                        <label for="rotate">Rotate</label>
+                    </li>
+                    <li>
+                        <input id="resize" type="radio" name="modifyType" onclick="update()" />
+                        <label for="resize">Resize</label>
+                        (<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
+                        <label for="keepAspectRatio">Keep Aspect Ratio</label>)
+                    </li>
+                    <li>
+                        <input id="drag" type="radio" checked name="modifyType" onclick="update()" />
+                        <label for="drag">Move</label>
+                    </li>
+                </ul>
+                <!-- <ul>
                     <input id="sides" type="text" size="2" maxlength="2"
                            name="sides" value="5" onchange="update()" hidden="hidden" />
                     <li>
-                        <input id="createVertices" type="checkbox" checked
-                               name="createVertices" onchange="update()" />
+                        <input id="createVertices" type="checkbox" name="createVertices" onchange="update()" />
                         <label for="createVertices">Add vertices</label>
                     </li>
                     <li>
@@ -76,11 +96,11 @@
                         <label for="keepAspectRatio">Keep Aspect Ratio</label>)
                     </li>
                     <li>
-                        <input id="drag" type="checkbox"
+                        <input id="drag" type="checkbox" checked
                                name="drag" onchange="update()" />
                         <label for="drag">Move</label>
                     </li>
-                </ul>
+                </ul> -->
             </li> 
 
 
