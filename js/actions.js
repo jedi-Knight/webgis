@@ -119,7 +119,8 @@
                         "vertexmodified": report,
                         "sketchmodified": report,
                         "sketchstarted": report,
-                        "sketchcomplete": report
+                        "sketchcomplete": report,
+                        "unselectfeature": report
                     });
                 }
 
@@ -214,15 +215,31 @@
                 });
 
                 polygonLayer.events.register("afterfeaturemodified", polygonControlModifier, function(obj) {
+                    alert("feature Modified by polygonControlModifier!!");
                     if (polygonControlModifier.active)
                         polygonControlModifier.deactivate();
+                    
+                    
                     //alert("after feature modified");
                     polygonControl.events.triggerEvent('featureadded');
                 });
+                
+                 polygonLayer.events.on({
+                        "unselectfeature": function(){
+                            alert("feature unselected");
+                        }
+                    });
+                
+                
 
             }
 
             function fetchData() {
+                //check if polygon.features[0] is still selected
+                if (polygonControlModifier.feature!==null){
+                    alert("Finish modifying the polygon first. Click outside the polygon to finish modification.");
+                    return;
+                }
                 //check if polyCoords is defined and is not empty
                 if (polyCoords === "" || !polyCoords) {
                     alert("Please select the area first");
@@ -234,7 +251,7 @@
                     return;
                 }
                 //Call update()
-                update();
+                //sazal update();
                 //Trigger afterfeaturemodified event of PolygonLayer
                 //if(polygonControlModifier.active)
                 //polygonLayer.events.triggerEvent("afterfeaturemodified");
@@ -256,7 +273,7 @@
                 layers.length = 0;
                 csvs.length = 0;
                 geoJSONs.length = 0;
-
+                
                 selected = new Array();
                 var ob = document.getElementById('facilityList');
                 for (var i = 0; i < ob.options.length; i++)
@@ -410,11 +427,15 @@
                 else if (element.value == "modify" && element.checked) {
                     /*polygonControlModifier.activate();
                      alert("inside toggleControl via modify");
-                     debugger;
+                     //debugger;
                      polygonControlModifier.selectFeature(polygonLayer.features[0]);*/
                     update();
                 }
                 else if (element.value == 'importGeoJSON' && element.checked) {
+                    polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
+                    polygonLayer.destroyFeatures();
+                    polyCoords = "";	//remove old coordinates from polyCoords array
+                                
                     //activate the file-input
                     document.getElementById('file-input').disabled = false;
                     fileInputControl = document.getElementById('file-input');
@@ -424,11 +445,12 @@
                                 files = fileInputControl.files,
                                 len = files.length;
                         for (; i < len; i++) {
-                            //console.log("Filename: " + files[i].name);
-                            //console.log("Type: " + files[i].type);
-                            //console.log("Size: " + files[i].size + " bytes");
+                            console.log("Filename: " + files[i].name);
+                            console.log("Type: " + files[i].type);
+                            console.log("Size: " + files[i].size + " bytes");
                         }
                         if (fileInputControl.files.length != 0) {
+                            //alert(fileInputControl.files.length);
                             fx(fileInputControl);
                         }
                     }, false);
@@ -751,7 +773,7 @@
                         polygonLayer.removeAllFeatures();
                         polygonLayer.destroyFeatures();
                         //polygonLayer.addFeatures([]);
-                        debugger;
+                        //debugger;
                         //polygonLayer.addFeatures(boundaryGeoJSON.read(geoJSONString));
                         polygonLayer.addFeatures([boundaryFeature]);
                         /*yaha samma ho*/
@@ -1138,11 +1160,18 @@
             }
 
             function update() {
-                if (polyCoords == "" || polyCoords == null)
+                if (polyCoords == "" || polyCoords == null || !polyCoords)
                     alert("No polygon to edit. Please draw a polygon first.");
                 else {
-                    polygonLayer.events.triggerEvent('afterfeaturemodified');
-
+                    alert("before triggering pL.e.afm");
+                    //polygonLayer.events.triggerEvent('afterfeaturemodified');
+                    if(polygonControlModifier.active){
+                        polygonControlModifier.deactivate();
+                        
+                        
+                        
+                    }
+                                            
                     // reset modification mode
                     polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
                     var rotate = document.getElementById("rotate").checked;
@@ -1173,5 +1202,40 @@
                     //Those two !buggers are here now
                     polygonControlModifier.activate();
                     polygonControlModifier.selectFeature(polygonLayer.features[0]);
+                    
+                    
+                    
+                    /* //Backup
+                    // reset modification mode
+                    polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+                    var rotate = document.getElementById("rotate").checked;
+                    if (rotate) {
+                        polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
+                    }
+                    var resize = document.getElementById("resize").checked;
+                    if (resize) {
+                        polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
+                        var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+                        if (keepAspectRatio) {
+                            polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+                        }
+                    }
+                    var drag = document.getElementById("drag").checked;
+                    if (drag) {
+                        polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;
+                    }
+                    if (rotate || drag) {
+                        polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+                    }
+                    polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
+                    //var sides = parseInt(document.getElementById("sides").value);
+                    //sides = Math.max(3, isNaN(sides) ? 0 : sides);
+                    //controls.regular.handler.sides = sides;
+                    //var irregular =  document.getElementById("irregular").checked;
+                    //controls.regular.handler.irregular = irregular;
+                    //Those two !buggers are here now
+                    polygonControlModifier.activate();
+                    polygonControlModifier.selectFeature(polygonLayer.features[0]);
+                    //End of Backup */
                 }
             }
