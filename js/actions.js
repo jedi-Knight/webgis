@@ -123,13 +123,13 @@ function init() {
             console.log(event.type, event.feature ? event.feature.id : event.components);
         }
         polygonLayer.events.on({
-            "beforefeaturemodified": report,
+            /*"beforefeaturemodified": report,
             "featuremodified": report,
             "afterfeaturemodified": report,
             "vertexmodified": report,
             "sketchmodified": report,
             "sketchstarted": report,
-            "sketchcomplete": report,
+            "sketchcomplete": report,*/
             "featureunselected": report
         });
     }
@@ -228,8 +228,6 @@ function init() {
         //alert("feature Modified by polygonControlModifier!!");
         if (polygonControlModifier.active)
             polygonControlModifier.deactivate();
-
-
         //alert("after feature modified");
         polygonControl.events.triggerEvent('featureadded');
     });
@@ -237,16 +235,11 @@ function init() {
     polygonLayer.events.register("featureadded", polygonControlRegular, function(obj) {
         if (polygonControlRegular.active)
             polygonControlRegular.deactivate();
-
-
         //alert("after feature modified");
         polygonControl.events.triggerEvent('featureadded');
     });
     
-    polygonControlRegular.events.register("unselectfeature", polygonControlRegular, function(obj) {
-       alert();
-    });
-
+    
 }
 
 function fetchData() {
@@ -433,13 +426,15 @@ function fetchData() {
 //for polygon
 function toggleControl(element) {
     //deselect all options from modifyType
-    var modes=document.getElementsByName('modifyType');
+    /*var modes=document.getElementsByName('modifyType');
         for (key in modes){
             modes[key].checked=false;
-        }
+        }*/
         
     var control = polygonControl;
     if (element.value == 'polygon' && element.checked) {
+        if(polygonControlModifier.feature)
+            polygonControlModifier.feature=null;
         polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
         polyCoords = "";	//remove old coordinates from polyCoords array
         document.getElementById('file-input').disabled = true;
@@ -489,7 +484,10 @@ function drawRegularPolygon() {
 
     polygonLayer.removeAllFeatures();
     polygonLayer.destroyFeatures();
+    //polygonLayer.addFeatures([]);
     polyCoords = "";
+    if(polygonControlModifier.feature)
+            polygonControlModifier.feature=null;
     polygonControlRegular.activate();
 
 }
@@ -1200,10 +1198,10 @@ function exportToGeoJSON2(selectedHeads) {
 function update() {
     if (polyCoords == "" || polyCoords == null || !polyCoords){
         alert("No polygon to edit. Please draw a polygon first.");
-        var modes=document.getElementsByName('modifyType');
+        /*var modes=document.getElementsByName('modifyType');
         for (key in modes){
             modes[key].checked=false;
-        }
+        }*/
     }
     else {
         //alert("before triggering pL.e.afm");
@@ -1213,6 +1211,7 @@ function update() {
             polygonControlModifier.deactivate();
         }
 
+        
         // reset modification mode
         polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
         var rotate = document.getElementById("rotate").checked;
@@ -1244,10 +1243,10 @@ function update() {
         polygonControlModifier.activate();
         polygonControlModifier.selectFeature(polygonLayer.features[0]);
         
-        var modes=document.getElementsByName('type');
+        /*var modes=document.getElementsByName('type');
         for (key in modes){
             modes[key].checked=false;
-        }
+        }*/
 
 
         /* //Backup
