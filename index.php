@@ -25,8 +25,8 @@
         <!--geosjon-->
         <script src="tagChanger.js"></script>
         <script src="js/actions.js"></script>
-            
-       
+
+
     </head>
 
     <body onload="init()">
@@ -35,20 +35,24 @@
         Click on "Draw New Boundary Polygon" to start drawing the polygon boundary. Then left-click on the map to start drawing. Double-click to end drawing.
         <ul id="controlToggle">
             <li>
-                <input type="radio" name="type" value="none" id="noneToggle"
-                       onclick="toggleControl(this);" checked="checked" />
+                <input type="radio" name="type" value="none" id="noneToggle" onclick="toggleControl(this);" checked="checked" />
                 <label for="noneToggle">Navigate</label>
             </li>
             <li>
                 <input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
-                <label for="polygonToggle">Draw New Polygon (and erase the previous one)</label>
+                <label for="polygonToggle">Draw New Polygon</label>
+                <input type="button" id="cancelPolygon" onclick="removePolygon()" value="Remove Polygon" />
             </li>
             <ul>
-                <li>
+               <li>
                     <input type="checkbox" name="allow-pan" value="allow-pan" id="allowPanCheckbox" checked=true onclick="allowPan(this);" />
                     <label for="allowPanCheckbox">Allow Pan while Drawing</label>
                 </li>
             </ul>
+            <li>
+                    <input type="radio" name="type" value="drawRegular" id="drawRegular" onclick="drawRegularPolygon();" />
+                    <label for="drawRegular">Draw Circle</label>
+            </li>
 
             <li>
                 <!--<input type="radio" name="type" value="modify" id="modifyToggle"
@@ -71,33 +75,28 @@
                         <label for="keepAspectRatio">Keep Aspect Ratio</label>)
                     </li>
                     <li>
-                        <input id="drag" type="radio" checked name="modifyType" onclick="update()" />
+                        <input id="drag" type="radio" name="modifyType" onclick="update()" />
                         <label for="drag">Move</label>
                     </li>
                 </ul>
                 <!-- <ul>
-                    <input id="sides" type="text" size="2" maxlength="2"
-                           name="sides" value="5" onchange="update()" hidden="hidden" />
+                    <input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" hidden="hidden" />
                     <li>
                         <input id="createVertices" type="checkbox" name="createVertices" onchange="update()" />
                         <label for="createVertices">Add vertices</label>
                     </li>
                     <li>
-                        <input id="rotate" type="checkbox"
-                               name="rotate" onchange="update()" />
+                        <input id="rotate" type="checkbox" name="rotate" onchange="update()" />
                         <label for="rotate">Rotate</label>
                     </li>
                     <li>
-                        <input id="resize" type="checkbox"
-                               name="resize" onchange="update()" />
+                        <input id="resize" type="checkbox" name="resize" onchange="update()" />
                         <label for="resize">Resize</label>
-                        (<input id="keepAspectRatio" type="checkbox"
-                                name="keepAspectRatio" onchange="update()" checked="checked" />
+                        (<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
                         <label for="keepAspectRatio">Keep Aspect Ratio</label>)
                     </li>
                     <li>
-                        <input id="drag" type="checkbox" checked
-                               name="drag" onchange="update()" />
+                        <input id="drag" type="checkbox" checked name="drag" onchange="update()" />
                         <label for="drag">Move</label>
                     </li>
                 </ul> -->
