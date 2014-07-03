@@ -307,6 +307,8 @@ function fetchData() {
         //debugger;
         switch (selected[sel]) {
             case 'school':
+                //show loadingimage.gif
+                document.getElementById('waitForMe').style.display="block";
                 //facility_url = "http://overpass-api.de/api/interpreter?data=(way['amenity'~'kindergarten|school|college|hospital|clinic|nursing_home|dentist|health$|health_post'](bbox);node(w);node['amenity'~'kindergarten|school|college|hospital|clinic|nursing_home|dentist|health_post'](bbox););out meta qt;";
 
                 facility_url = "http://overpass-api.de/api/interpreter";
@@ -323,14 +325,18 @@ function fetchData() {
                         readWithPOST: true
                     }),
                     projection: new OpenLayers.Projection("EPSG:4326")
-                            //styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"blue"})})
+                       // styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"green"})})
                 });
                 map.addLayers([school]);
                 layers.push(school);
                 school.events.on({"featuresadded": function(features) {
+                        
                         document.getElementById(school.name + 'Count').innerHTML = school.features.length;
                         //populate selectTagsInLayers
                         populateTagsSelector(school);
+                        //hide loadingimage.gif
+                        document.getElementById('waitForMe').style.display="none";
+    
                         //Test for 'aggregate'
                         element = document.getElementById('aggSchool');
                         element.style.display = "block";
@@ -371,6 +377,8 @@ function fetchData() {
                 break;
 
             case 'hospital':
+                //show loadingimage.gif
+                document.getElementById('waitForMe').style.display="block";
                 //facility_url = "http://overpass-api.de/api/interpreter?data=(way['amenity'~'hospital|clinic|nursing_home|dentist|health$|health_post'](poly: '" +polyCoords+ "');node(w);node['amenity'~'hospital|clinic|nursing_home|dentist|health_post'](poly: '" +polyCoords+ "'););out meta qt;";
 
                 facility_url = "http://overpass-api.de/api/interpreter";
@@ -392,10 +400,15 @@ function fetchData() {
                 hospital.events.on({"featuresadded": function(features) {
                         document.getElementById(hospital.name + 'Count').innerHTML = hospital.features.length;
                         populateTagsSelector(hospital);
+                         //hide loadingimage.gif
+                        document.getElementById('waitForMe').style.display="none";
+                        
                     }});
                 break;
 
             case 'college':
+                //show loadingimage.gif
+                document.getElementById('waitForMe').style.display="block";
                 //facility_url = "http://overpass-api.de/api/interpreter?data=(way['amenity'~'college'](poly: '" +polyCoords+ "');node(w);node['amenity'~'college'](poly: '" +polyCoords+ "'););out meta qt;";
 
                 facility_url = "http://overpass-api.de/api/interpreter";
@@ -417,6 +430,8 @@ function fetchData() {
                 college.events.on({"featuresadded": function(features) {
                         document.getElementById(college.name + 'Count').innerHTML = college.features.length;
                         populateTagsSelector(college);
+                        //hide loadingimage.gif
+                        document.getElementById('waitForMe').style.display="none";
                     }});
                 break;
         }
@@ -680,8 +695,11 @@ function exportToGeoJSON() {
 
 function callAJAXCSV(index) {
     //alert(index + "," + layers[index].name + "," + csvs[index]);
-    if (index == layers.length)
+    if (index == layers.length){
+        //hide loadingimage.gif
+                document.getElementById('waitForMe').style.display="none";
         return;//do nothing. we are done here.
+    }
     //if (csvs[index]==="\n")//this worked before URIEncode was used.
     if (document.getElementById('tagsIn' + layers[index].name).selectedOptions.length == 0)
         callAJAXCSV(index + 1);	//do not make a csv file if it <del>does not have any data</del> <em>has no tags selected in the corresponding selectBox</em>. move on to the next item in 'csvs' array.
@@ -700,6 +718,8 @@ function callAJAXCSV(index) {
         {
             if (xmlhttp.readyState == 3 || xmlhttp.readyState == 2 || xmlhttp.readyState == 1 || xmlhttp.readyState == 0)
             {
+                //show loadingimage.gif
+                document.getElementById('waitForMe').style.display="block";
 
             }
             if (xmlhttp.readyState == 4)
@@ -726,7 +746,9 @@ function callAJAXCSV(index) {
 
 function callAJAXGeoJSON(index) {
     if (index == layers.length) {
-        return; //do nothing. we are done here.
+        //hide loadingimage.gif
+                document.getElementById('waitForMe').style.display="none";
+        return;//do nothing. we are done here.
     }
     if (document.getElementById('tagsIn' + layers[index].name).selectedOptions.length == 0)
         callAJAXGeoJSON(index + 1);	//do not make a csv file if does not have any data. move on to the next item in 'csvs' array.
