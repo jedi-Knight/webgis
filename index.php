@@ -30,6 +30,9 @@
     </head>
 
     <body onload="init()">
+        <div id="waitForMe" style="z-index:9000;margin:auto;width:100%;height:100%;position:fixed;background-color:black;opacity:0.8;vertical-align:middle" hidden="hidden">
+            <img src="http://localhost/aggregator/current/img/loadingimage.gif" style="z-index:9000;position:absolute;margin-left:auto;margin-right:auto;opacity:1.0" />
+        </div>
         <!-- Map Container -->
         <div id="map" style="height:400px"></div>
         Click on "Draw New Boundary Polygon" to start drawing the polygon boundary. Then left-click on the map to start drawing. Double-click to end drawing.
@@ -153,5 +156,6 @@
             </div>
             <div id="aggHospital" hidden="hidden">Hospital</div>
         </div>
+        
     </body>
 </html>
