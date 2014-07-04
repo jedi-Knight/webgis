@@ -301,9 +301,10 @@ function fetchData(selected) {
                 map.addLayers([school]);
                 layers.push(school);
                 school.events.on({"featuresadded": function(features) {
-                        document.getElementById(school.name + 'Count').innerHTML = school.features.length;
+                        document.getElementById(school.name + 'Count').innerHTML = "schools: " + school.features.length;
                         //populate selectTagsInLayers
                         populateTagsSelector(school);
+                        guiPanelShowAggregate();
                     }});
                 break;
 
@@ -327,8 +328,9 @@ function fetchData(selected) {
                 map.addLayers([hospital]);
                 layers.push(hospital);
                 hospital.events.on({"featuresadded": function(features) {
-                        document.getElementById(hospital.name + 'Count').innerHTML = hospital.features.length;
+                        document.getElementById(hospital.name + 'Count').innerHTML = "hospitals: " + hospital.features.length;
                         populateTagsSelector(hospital);
+                        guiPanelShowAggregate();
                     }});
                 break;
 
@@ -352,8 +354,9 @@ function fetchData(selected) {
                 map.addLayers([college]);
                 layers.push(college);
                 college.events.on({"featuresadded": function(features) {
-                        document.getElementById(college.name + 'Count').innerHTML = college.features.length;
+                        document.getElementById(college.name + 'Count').innerHTML = "colleges: " + college.features.length;
                         populateTagsSelector(college);
+                        guiPanelShowAggregate();
                     }});
                 break;
         }
