@@ -16,8 +16,12 @@
 
 
 $(document).ready(function(){
+        $("div.hiddenOnLoad").hide();
 	init();
 	//initPresetSelectFromList();  obsolete
+        
+        $("h3").css("max-width", $("#glass").outerWidth());
+        
 		
 	/**panel expand/collapse**/
 	$(".trigger.panelTrigger").click(function(){
@@ -36,6 +40,7 @@ $(document).ready(function(){
         /**pen toggle**/
         $(".tool").click(function(){
            $(this).toggleClass("passive active"); //class switch for active/passive state actions and css
+           guiPanelShowPresetSelector();//show 'warning: clears boundary polygon layer,' and show presets panel if user proceeds
            toggleControl(this); //call pen active method
         });
         /****/
@@ -87,8 +92,12 @@ $(document).ready(function(){
                 source: toDownload,
                 minLength: 0,
                 select: function( event, ui ) {
-                    $(".presets #selectedPresets").append("<li class='presetItem'>"+ui.item.value+"</li><div class='delItem'></div>");
-              }
+                    $("<li class='presetItem'>"+ui.item.value+"<div class='delItem'><a title='Remove preset' href='#'><img src='img/minus.png'/></a></div></li>")
+                            .appendTo($(".presets #selectedPresets"))
+                            .click(function(){
+                                $(this).closest("li.presetItem").remove();
+                            });
+                    }
             });
           });
           
