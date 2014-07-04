@@ -40,7 +40,8 @@ h3 {
     -webkit-transform: scale(1.57, 1) translateX(6px);
     text-shadow: rgba(0,0,0,0.4) 0 0 0.5px;
     -webkit-font-smoothing: antialiased;
-    display: inline-block;
+    display: block;
+    /*float:both;*/
 
 }
 pic {
@@ -80,7 +81,7 @@ p {
     /*	border: darkslategray;
             border-style: solid;
             border-weight:1;*/
-    box-shadow: 0px 0px 5px rgba(100,100,50,0.5);
+    /*box-shadow: 0px 0px 5px rgba(100,100,50,0.5);*/
     display: none;
     /*//-moz-border-radius-topleft: 20px;*/
     border-top-left-radius: 10px;
@@ -100,7 +101,7 @@ p {
 /*    //width: 330px;
     //height:available;*/
     padding: 30px 30px 0px 30px;
-    box-shadow: 0px 0px 2px rgba(50,50,0,0.4) inset;
+    box-shadow: 0px 0px 2px rgba(50,50,0,0.4) inset, 0px 0px 5px rgba(100,100,50,0.5);
 }
 
 .presets{
@@ -129,7 +130,19 @@ p {
 }
 
 div.delItem{
-    position: absolute;
+    float: right;
+    box-sizing: border-box;
+    
+}
+
+div.delItem a{
+    /*margin-right:2px;*/
+    box-sizing: border-box;
+    /*padding:0px;*/
+}
+
+div.delItem img{
+/*    position: absolute;
     font-family: "Lucida Grande", "Verdana", "sans-serif";
     font-style: normal;
     float: right;
@@ -144,11 +157,14 @@ div.delItem{
     border-style: solid;
     border-color: #eeeeee;
     text-align: center;
-    padding-right:1px;
+    padding-right:1px;*/
+    box-sizing: border-box;
+    width: 10pt;
+    height: 10pt;
 }
-div.delItem:after{
+/*div.delItem:after{
     content: "-";
-}
+}*/
 
 .panel p {
     margin: 0 0 15px 0;
@@ -157,7 +173,10 @@ div.delItem:after{
 
 }
 .panelContent{
-    margin-bottom:50px;
+    margin-bottom:25px;
+    max-height: 120pt;
+    max-width: none;
+    overflow: auto;
 }
 .panel a, .panel a:visited, .splashContainerBase a{
 
