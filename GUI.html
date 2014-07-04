@@ -19,6 +19,7 @@
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="http://openlayers.org/api/2.13/OpenLayers.js"></script>
         <script type="text/javascript" src="js/OSMMeta.js"></script>
+        <script type="text/javascript" src="js/guiFunctions.js"></script>
         <script type="text/javascript" src="js/actions.js"></script>
         <script type="text/javascript" src="js/interactivity.js"></script>
         <!--<script type="text/javascript" src="js/basemap.js"></script> -->
@@ -41,20 +42,28 @@
         </style>
         <div id="map"></div>
         <div class="panel" style="z-index:2;"><div id="glass">
-                <div class="panelContent">
-                    <h3>Presets</h3><br/>
-                    <div class="presets">
+                <h3>Presets</h3><br/>
+                <div class="panelContent" id="panelContent">
+                    
+                    <div class="presets" id="presetSelector">
                         <ul id="selectedPresets">
                         </ul>
                         <input id="selectFrom" value="Add a preset"></input>
                     </div>
-                    <div style="clear:both;"></div>
+                    <!--<div style="clear:both;"></div>
                     <div class="columns">
                         <div class="colleft"> </div>
-                    </div>
+                    </div>-->
+                    
+                    <div class = "aggregate hiddenOnLoad" id="aggregate">
+                                                            <div id='schoolCount'></div>
+                                                                <div id='hospitalCount'></div>
+                                                                    <div id='collegeCount'></div>
+                                                                        </div>
                 </div>
+                
                 <div class="panelControls">
-                    <a class="trigger panelTrigger" id="collapsePanel" href="#">
+                    <a class="trigger panelTrigger" id="collapsePanel" href="#" title="Panel Collapse">
                         <img class="icon arrow" src="img/arrow.png"/>
                     </a>
 
@@ -79,7 +88,7 @@
 
                                 </div>
                                 </div></div>
-                                <a class="trigger panelTrigger" id="expandPanel" href="#">
+                                <a class="trigger panelTrigger" id="expandPanel" href="#" title="Panel Expand">
                                     <img class="icon arrow" src="img/arrow.png"/>
                                 </a>
                                 <div class="splashContainerBase passive">
@@ -90,16 +99,11 @@
                                         <div class="label checkbox"><input type="radio" name="exportType" value="csv">CSV
                                                 <input type="radio" name="exportType" value="geojson">GeoJson</div>
                                                     <a class="trigger download active">
-                                                        <img src="img/download.png" class="icon"/>
+                                                        <img src="img/download.png" class="icon"/> 
                                                     </a>
                                                     </div>
                                                     </div>
-                                                    <div id="aggregate" sytle="margin-right:0px">
-                                                        <label>Aggregate</label><br>
-                                                            <span id='schoolCount'></span><br>
-                                                                <span id='hospitalCount'></span><br>
-                                                                    <span id='collegeCount'></span><br>
-                                                                        </div>
+                                                    
                                                                         <div class="hiddenObjects" id="exportStatus"></div>
                                                                         </body>
                                                                         </html>
