@@ -13,6 +13,7 @@
         <script src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&amp;mkt=en-us"></script> <!--This is required wrapper for the bing images-->
         <!--<script type="text/javascript" src="js/OSMMeta.js"></script>-->
         <script src="sessvars.js"></script>
+        <script src="tagChanger.js"></script>
         <!--<script src="http://trac.osgeo.org/openlayers/export/12468/addins/loadingPanel/trunk/lib/OpenLayers/Control/LoadingPanel.js"></script>-->
         <!---->
 
@@ -40,6 +41,9 @@
                 padding: 0;
             }
         </style>
+        <div id="waitForMe" style="z-index:9000;margin:auto;width:100%;height:100%;position:fixed;background-color:black;opacity:0.8;vertical-align:middle" hidden="hidden">
+            <img src="http://localhost/aggregator/current/img/loadingimage.gif" style="z-index:9000;position:absolute;margin-left:auto;margin-right:auto;opacity:1.0" />
+        </div>
         <div id="map"></div>
         <div class="panel" style="z-index:2;"><div id="glass">
                 <h3>Presets</h3><br/>
@@ -59,6 +63,12 @@
                                                             <div id='schoolCount'></div>
                                                                 <div id='hospitalCount'></div>
                                                                     <div id='collegeCount'></div>
+                                                                    <div id="aggSchool" hidden="hidden">
+                <h2>School</h2>
+                Total Students&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span id="schoolCountStudents"></span></br>
+                No of Secondary Schools: <span id="schoolCountPrimary"></span></br>
+            </div>
+            <div id="aggHospital" hidden="hidden">Hospital</div>
                                                                         </div>
                 </div>
                 
@@ -91,13 +101,48 @@
                                 <a class="trigger panelTrigger" id="expandPanel" href="#" title="Panel Expand">
                                     <img class="icon arrow" src="img/arrow.png"/>
                                 </a>
+        
+        
+        <!--drawing controls panel-->
+        
+        <div id="drawControls" class="float panel hiddenObjects">
+            <a class="tool pen passive" id="penToggle">
+                <img  class="icon" src="img/pen.png"/>
+            </a>
+            <a class="tool circle passive" id="circleToggle">
+                <img  class="icon" src="img/circle.png"/>
+            </a>
+            <a class="tool addVertices passive" id="addVertexToggle">
+                <img  class="icon" src="img/addVertexIcon.png"/>
+            </a>
+            <a class="tool rotate passive" id="rotateToggle">
+                <img  class="icon" src="img/rotateHandleIcon.png"/>
+            </a>
+            <a class="tool resize passive" id="resizeToggle">
+                <img  class="icon" src="img/resizeHandleIcon.png"/>
+            </a>
+            <a class="tool move passive" id="moveToggle">
+                <img  class="icon" src="img/moveHandleIcon.png"/>
+            </a>
+        </div>
+            
+        <!---->
+        
+        
+        
+        
+        
+        
+        
+        
+        
                                 <div class="splashContainerBase passive">
-                                    <div class="splashContainer export">
+                                    <div id="splashContainer" class="splashContainer export">
                                         <div id="tagsSelector">
                                             hey there
                                         </div>
-                                        <div class="label checkbox"><input type="radio" name="exportType" value="csv">CSV
-                                                <input type="radio" name="exportType" value="geojson">GeoJson</div>
+                                        <div class="label checkbox"><input type="radio" name="exportType" value="exportToCSV">CSV
+                                                <input type="radio" name="exportType" value="exportToGeoJSON">GeoJson</div>
                                                     <a class="trigger download active">
                                                         <img src="img/download.png" class="icon"/> 
                                                     </a>
