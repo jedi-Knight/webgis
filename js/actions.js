@@ -79,7 +79,7 @@ function init() {
                 //displayProjection:proj900913
     });
 
-    map.addControl(new OpenLayers.Control.LoadingPanel());
+//    map.addControl(new OpenLayers.Control.LoadingPanel());
     bing = new OpenLayers.Layer.Bing({name: "Bing Aerial Layer", type: "Aerial", key: "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf", });
     osm = new OpenLayers.Layer.OSM("OSM", null, {sphericalMercator: false, attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors (ODbL)"});
     wmsLayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
@@ -242,22 +242,22 @@ function init() {
     
 }
 
-function fetchData() {
+function fetchData(selected) {
     //check if polygon.features[0] is still selected
     if (polygonControlModifier.feature !== null) {
         alert("Finish modifying the polygon first. Click outside the polygon to finish modification.");
         return;
     }
     //check if polyCoords is defined and is not empty
-    if (polyCoords === "" || !polyCoords) {
-        alert("Please select the area first");
-        return;
-    }
-    //check if the layers are selected
-    if (document.getElementById('facilityList').options.selectedIndex < 0) {
-        alert("Please select at least one item in the Features List");
-        return;
-    }
+//    if (polyCoords === "" || !polyCoords) {
+//        alert("Please select the area first");
+//        return;
+//    }
+//    //check if the layers are selected
+//    if (document.getElementById('facilityList').options.selectedIndex < 0) {
+//        alert("Please select at least one item in the Features List");
+//        return;
+//    }
     //Call update()
     //sazal update();
     //Trigger afterfeaturemodified event of PolygonLayer
@@ -282,12 +282,12 @@ function fetchData() {
     csvs.length = 0;
     geoJSONs.length = 0;
 
-    selected = new Array();
-    var ob = document.getElementById('facilityList');
-    for (var i = 0; i < ob.options.length; i++)
-        if (ob.options[i].selected) {
-            selected.push(ob.options[i].value);
-        }
+//    selected = new Array();
+//    var ob = document.getElementById('facilityList');
+//    for (var i = 0; i < ob.options.length; i++)
+//        if (ob.options[i].selected) {
+//            selected.push(ob.options[i].value);
+//        }
 
     //create new select boxes for each item in 'selected' array inside 'tagsSelector' div
     for (key in selected) {
@@ -449,12 +449,11 @@ function toggleControl(element) {
         }*/
         
     var control = polygonControl;
-    if (element.value == 'polygon' && element.checked) {
-        if(polygonControlModifier.feature)
-            polygonControlModifier.feature=null;
+    //console.log("logogogogogogo");
+    if ($(element).hasClass("active") && $(element).hasClass("pen")) {
         polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
         polyCoords = "";	//remove old coordinates from polyCoords array
-        document.getElementById('file-input').disabled = true;
+        //document.getElementById('file-input').disabled = true;
         control.activate();
     }
     else if (element.value == "modify" && element.checked) {
@@ -464,13 +463,11 @@ function toggleControl(element) {
          polygonControlModifier.selectFeature(polygonLayer.features[0]);*/
         update();
     }
-    else if (element.value == 'importGeoJSON' && element.checked) {
-        polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
-        polygonLayer.destroyFeatures();
-        polyCoords = "";	//remove old coordinates from polyCoords array
-
+                /**/
+    else if ($(element).hasClass("importPolygon")) {
+        //console.log("hellooooo");
         //activate the file-input
-        document.getElementById('file-input').disabled = false;
+        //document.getElementById('file-input').disabled = false;
         fileInputControl = document.getElementById('file-input');
         fileInputControl.addEventListener("change", function(event) {
             // When the control has changed, there are new files
@@ -486,13 +483,18 @@ function toggleControl(element) {
                 //alert(fileInputControl.files.length);
                 fx(fileInputControl);
             }
+            /*jediKnight: what does this code do??
             document.getElementById('importGeoJSONToggle').checked=false;
             document.getElementById('file-input').disabled="false";
+            */
         }, false);
         fileInputControl.addEventListener("close", function(event) {
             alert("aborted");
             polyCoords = "";
         }, false);
+        /**jedicode**/
+        fileInputControl.click();
+        /****/
     }
 }
 
@@ -726,15 +728,16 @@ function callAJAXCSV(index) {
             }
             if (xmlhttp.readyState == 4)
             {
+                window.location = xmlhttp.response; //jedicode
                 //window.open(xmlhttp.response);
-                myButton = document.createElement("input");
-                myButton.type = "button";
-                myButton.value = xmlhttp.response;
-                myButton.onclick = function() {
-                    window.open(xmlhttp.response)
-                };
-                placeHolder = document.getElementById("exportStatus");
-                placeHolder.appendChild(myButton);
+//                myButton = document.createElement("input");
+//                myButton.type = "button";
+//                myButton.value = xmlhttp.response;
+//                myButton.onclick = function() {
+//                    window.open(xmlhttp.response)
+//                };
+//                placeHolder = document.getElementById("exportStatus");
+//                placeHolder.appendChild(myButton);
                 callAJAXCSV(index + 1);
             }
         }
@@ -773,15 +776,16 @@ function callAJAXGeoJSON(index) {
             }
             if (xmlhttp.readyState == 4)
             {
+                window.location = xmlhttp.response; //jedicode
                 //window.open(xmlhttp.response);
-                myButton = document.createElement("input");
-                myButton.type = "button";
-                myButton.value = xmlhttp.response;
-                myButton.onclick = function() {
-                    window.open(xmlhttp.response)
-                };
-                placeHolder = document.getElementById("exportStatus");
-                placeHolder.appendChild(myButton);
+//                myButton = document.createElement("input");
+//                myButton.type = "button";
+//                myButton.value = xmlhttp.response;
+//                myButton.onclick = function() {
+//                    window.open(xmlhttp.response)
+//                };
+//                placeHolder = document.getElementById("exportStatus");
+//                placeHolder.appendChild(myButton);
                 callAJAXGeoJSON(index + 1);
             }
         }
@@ -939,6 +943,7 @@ function customExportToType(type) {
     //get selected 'tags' items
     //remove unselected 'tags' items from this cloned layer in clonedLayers
     //call ExportToCSV() on clonedLayers
+    console.log("customExportToType: type = "+type);
     var selectedHeads = new Array();
     for (key in layers)
         clonedLayers[key] = layers[key].clone();
@@ -983,7 +988,8 @@ function customExportToType(type) {
     //exportToCSV2();
 
     //determine export type and call appropriate exportTo... function
-    switch (type.id)
+    /**jedicode**/
+    switch(type)
     {
         case "exportToCSV":
             exportToCSV2(selectedHeads);
