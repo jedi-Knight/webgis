@@ -58,7 +58,7 @@ $(document).ready(function(){
         });
         
         $(".splashContainer.export a.download.trigger.active").click(function(){
-            customExportToType($(".splashContainer.export .checkbox>input:checked")[0]);
+            customExportToType($("#splashContainer").find("div.checkbox>input:checked")[0].value);
             $(".splashContainerBase").toggleClass("active passive");
         });
         /****/
