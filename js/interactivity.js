@@ -22,28 +22,81 @@ $(document).ready(function(){
         
         $("h3").css("max-width", $("#glass").outerWidth());
         
+        $("#floatPanelsContainer").css("width", $(document).outerWidth());
+        $("#floatPanelsContainer").css("height", $(document).outerHeight());
+        
 		
 	/**panel expand/collapse**/
-	$(".trigger.panelTrigger").click(function(){
-		$(".panel").toggle("fast");
-		return false;
-	});
+//	$(".trigger.panelTrigger.right-docked").click(function(){
+//		
+//		return false;
+//	});
 	
 	$("#expandPanel").click(function(){
+                $(".panel.right-docked").toggle("fast");
 		$(this).hide();
 	});
 	$("#collapsePanel").click(function(){
+                $(".panel.right-docked").toggle("fast");
 		$("#expandPanel").show();
 	});
         /****/
         
-        /**pen toggle**/
+        /**draw panel**//**draw panel**//**draw panel**//**draw panel**/
+        
+        /*draw circle*/
+        $("#circleToggle").click(function(){
+           drawRegularPolygon(); 
+        });
+        /**/
+        
+        /*modify vector*/
+        $("#drawControls .editTool").not(".pen, .circle").click(function(e){
+            if(!($(e.target).is($(this).find("div, div>*")))){
+                console.log("a polgyon editor tool selected!!"+$(this)[0].id);
+                //console.log($(".editTool input").click());
+                $(this).siblings().removeClass("active");
+                $(this).siblings().addClass("passive");
+                //$(this).find("input").parent().toggle();
+                $(this).toggleClass("active passive");
+            }
+           //console.log("calling callPolygonEditorHandles with tool: "+$($(this).filter(".active")));
+           console.log($(this).filter(".active").callPolygonEditorHandles());
+        });
+        /**/
+        
+        
+        
+              
+        /*draw panel toggle*/
+        $("#drawControlsToggle").click(function(){
+           $("#drawControls").toggle(0,function(){
+               /*make drawControls panel draggable*/
+                $(this).draggable({
+                    handle:"div",
+                    grid: [80,40],
+                    snap: ".panel",
+                    snapMode: "outer",
+                    containment: "#floatPanelsContainer",
+                    scroll: false
+                });
+               /**/
+           });
+           $(this).toggleClass("passive active"); 
+        });
+        /**/
+        
+        
+        
+        /*pen toggle*/
         $(".tool").click(function(){
            $(this).toggleClass("passive active"); //class switch for active/passive state actions and css
            guiPanelShowPresetSelector();//show 'warning: clears boundary polygon layer,' and show presets panel if user proceeds
            toggleControl(this); //call pen active method
         });
-        /****/
+        /**/
+        
+        /****//****//****//****//****/
         
         /**import polygon**/
         $("a.trigger.inputTrigger").click(function(){
@@ -57,9 +110,9 @@ $(document).ready(function(){
             $(".splashContainerBase").toggleClass("passive active"); //class switch for active/passive state actions and css
         });
         
-        $(".splashContainer.export a.download.trigger.active").click(function(){
+        $("#splashContainer").find("a.download.trigger.active").click(function(){
             customExportToType($("#splashContainer").find("div.checkbox>input:checked")[0].value);
-            $(".splashContainerBase").toggleClass("active passive");
+            $("#splashContainer").parent(".splashContainerBase").toggleClass("active passive");
         });
         /****/
         
