@@ -1225,91 +1225,91 @@ function exportToGeoJSON2(selectedHeads) {
 
 }
 
-function update() {
-    if (polyCoords == "" || polyCoords == null || !polyCoords){
-        alert("No polygon to edit. Please draw a polygon first.");
-        /*var modes=document.getElementsByName('modifyType');
-        for (key in modes){
-            modes[key].checked=false;
-        }*/
-    }
-    else {
-        //alert("before triggering pL.e.afm");
-        //polygonLayer.events.triggerEvent('afterfeaturemodified');
-        
-        if (polygonControlModifier.active) {
-            polygonControlModifier.deactivate();
-        }
-
-        
-        // reset modification mode
-        polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
-        var rotate = document.getElementById("rotate").checked;
-        if (rotate) {
-            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;//|
-        }
-        var resize = document.getElementById("resize").checked;
-        if (resize) {
-            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;//|
-            var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
-            if (keepAspectRatio) {
-                polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
-            }
-        }
-        var drag = document.getElementById("drag").checked;
-        if (drag) {
-            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;//|
-        }
-        if (rotate || drag) {
-            polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
-        }
-        polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
-        //var sides = parseInt(document.getElementById("sides").value);
-        //sides = Math.max(3, isNaN(sides) ? 0 : sides);
-        //controls.regular.handler.sides = sides;
-        //var irregular =  document.getElementById("irregular").checked;
-        //controls.regular.handler.irregular = irregular;
-        //Those two !buggers are here now
-        polygonControlModifier.activate();
-        polygonControlModifier.selectFeature(polygonLayer.features[0]);
-        
-        /*var modes=document.getElementsByName('type');
-        for (key in modes){
-            modes[key].checked=false;
-        }*/
-
-
-        /* //Backup
-         // reset modification mode
-         polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
-         var rotate = document.getElementById("rotate").checked;
-         if (rotate) {
-         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
-         }
-         var resize = document.getElementById("resize").checked;
-         if (resize) {
-         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
-         var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
-         if (keepAspectRatio) {
-         polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
-         }
-         }
-         var drag = document.getElementById("drag").checked;
-         if (drag) {
-         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;
-         }
-         if (rotate || drag) {
-         polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
-         }
-         polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
-         //var sides = parseInt(document.getElementById("sides").value);
-         //sides = Math.max(3, isNaN(sides) ? 0 : sides);
-         //controls.regular.handler.sides = sides;
-         //var irregular =  document.getElementById("irregular").checked;
-         //controls.regular.handler.irregular = irregular;
-         //Those two !buggers are here now
-         polygonControlModifier.activate();
-         polygonControlModifier.selectFeature(polygonLayer.features[0]);
-         //End of Backup */
-    }
-}
+//function update() {
+//    if (polyCoords == "" || polyCoords == null || !polyCoords){
+//        alert("No polygon to edit. Please draw a polygon first.");
+//        /*var modes=document.getElementsByName('modifyType');
+//        for (key in modes){
+//            modes[key].checked=false;
+//        }*/
+//    }
+//    else {
+//        //alert("before triggering pL.e.afm");
+//        //polygonLayer.events.triggerEvent('afterfeaturemodified');
+//        
+//        if (polygonControlModifier.active) {
+//            polygonControlModifier.deactivate();
+//        }
+//
+//        
+//        // reset modification mode
+//        polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+//        var rotate = document.getElementById("rotate").checked;
+//        if (rotate) {
+//            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;//|
+//        }
+//        var resize = document.getElementById("resize").checked;
+//        if (resize) {
+//            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;//|
+//            var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+//            if (keepAspectRatio) {
+//                polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+//            }
+//        }
+//        var drag = document.getElementById("drag").checked;
+//        if (drag) {
+//            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;//|
+//        }
+//        if (rotate || drag) {
+//            polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+//        }
+//        polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
+//        //var sides = parseInt(document.getElementById("sides").value);
+//        //sides = Math.max(3, isNaN(sides) ? 0 : sides);
+//        //controls.regular.handler.sides = sides;
+//        //var irregular =  document.getElementById("irregular").checked;
+//        //controls.regular.handler.irregular = irregular;
+//        //Those two !buggers are here now
+//        polygonControlModifier.activate();
+//        polygonControlModifier.selectFeature(polygonLayer.features[0]);
+//        
+//        /*var modes=document.getElementsByName('type');
+//        for (key in modes){
+//            modes[key].checked=false;
+//        }*/
+//
+//
+//        /* //Backup
+//         // reset modification mode
+//         polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+//         var rotate = document.getElementById("rotate").checked;
+//         if (rotate) {
+//         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
+//         }
+//         var resize = document.getElementById("resize").checked;
+//         if (resize) {
+//         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
+//         var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+//         if (keepAspectRatio) {
+//         polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+//         }
+//         }
+//         var drag = document.getElementById("drag").checked;
+//         if (drag) {
+//         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;
+//         }
+//         if (rotate || drag) {
+//         polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+//         }
+//         polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
+//         //var sides = parseInt(document.getElementById("sides").value);
+//         //sides = Math.max(3, isNaN(sides) ? 0 : sides);
+//         //controls.regular.handler.sides = sides;
+//         //var irregular =  document.getElementById("irregular").checked;
+//         //controls.regular.handler.irregular = irregular;
+//         //Those two !buggers are here now
+//         polygonControlModifier.activate();
+//         polygonControlModifier.selectFeature(polygonLayer.features[0]);
+//         //End of Backup */
+//    }
+//}
