@@ -20,8 +20,9 @@
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="http://openlayers.org/api/2.13/OpenLayers.js"></script>
         <script type="text/javascript" src="js/OSMMeta.js"></script>
-        <script type="text/javascript" src="js/guiFunctions.js"></script>
+        
         <script type="text/javascript" src="js/actions.js"></script>
+        <script type="text/javascript" src="js/guiFunctions.js"></script>
         <script type="text/javascript" src="js/interactivity.js"></script>
         <!--<script type="text/javascript" src="js/basemap.js"></script> -->
 
@@ -45,7 +46,7 @@
             <img src="http://localhost/aggregator/current/img/loadingimage.gif" style="z-index:9000;position:absolute;margin-left:auto;margin-right:auto;opacity:1.0" />
         </div>
         <div id="map"></div>
-        <div class="panel" style="z-index:2;"><div id="glass">
+        <div class="panel right-docked" style="z-index:2;"><div id="glass">
                 <h3>Presets</h3><br/>
                 <div class="panelContent" id="panelContent">
                     
@@ -73,11 +74,11 @@
                 </div>
                 
                 <div class="panelControls">
-                    <a class="trigger panelTrigger" id="collapsePanel" href="#" title="Panel Collapse">
+                    <a class="trigger panelTrigger" id="collapsePanel" title="Panel Collapse">
                         <img class="icon arrow" src="img/arrow.png"/>
                     </a>
 
-                    <a class="tool pen passive" id="penToggle">
+                    <a class="tool drawControlsToggle passive" id="drawControlsToggle">
                         <img  class="icon" src="img/pen.png"/>
                     </a>
 
@@ -98,32 +99,40 @@
 
                                 </div>
                                 </div></div>
-                                <a class="trigger panelTrigger" id="expandPanel" href="#" title="Panel Expand">
+                                <a class="trigger panelTrigger right-docked" id="expandPanel" title="Panel Expand">
                                     <img class="icon arrow" src="img/arrow.png"/>
                                 </a>
         
         
         <!--drawing controls panel-->
         
-        <div id="drawControls" class="float panel hiddenObjects">
-            <a class="tool pen passive" id="penToggle">
+        <div id="drawControls" class="panel floatPanel">
+            <div id="dragDrawControlPanel">
+                <div class="icon" class="tool"></div>
+                <div class="dragHelper"></div>
+            </div>
+            <div>
+            <a class="tool pen passive" id="penToggle" title="Draw boundary polygon">
                 <img  class="icon" src="img/pen.png"/>
             </a>
-            <a class="tool circle passive" id="circleToggle">
+            <a class="tool circle passive" id="circleToggle" title="Draw boundary cicle">
                 <img  class="icon" src="img/circle.png"/>
             </a>
-            <a class="tool addVertices passive" id="addVertexToggle">
+            <a class="editTool addVertex passive" id="addVertexToggle" title="Add vertices to boundary shape">
                 <img  class="icon" src="img/addVertexIcon.png"/>
             </a>
-            <a class="tool rotate passive" id="rotateToggle">
+            <a class="editTool rotate passive" id="rotateToggle" title="Rotate boundary">
                 <img  class="icon" src="img/rotateHandleIcon.png"/>
             </a>
-            <a class="tool resize passive" id="resizeToggle">
+            <a class="editTool resize passive" id="resizeToggle" title="Resize boundary">
                 <img  class="icon" src="img/resizeHandleIcon.png"/>
+                <div><input type="checkbox" value="ratio" checked="true"/>Maintain aspect ratio</div>
             </a>
-            <a class="tool move passive" id="moveToggle">
+                
+            <a class="editTool drag passive" id="dragToggle" title="Move boundary">
                 <img  class="icon" src="img/moveHandleIcon.png"/>
             </a>
+            </div>
         </div>
             
         <!---->
@@ -150,5 +159,8 @@
                                                     </div>
                                                     
                                                                         <div class="hiddenObjects" id="exportStatus"></div>
-                                                                        </body>
+    
+                                                                        <div id="floatPanelsContainer"></div>
+    
+    </body>
                                                                         </html>
