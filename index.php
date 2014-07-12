@@ -24,7 +24,7 @@
 
         <!--geosjon-->
         <script src="tagChanger.js"></script>
-        <script src="js/actions.js"></script>
+        <script src="js/actions1.js"></script>
 
 
     </head>
