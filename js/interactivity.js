@@ -25,6 +25,72 @@ $(document).ready(function(){
         $("#floatPanelsContainer").css("width", $(document).outerWidth());
         $("#floatPanelsContainer").css("height", $(document).outerHeight());
         
+        
+        
+        /**TEMPORARY**/
+//        $("#OpenLayers_Control_MaximizeDiv").css({
+////            $(this).css({
+//                right: $(document).outerWidth()-20,
+//                top: $(document).outerHeight()-20,
+//                transform: "rotate(180deg)"
+////            });
+//        });
+        $("#OpenLayers_Control_LayerSwitcher_6").css({
+//            $(this).css({
+                right: $(document).outerWidth()-220,
+                top: $(document).outerHeight()-138-80,
+                transform: "rotate(180deg)",
+                
+                
+                
+//            });
+        });
+        $("#OpenLayers_Control_LayerSwitcher_6_layersDiv").css({
+            transform: "rotate(180deg)",
+            "padding-left":"20px",
+            "padding-bottom":"20px",
+            "background-color":"#666666",
+            "border-top-right-radius":"10px",
+            "border-bottom-right-radius":"10px",
+            
+            border: "#cccccc thin solid",
+            "border-left":"none",
+                "box-shadow": "3px 3px 6px rgba(50,50,50,0.6)",
+                "font-family": "'Verdana', 'sans-serif'",
+                "font-size":"10pt",
+                "line-height":"10pt",
+        });
+        
+        $("#OpenLayers_Control_MaximizeDiv").text("+").css({
+//            $(this).css({
+                right: -220,
+                top: -138,
+                "font-size":"12pt",
+                "text-align":"center",
+                "background-color":"#666666",
+                "border-top-left-radius":"10px",
+                "border-bottom-left-radius":"10px"
+//            });
+        }).children("img").css({
+            opacity:0
+        });
+        
+        $("#OpenLayers_Control_MinimizeDiv").css({
+//            $(this).css({
+                right: "2px",
+                top: "2px"
+                
+//            });
+        });
+        
+        $("#OpenLayers_Control_Zoom_2>a.olButton").css({
+            "background-color":"#666666",
+            opacity:1
+        });
+        
+        
+        /****/
+        
 		
 	/**panel expand/collapse**/
 //	$(".trigger.panelTrigger.right-docked").click(function(){
