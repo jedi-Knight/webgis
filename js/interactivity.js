@@ -63,8 +63,9 @@ $(document).ready(function(){
         
         $("#OpenLayers_Control_MaximizeDiv").text("+").css({
 //            $(this).css({
-                right: -220,
-                top: -138,
+                position:"initial",
+                "margin-left": 202,
+                "margin-bottom": -18,
                 "font-size":"12pt",
                 "text-align":"center",
                 "background-color":"#666666",
