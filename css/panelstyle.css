@@ -89,7 +89,8 @@ p {
     /*box-shadow: 0px 0px 5px rgba(100,100,50,0.5);*/
     display: none;    
     border-radius:10px;
-    box-shadow: 0px 0px 4px rgba(50,50,0,0.6) inset, 0px 0px 5px rgba(100,100,50,0.6);
+    box-shadow: 0px 0px 4px #000000;
+    /*box-shadow: 0px 0px 4px rgba(50,50,0,0.6) inset, 0px 0px 5px rgba(100,100,50,0.6);*/
 /*    //padding: 30px 30px 0px 30px;*/
     /*filter: alpha(opacity=85);
     /*opacity: .70;*/
@@ -172,8 +173,9 @@ p {
     display:none;
 }
 
-#dragDrawControlPanel:hover>div.dragHelper{
-    display:inline-block;
+#dragDrawControlPanel:active>div.dragHelper{
+    display:inline-flex;
+    cursor: move;
 }
 
 #floatPanelsContainer{
@@ -245,6 +247,15 @@ div.delItem img{
     content: "-";
 }*/
 
+div.addItem{
+    float:right;
+    margin-top:-15pt;
+}
+div.addItem img{
+    width:10pt;
+    height:10pt;
+}
+
 .panel p {
     margin: 0 0 15px 0;
     padding: 0;
@@ -253,7 +264,7 @@ div.delItem img{
 }
 .panelContent{
     margin-bottom:25px;
-    max-height: 120pt;
+    max-height: 200pt;
     max-width: none;
     overflow: auto;
     box-shadow: 0px 0px 3px rgba(50, 50, 100, 0.2);
@@ -382,7 +393,7 @@ a.trigger .triggerMask{
 
 #selectFrom{
     width:230px;
-    background-color:#ffffff;
+    background-color:rgba(0,0,0,0);
     border-width: 0px;
     border-bottom-width:thin;
     border-style: solid;
@@ -390,13 +401,22 @@ a.trigger .triggerMask{
 /*    //box-shadow:#666;
     //overflow:hidden;*/
     text-transform:capitalize;
+    outline: #cccccc dashed thin;
+    outline-offset:-1px;
+    font-height: 12pt;
+    padding-top: 6px;
+/*    margin-top:-4px;*/
+    
+    
     /*//border-bottom-width: 0.5px;*/
 }
 
 #selectedPresets{
     /*//width:300px;*/
+    width:230px;
     background-color: #ffffff;
 }
+
 
 #aggregate{
     /*z-index:-1;*/
@@ -493,12 +513,8 @@ hr {
     width:20%;
     overflow: scroll;
 }
-.splashContainer{
-    padding:10px;
-    box-shadow: 0px 0px 4px rgba(0,0,0,1);
-    border-radius:10px;
-    background-color:#ffffff;
-}
+
+
 .splashContainerBase *{
     z-index:1000;
     /*width:200px;*/
@@ -509,8 +525,16 @@ hr {
 .splashContainerBase.active .panel{
     display:inline-flex;
     flex-wrap:wrap;
+    overflow: hidden;
+    padding:10px 10px 20px 10px;
+    box-shadow: 0px 0px 4px rgba(0,0,0,1);
+    border-radius:10px;
+    background-color:#ffffff;
+}
+.splashContainerBase.active .panel>div{
     max-width:330px;
     max-height:300px;
+    outline: #dddddd thin solid;
     overflow: auto;
 }
 
