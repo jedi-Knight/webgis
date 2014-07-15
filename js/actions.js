@@ -299,7 +299,7 @@ function fetchData(selected) {
         //Create and append select list
         var selectList = document.createElement("select");
         selectList.id = "tagsIn" + selected[key];
-        selectList.multiple = "multiple"
+        selectList.multiple = "multiple";
         myTagsSelector.appendChild(selectList);
     }
 
