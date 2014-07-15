@@ -157,7 +157,8 @@ p {
 #dragDrawControlPanel>div{
     width:10px;
     /*height:20px;*/
-    background: repeating-linear-gradient(90deg, white 20%, black 25%, white 27%, black 30%, white 32%, black 35%, white);
+    /*background: repeating-linear-gradient(90deg, white 20%, black 25%, white 27%, black 30%, white 32%, black 35%, white);*/
+    background: #ffffff url("img/dragHandle.png") no-repeat right top;
     opacity:0.4;
     border-radius:10px;
 }
