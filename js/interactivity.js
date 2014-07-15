@@ -173,8 +173,13 @@ $(document).ready(function(){
         
         /**export data**/
         $("a.trigger.exportData").click(function(){
+            if(!$("#tagsSelector").children().length){
+                console.log("no data to export");
+                return;
+            }
+            $(".splashContainerBase").toggleClass("passive active");     //class switch for active/passive state actions and css
             $(this).toggleClass("passive active"); //class switch for active/passive state actions and css 
-            $(".splashContainerBase").toggleClass("passive active"); //class switch for active/passive state actions and css
+            return;
         });
         
         $("#splashContainer").find("a.download.trigger.active").click(function(){
@@ -212,11 +217,12 @@ $(document).ready(function(){
                 source: toDownload,
                 minLength: 0,
                 select: function( event, ui ) {
-                    $("<li class='presetItem'>"+ui.item.value+"<div class='delItem'><a title='Remove preset' href='#'><img src='img/minus.png'/></a></div></li>")
+                            $("<li class='presetItem'>"+ui.item.value+"</li>")
                             .appendTo($(".presets #selectedPresets"))
-                            .click(function(){
-                                $(this).closest("li.presetItem").remove();
-                            });
+                            .append($("<div class='delItem'><a title='Remove preset' href='#'><img src='img/minus.png'/></a></div>").click(function(){
+                                        $(this).closest("li.presetItem").remove();
+                                    }));
+                            $("#panelContent").scrollTop(100000);
                     }
             });
           });
