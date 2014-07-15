@@ -532,7 +532,7 @@ hr {
     background-color:#ffffff;
 }
 .splashContainerBase.active .panel>div{
-    max-width:330px;
+    max-width:350px;
     max-height:300px;
     outline: #dddddd thin solid;
     overflow: auto;
