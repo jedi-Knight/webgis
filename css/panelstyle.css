@@ -322,7 +322,7 @@ a.trigger, a.tool, a.editTool{
     /*//padding: 10px 10px 5px 10px;*/
     /*//padding:10px;*/
     font-weight: 700;
-    background: rgba(51,51,51,0.2);
+    background: rgba(51,51,51,0.4);
     border: 1px solid rgba(0,0,0,0);
     /*opacity:0.2;*/
     /*//border-radius-topleft: 20px;*/
@@ -333,6 +333,11 @@ a.trigger, a.tool, a.editTool{
     /*border-bottom-right-radius: 0px;*/
     /*//display: block;*/
 }
+
+a.trigger.disabled, a.tool.disabled, a.editTool.disabled, a.trigger.disabled:hover, a.tool.disabled:hover, a.editTool.disabled:hover{
+    background: rgba(51,51,51,0.2);
+}
+
 a.trigger:hover, a.tool:hover, a.editTool:hover {
     /*//position: absolute;*/
     /*size:auto;*/
