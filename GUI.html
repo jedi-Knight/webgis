@@ -43,7 +43,7 @@
             }
         </style>
         <div id="waitForMe" style="z-index:9000;margin:auto;width:100%;height:100%;position:fixed;background-color:rgba(0,0,0,0.4);text-align:center;padding-top:5%;" hidden="hidden">
-            <img src="img/loadingimage.gif" style="z-index:9000;opacity:0.4;height:80%;" />
+            <img src="img/loader.png" style="z-index:9000;height:80%;" />
         </div>
         <div id="map"></div>
         <div class="panel right-docked" style="z-index:2;"><div id="glass">
@@ -77,31 +77,31 @@
                 
                 <div class="panelControls">
                     <a class="trigger panelTrigger" id="collapsePanel" title="Panel Collapse">
-                        <img class="icon arrow" src="img/arrow.png"/>
+                        <img class="icon arrow" src="img/arrow.png" title="Close this panel"/>
                     </a>
 
-                    <a class="tool drawControlsToggle passive" id="drawControlsToggle">
-                        <img  class="icon" src="img/drawPanel.png"/>
+                    <a class="trigger drawControlsToggle passive" id="drawControlsToggle">
+                        <img  class="icon" src="img/drawPanel.png" title="Create a new boundary or edit existing boundary"/>
                     </a>
 
-                    <a class="trigger inputTrigger importPolygon active" id="importPolygonTrigger">
+                    <a class="trigger inputTrigger importPolygon active" id="importPolygonTrigger" title="Import boundary GeoJSON">
 
                         <div class="inputDiv fileInputDiv">
-                            <input type="file" class="fileInput hiddenObjects" id="file-input" name="file-input"/><img class="icon" src="img/polygon.png"/>
+                            <input type="file" class="fileInput hiddenObjects" id="file-input" name="file-input"/><img class="icon" src="img/geojson.png"/>
                         </div>
                     </a>
 
-                    <a class = "trigger download fetchData active" id="fetchDataTrigger">
+                    <a class = "trigger download fetchData active" id="fetchDataTrigger" title="Fetch data from OSM">
                         <img class="icon" src="img/fetch.png"</img>
                     </a>
 
-                    <a class = "trigger exportData active" id="exportDataTrigger">
+                    <a class = "trigger exportData active" id="exportDataTrigger" title="Download data for offline use">
                         <img class="icon" src = "img/export.png"><img>
                                 </a>
 
                                 </div>
                                 </div></div>
-                                <a class="trigger panelTrigger right-docked" id="expandPanel" title="Panel Expand">
+                                <a class="trigger panelTrigger right-docked" id="expandPanel" title="Show Control Panel">
                                     <img class="icon arrow" src="img/arrow.png"/>
                                 </a>
         
