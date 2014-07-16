@@ -25,6 +25,8 @@ $(document).ready(function(){
         $("#floatPanelsContainer").css("width", $(document).outerWidth());
         $("#floatPanelsContainer").css("height", $(document).outerHeight());
         
+        $("#fetchDataTrigger, #exportDataTrigger, .editTool").addClass("disabled");
+        
         
         
         /**TEMPORARY**/
@@ -113,12 +115,14 @@ $(document).ready(function(){
         
         /*draw circle*/
         $("#circleToggle").click(function(){
+           if($(this).hasClass("disabled"))return;
            drawRegularPolygon(); 
         });
         /**/
         
         /*modify vector*/
-        $("#drawControls .editTool").not(".pen, .circle").click(function(e){
+        $("#drawControls").find(".editTool").not(".pen, .circle").click(function(e){
+            if($(this).hasClass("disabled"))return;
             if(!($(e.target).is($(this).find("div, div>*")))){
                 console.log("a polgyon editor tool selected!!"+$(this)[0].id);
                 //console.log($(".editTool input").click());
@@ -137,6 +141,7 @@ $(document).ready(function(){
               
         /*draw panel toggle*/
         $("#drawControlsToggle").click(function(){
+           if($(this).hasClass("disabled"))return;
            $("#drawControls").toggle(0,function(){
                /*make drawControls panel draggable*/
                 $(this).draggable({
@@ -157,6 +162,7 @@ $(document).ready(function(){
         
         /*pen toggle*/
         $(".tool").click(function(){
+           if($(this).hasClass("disabled"))return;
            $(this).toggleClass("passive active"); //class switch for active/passive state actions and css
            guiPanelShowPresetSelector();//show 'warning: clears boundary polygon layer,' and show presets panel if user proceeds
            toggleControl(this); //call pen active method
@@ -167,12 +173,14 @@ $(document).ready(function(){
         
         /**import polygon**/
         $("a.trigger.inputTrigger").click(function(){
+           if($(this).hasClass("disabled"))return;
            toggleControl(this);
         });
         /****/
         
         /**export data**/
         $("a.trigger.exportData").click(function(){
+            if($(this).hasClass("disabled"))return;
             if(!$("#tagsSelector").children().length){
                 console.log("no data to export");
                 return;
@@ -236,6 +244,7 @@ $(document).ready(function(){
         
         /**fetch data from overpass**/
         $("#fetchDataTrigger").click(function(){
+            if($(this).hasClass("disabled"))return;
             //check if polyCoords is defined and is not empty
 		if (polyCoords ==="" || !polyCoords){
 			alert ("Please select the area first");
