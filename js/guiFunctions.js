@@ -39,6 +39,23 @@ function guiPanelShowPresetSelector(){
    return;
 }
 
+function showLoadingAnim(bool){
+    var anim=0;
+    var deg=0;
+    if(bool){
+        anim = setInterval(function(){
+            $("#waitForMe>img").css("transform","rotate("+deg+"deg)");
+            deg+=30;
+            console.log(deg);
+        },300);
+        $("#waitForMe").css("display","block");
+    }else{
+        $("#waitForMe").css("display","none");
+        clearInterval(anim);
+        $("#waitForMe>img").css("transform","rotate(0deg)");
+    }
+}
+
 
 $.fn.callPolygonEditorHandles = function(f){
     if(typeof f == "function") console.log(f() + " :passed from from callback");
