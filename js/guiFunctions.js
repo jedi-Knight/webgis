@@ -46,7 +46,7 @@ function showLoadingAnim(bool){
         anim = setInterval(function(){
             //$("#waitForMe>img").css("transform","rotate("+deg+"deg)");
             $("#waitForMe>div").css("margin-left",20+Math.abs(Math.sin(deg)*60)+"%");
-            deg+=0.3;
+            deg+=0.15;
             //console.log(deg);
         },30);
         $("#waitForMe").css("display","block");
