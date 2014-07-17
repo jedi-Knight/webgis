@@ -30,18 +30,13 @@ $(document).ready(function(){
         
         
         /**TEMPORARY**/
-//        $("#OpenLayers_Control_MaximizeDiv").css({
-////            $(this).css({
-//                right: $(document).outerWidth()-20,
-//                top: $(document).outerHeight()-20,
-//                transform: "rotate(180deg)"
-////            });
-//        });
+        /*  kept in comments: in case in-line css is required for these elements;
+        
         $("#OpenLayers_Control_LayerSwitcher_6").css({
 //            $(this).css({
 //                right: $(document).outerWidth()-220,
 //                top: $(document).outerHeight()-138-80,
-                /*transform: "rotate(180deg)",*/
+                
                 
                 "float":"left",
                 "left":"-3px",
@@ -98,7 +93,7 @@ $(document).ready(function(){
             "background-color":"#666666",
             opacity:1
         });
-        
+        */
         
         /****/
         
@@ -159,6 +154,7 @@ $(document).ready(function(){
                     snapMode: "outer",
                     containment: "#floatPanelsContainer",
                     scroll: false
+                    /*,cursorAt: { top: 14, left: 120 }*/
                 });
                /**/
            });
