@@ -739,7 +739,11 @@ function callAJAXCSV(index) {
             }
             if (xmlhttp.readyState == 4)
             {
-                window.location = xmlhttp.response; //jedicode
+                /*jedi-code*/
+                console.log("callAJAXCSV(): ..now opening saveas dialogue box for: "+xmlhttp.response);
+                window.location = xmlhttp.response;
+                /**/
+                
                 //window.open(xmlhttp.response);
 //                myButton = document.createElement("input");
 //                myButton.type = "button";
@@ -788,7 +792,10 @@ function callAJAXGeoJSON(index) {
             }
             if (xmlhttp.readyState == 4)
             {
-                window.location = xmlhttp.response; //jedicode
+                /*jedi-code*/
+                console.log("callAJAXGeoJSON(): ..now opening saveas dialogue box for: "+xmlhttp.response);
+                window.location = "GeoJSONDownloader.php?file="+xmlhttp.response;
+                /**/
                 //window.open(xmlhttp.response);
 //                myButton = document.createElement("input");
 //                myButton.type = "button";
