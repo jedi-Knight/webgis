@@ -14,6 +14,15 @@ body {
     padding: 0;
     overflow: hidden;
 }
+
+body *{
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -o-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+
 a:focus {
     outline: none;
 }
@@ -428,6 +437,14 @@ a.trigger .triggerMask{
     /*z-index:-1;*/
     background-color:#ffffff;
     box-shadow: 0px 0px 3px rgba(50, 50, 100, 0.2);
+}
+
+#selectFrom *, #selectedPresets *, #aggregate *{
+    -moz-user-select: text;
+    -webkit-user-select:text;
+    -o-user-select:text;
+    -ms-user-select:text;
+    user-select:text;
 }
 
 #add{
