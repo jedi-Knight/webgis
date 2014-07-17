@@ -44,15 +44,16 @@ function showLoadingAnim(bool){
     var deg=0;
     if(bool){
         anim = setInterval(function(){
-            $("#waitForMe>img").css("transform","rotate("+deg+"deg)");
-            deg-=30;
+            //$("#waitForMe>img").css("transform","rotate("+deg+"deg)");
+            $("#waitForMe>div").css("margin-left",20+Math.abs(Math.sin(deg)*60)+"%");
+            deg+=0.3;
             //console.log(deg);
-        },300);
+        },30);
         $("#waitForMe").css("display","block");
     }else{
         $("#waitForMe").css("display","none");
         clearInterval(anim);
-        $("#waitForMe>img").css("transform","rotate(0deg)");
+        //$("#waitForMe>img").css("transform","rotate(0deg)");
     }
 }
 
