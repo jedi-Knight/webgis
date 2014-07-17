@@ -222,9 +222,12 @@ function init() {
         //assign strVerticesInLatLon to global variable polyCoords, which is used in facility_url
         polyCoords = strVerticesInLatLon;
         //alert(polyCoords);
+        
         /**jedi-code**/
         $("a.editTool, a.tool, a.trigger").removeClass("disabled");
+        $("a.tool").removeClass("active").addClass("passive");
         /****/
+        
     });
 
     polygonLayer.events.register("afterfeaturemodified", polygonControlModifier, function(obj) {
