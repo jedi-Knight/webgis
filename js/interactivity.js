@@ -39,16 +39,19 @@ $(document).ready(function(){
 //        });
         $("#OpenLayers_Control_LayerSwitcher_6").css({
 //            $(this).css({
-                right: $(document).outerWidth()-220,
-                top: $(document).outerHeight()-138-80,
-                transform: "rotate(180deg)",
+//                right: $(document).outerWidth()-220,
+//                top: $(document).outerHeight()-138-80,
+                /*transform: "rotate(180deg)",*/
                 
+                "float":"left",
+                "left":"-3px",
+                "top":"80px"
                 
                 
 //            });
         });
         $("#OpenLayers_Control_LayerSwitcher_6_layersDiv").css({
-            transform: "rotate(180deg)",
+            
             "padding-left":"20px",
             "padding-bottom":"20px",
             "background-color":"#666666",
@@ -66,8 +69,9 @@ $(document).ready(function(){
         $("#OpenLayers_Control_MaximizeDiv").text("+").css({
 //            $(this).css({
                 position:"initial",
-                "margin-left": 202,
-                "margin-bottom": -18,
+//                "margin-left": -220,
+                transform: "rotate(180deg)",
+                
                 "font-size":"12pt",
                 "text-align":"center",
                 "background-color":"#666666",
@@ -80,8 +84,12 @@ $(document).ready(function(){
         
         $("#OpenLayers_Control_MinimizeDiv").css({
 //            $(this).css({
-                right: "2px",
-                top: "2px"
+                //right: "2px",
+                //bottom: "2px"
+                position:"initial",
+                "float":"right",
+                "margin-right":"6px",
+                "margin-top":"-24px",
                 
 //            });
         });
@@ -225,9 +233,14 @@ $(document).ready(function(){
                 source: toDownload,
                 minLength: 0,
                 select: function( event, ui ) {
-                            $("<li class='presetItem'>"+ui.item.value+"</li>")
+                            $("<li class='presetItem' id='listItem_"+ui.item.id+"'>"+ui.item.value+"</li>")
                             .appendTo($(".presets #selectedPresets"))
                             .append($("<div class='delItem'><a title='Remove preset' href='#'><img src='img/minus.png'/></a></div>").click(function(){
+                                        var arj = {
+                                            "id": $(this).closest("li.presetItem").attr("id").replace("listItem_",""),
+                                            "value": $(this).closest("li.presetItem").text()
+                                        };
+                                        $("#selectFrom").autocomplete("option","source").push(arj);
                                         $(this).closest("li.presetItem").remove();
                                     }));
                             $("#panelContent").scrollTop(100000);
