@@ -128,10 +128,11 @@ p {
     top:30%;
     left:30%;
     padding:5px;
+    z-index:10000;
 }
-.panel.floatPanel>div{
+/*.panel.floatPanel>div{
     display:inline-block;
-}
+}*/
 .panel.floatPanel>div a{
     display:inline-flex;
     flex-wrap:wrap;
@@ -162,14 +163,38 @@ p {
 }
 
 
-
+#drawControls.panel.floatPanel{
+    
+    top:380px;
+    right:10px;
+    left:initial;
+    
+    max-width:240px;
+    padding-top:0px;
+}
+#dragDrawControlPanel{
+    padding:4px 2px 10px 2px;
+    margin-bottom:6px;
+    cursor: move;
+}
 #dragDrawControlPanel>div{
+    display:inline-block;
     width:10px;
+    height:10px;
     /*height:20px;*/
     /*background: repeating-linear-gradient(90deg, white 20%, black 25%, white 27%, black 30%, white 32%, black 35%, white);*/
     background: #ffffff url("img/dragHandle.png") no-repeat right top;
     opacity:0.4;
     border-radius:10px;
+}
+#dragDrawControlPanel>span{
+    font-size:12pt;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -o-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    cursor: move;
 }
 
 #dragDrawControlPanel>div.dragHelper{
@@ -183,10 +208,10 @@ p {
     display:none;
 }
 
-#dragDrawControlPanel:active>div.dragHelper{
+/*#dragDrawControlPanel:active>div.dragHelper{
     display:inline-flex;
     cursor: move;
-}
+}*/
 
 #floatPanelsContainer{
     position:absolute;
@@ -341,6 +366,7 @@ a.trigger, a.tool, a.editTool{
     /*//border-radius-bottomright: 0px;*/
     /*border-bottom-right-radius: 0px;*/
     /*//display: block;*/
+    cursor:pointer;
 }
 
 a.trigger.disabled, a.tool.disabled, a.editTool.disabled, a.trigger.disabled:hover, a.tool.disabled:hover, a.editTool.disabled:hover{
@@ -397,7 +423,20 @@ a.trigger .triggerMask{
     position:absolute;
     top:50px;
     right:0;
+    /*.trigger class overrides*/
+    padding: 5px 15px 5px 5px;
+    background-color:rgba(102,102,102,0.6);
+    /**/
 }
+#expandPanel:hover, #expandPanel:active{
+    background-color:#666666;
+}
+/*.icon class overrides*/
+#expandPanel .icon{
+    width:22px;
+    height:22px;
+}
+/**/
 /*#collapsePanel{
 
     	position:relative;
@@ -594,3 +633,65 @@ hr {
 .ui-menu-item{
     text-transform: capitalize;
 }
+
+
+/**layer-switcher panel**/
+#OpenLayers_Control_LayerSwitcher_6{
+    float:left;
+    left:-3px;
+    top:80px;
+}
+
+#OpenLayers_Control_LayerSwitcher_6_layersDiv{
+    /*padding-left:20px;*/
+    padding-bottom:20px;
+    background-color:#666666;
+    border-top-right-radius:10px;
+    border-bottom-right-radius:10px;
+            
+    border: #cccccc thin solid;
+    border-left:none;
+    box-shadow: 3px 3px 6px rgba(50,50,50,0.6);
+    font-family: "Verdana", "sans-serif";
+    font-size:10pt;
+    line-height:10pt;
+}
+#OpenLayers_Control_MaximizeDiv{
+    position:initial !important;
+/*                "margin-left": -220,*/
+    /*transform: rotate(180deg);*/
+
+    font-size:16pt;
+    padding:6pt 10pt 10pt 10pt;
+    text-align:center;
+    /*background-color:#666666;*/
+    background-color:rgba(102,102,102,0.6);
+/*    border-top-left-radius:10px;
+    border-bottom-left-radius:10px;*/
+    border-top-right-radius:10px;
+    border-bottom-right-radius:10px;
+}
+#OpenLayers_Control_MaximizeDiv:hover, #OpenLayers_Control_MaximizeDiv:active{
+    background-color:#666666;
+}
+
+#OpenLayers_Control_MaximizeDiv>img{
+    opacity:0;
+}
+#OpenLayers_Control_MaximizeDiv:before{
+    content: "+";
+}
+#OpenLayers_Control_MinimizeDiv{
+    position:initial !important;
+    float:right;
+    margin-right:6px;
+    margin-top:-24px;
+}
+/****/
+
+/**zoom-controls**/
+#OpenLayers_Control_Zoom_2>a.olButton{
+    background-color:#666666;
+    opacity:1;
+}
+/****/
