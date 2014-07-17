@@ -231,6 +231,16 @@ $(document).ready(function(){
                                         $(this).closest("li.presetItem").remove();
                                     }));
                             $("#panelContent").scrollTop(100000);
+                            
+                            console.log(
+                                        $(this).autocomplete("option","source")
+                                        .splice(
+                                            $(this).autocomplete("option","source").map(function(o){
+                                                return o.value;
+                                            }).indexOf(ui.item.value)
+                                        ,1)
+                                    );
+                            
                     }
             });
           });
