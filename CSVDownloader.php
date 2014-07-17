@@ -14,11 +14,12 @@
 		//header('Content-Type: application/csv');
 		
 		$myFile=$_GET['myFile'];
-		header('Content-Type: application/octet-stream');
+		session_cache_limiter("nocache");
+		header('Content-Type: text/csv');
 		header("Content-Disposition: attachment; filename=$myFile");
 		header('Content-Length: ' . filesize($myFile));
-		header('Pragma: no-cache');
-		readfile("$myFile");
+		//header('Pragma: no-cache');
+		//readfile("$myFile");
 		print file_get_contents($myFile);
 		//return (string)$myFile;
 		}
