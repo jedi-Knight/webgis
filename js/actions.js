@@ -227,6 +227,7 @@ function init() {
         /**jedi-code**/
         $("a.editTool, a.tool, a.trigger").removeClass("disabled");
         $("a.tool").removeClass("active").addClass("passive");
+        $("#expandPanel").click();
         /****/
         
     });
