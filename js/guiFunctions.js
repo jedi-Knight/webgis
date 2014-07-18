@@ -40,12 +40,12 @@ function guiPanelShowPresetSelector(){
 }
 
 function showLoadingAnim(bool){
-    var anim=0;
     var deg=0;
+    if(anim) clearInterval(anim);
     if(bool){
         anim = setInterval(function(){
             //$("#waitForMe>img").css("transform","rotate("+deg+"deg)");
-            $("#waitForMe>div").css("margin-left",20+Math.abs(Math.sin(deg)*60)+"%");
+            $("#waitForMe>div").css("margin-left",Math.abs(50+Math.sin(deg)*30)+"%");
             deg+=0.05;
             //console.log(deg);
         },30);
@@ -53,6 +53,7 @@ function showLoadingAnim(bool){
     }else{
         $("#waitForMe").css("display","none");
         clearInterval(anim);
+        anim = 0;
         //$("#waitForMe>img").css("transform","rotate(0deg)");
     }
 }

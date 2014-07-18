@@ -16,7 +16,8 @@ var map,
         styles,
         field,
         text,
-        geom;
+        geom,
+        anim;  //jedi-code
 //var markers = new OpenLayers.Layer.Markers( "Markers",{displayInLayerSwitcher:false} );
 
 var centerX = 85.33141;//491213.721224323//-123.1684986291807;//9497800;

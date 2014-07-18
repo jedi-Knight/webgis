@@ -26,7 +26,7 @@ $(document).ready(function(){
         $("#floatPanelsContainer").css("height", $(document).outerHeight());
         
         $("#fetchDataTrigger, #exportDataTrigger, .editTool").addClass("disabled");
-        
+                
         
         
         /**TEMPORARY**/
