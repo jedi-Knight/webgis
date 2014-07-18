@@ -115,11 +115,11 @@ $(document).ready(function(){
 //	});
 	
 	$("#expandPanel").click(function(){
-                $(".panel.right-docked").toggle("fast");
+                $(".panel.right-docked").show("fast");
 		$(this).hide();
 	});
 	$("#collapsePanel").click(function(){
-                $(".panel.right-docked").toggle("fast");
+                $(".panel.right-docked").hide("fast");
 		$("#expandPanel").show();
 	});
         /****/
