@@ -26,6 +26,16 @@ $(document).ready(function(){
         $("#floatPanelsContainer").css("height", $(document).outerHeight());
         
         $("#fetchDataTrigger, #exportDataTrigger, .editTool").addClass("disabled");
+        
+        
+        
+        $("<a class='trigger closeButton' title='Close'><div class='icon'>X</div></a>")
+            .appendTo("div.floatPanel")
+            .click(function(){
+                $("#"+
+                    $(this).closest("[toggledBy]").attr("toggledBy")
+                        ).click();
+        });
                 
         
         
