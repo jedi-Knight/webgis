@@ -216,7 +216,8 @@ $(document).ready(function(){
 	
         
         /**presect selector (#selectFrom) autocomplete**/
-        var toDownload = [{"id":"schools","value":"school"}, {"id":"colleges","value":"college"}, {"id":"hospitals","value":"hospital"}, {"id":"government offices","value":"government office"}];
+        var toDownload = [{"id":"schools","value":"school"}, {"id":"colleges","value":"college"}, {"id":"hospitals","value":"hospital"}];
+        //a hard-coded json array "toDownload" used for the time being
         $(function() {
             function log( message ) {
               $( "<div>" ).text( message ).prependTo( "#log" );
