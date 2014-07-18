@@ -20,7 +20,7 @@ $(document).ready(function(){
 	init();
 	//initPresetSelectFromList();  obsolete
         
-        $("h3").css("max-width", $("#glass").outerWidth());
+        $("#glass h3").css("max-width", $("#glass").outerWidth());
         
         $("#floatPanelsContainer").css("width", $(document).outerWidth());
         $("#floatPanelsContainer").css("height", $(document).outerHeight());
