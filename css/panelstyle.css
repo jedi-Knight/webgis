@@ -208,6 +208,23 @@ p {
     display:none;
 }
 
+/**floatPanel close button**/
+.panel.floatPanel a.trigger.closeButton{
+    position:absolute;
+    left:initial;
+    right: 2px;
+    top: 2px;
+    float:right;
+    border-radius:6px;
+}
+.panel.floatPanel a.trigger.closeButton .icon{
+    width:6px;
+    height:6px;
+    font-size:8px;
+    padding: 3px 5px 7px 5px;
+}
+/****/
+
 /*#dragDrawControlPanel:active>div.dragHelper{
     display:inline-flex;
     cursor: move;
