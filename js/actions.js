@@ -79,7 +79,7 @@ function init() {
                 //displayProjection:proj900913
     });
 
-    map.addControl(new OpenLayers.Control.LoadingPanel());
+//    map.addControl(new OpenLayers.Control.LoadingPanel());
     bing = new OpenLayers.Layer.Bing({name: "Bing Aerial Layer", type: "Aerial", key: "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf", });
     osm = new OpenLayers.Layer.OSM("OSM", null, {sphericalMercator: false, attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors (ODbL)"});
     wmsLayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
@@ -222,6 +222,12 @@ function init() {
         //assign strVerticesInLatLon to global variable polyCoords, which is used in facility_url
         polyCoords = strVerticesInLatLon;
         //alert(polyCoords);
+        
+        /**jedi-code**/
+        $("a.editTool, a.tool, a.trigger").removeClass("disabled");
+        $("a.tool").removeClass("active").addClass("passive");
+        /****/
+        
     });
 
     polygonLayer.events.register("afterfeaturemodified", polygonControlModifier, function(obj) {
@@ -242,22 +248,22 @@ function init() {
     
 }
 
-function fetchData() {
+function fetchData(selected) {
     //check if polygon.features[0] is still selected
     if (polygonControlModifier.feature !== null) {
         alert("Finish modifying the polygon first. Click outside the polygon to finish modification.");
         return;
     }
     //check if polyCoords is defined and is not empty
-    if (polyCoords === "" || !polyCoords) {
-        alert("Please select the area first");
-        return;
-    }
-    //check if the layers are selected
-    if (document.getElementById('facilityList').options.selectedIndex < 0) {
-        alert("Please select at least one item in the Features List");
-        return;
-    }
+//    if (polyCoords === "" || !polyCoords) {
+//        alert("Please select the area first");
+//        return;
+//    }
+//    //check if the layers are selected
+//    if (document.getElementById('facilityList').options.selectedIndex < 0) {
+//        alert("Please select at least one item in the Features List");
+//        return;
+//    }
     //Call update()
     //sazal update();
     //Trigger afterfeaturemodified event of PolygonLayer
@@ -282,12 +288,12 @@ function fetchData() {
     csvs.length = 0;
     geoJSONs.length = 0;
 
-    selected = new Array();
-    var ob = document.getElementById('facilityList');
-    for (var i = 0; i < ob.options.length; i++)
-        if (ob.options[i].selected) {
-            selected.push(ob.options[i].value);
-        }
+//    selected = new Array();
+//    var ob = document.getElementById('facilityList');
+//    for (var i = 0; i < ob.options.length; i++)
+//        if (ob.options[i].selected) {
+//            selected.push(ob.options[i].value);
+//        }
 
     //create new select boxes for each item in 'selected' array inside 'tagsSelector' div
     for (key in selected) {
@@ -299,7 +305,7 @@ function fetchData() {
         //Create and append select list
         var selectList = document.createElement("select");
         selectList.id = "tagsIn" + selected[key];
-        selectList.multiple = "multiple"
+        selectList.multiple = "multiple";
         myTagsSelector.appendChild(selectList);
     }
 
@@ -308,7 +314,8 @@ function fetchData() {
         switch (selected[sel]) {
             case 'school':
                 //show loadingimage.gif
-                document.getElementById('waitForMe').style.display="block";
+                showLoadingAnim(true); //jedi-code
+                //document.getElementById('waitForMe').style.display="block";
                 //facility_url = "http://overpass-api.de/api/interpreter?data=(way['amenity'~'kindergarten|school|college|hospital|clinic|nursing_home|dentist|health$|health_post'](bbox);node(w);node['amenity'~'kindergarten|school|college|hospital|clinic|nursing_home|dentist|health_post'](bbox););out meta qt;";
 
                 facility_url = "http://overpass-api.de/api/interpreter";
@@ -330,12 +337,13 @@ function fetchData() {
                 map.addLayers([school]);
                 layers.push(school);
                 school.events.on({"featuresadded": function(features) {
-                        
-                        document.getElementById(school.name + 'Count').innerHTML = school.features.length;
+                        document.getElementById(school.name + 'Count').innerHTML = "schools: " + school.features.length;
                         //populate selectTagsInLayers
                         populateTagsSelector(school);
+                        guiPanelShowAggregate();
                         //hide loadingimage.gif
-                        document.getElementById('waitForMe').style.display="none";
+                        showLoadingAnim(false); //jedi-code
+                        //document.getElementById('waitForMe').style.display="none";
     
                         //Test for 'aggregate'
                         element = document.getElementById('aggSchool');
@@ -378,7 +386,8 @@ function fetchData() {
 
             case 'hospital':
                 //show loadingimage.gif
-                document.getElementById('waitForMe').style.display="block";
+                showLoadingAnim(true); //jedi-code
+                //document.getElementById('waitForMe').style.display="block";
                 //facility_url = "http://overpass-api.de/api/interpreter?data=(way['amenity'~'hospital|clinic|nursing_home|dentist|health$|health_post'](poly: '" +polyCoords+ "');node(w);node['amenity'~'hospital|clinic|nursing_home|dentist|health_post'](poly: '" +polyCoords+ "'););out meta qt;";
 
                 facility_url = "http://overpass-api.de/api/interpreter";
@@ -398,17 +407,20 @@ function fetchData() {
                 map.addLayers([hospital]);
                 layers.push(hospital);
                 hospital.events.on({"featuresadded": function(features) {
-                        document.getElementById(hospital.name + 'Count').innerHTML = hospital.features.length;
+                        document.getElementById(hospital.name + 'Count').innerHTML = "hospitals: " + hospital.features.length;
                         populateTagsSelector(hospital);
+                        guiPanelShowAggregate();
                          //hide loadingimage.gif
-                        document.getElementById('waitForMe').style.display="none";
+                         showLoadingAnim(false); //jedi-code
+                        //document.getElementById('waitForMe').style.display="none";
                         
                     }});
                 break;
 
             case 'college':
                 //show loadingimage.gif
-                document.getElementById('waitForMe').style.display="block";
+                showLoadingAnim(true); //jedi-code
+                //document.getElementById('waitForMe').style.display="block";
                 //facility_url = "http://overpass-api.de/api/interpreter?data=(way['amenity'~'college'](poly: '" +polyCoords+ "');node(w);node['amenity'~'college'](poly: '" +polyCoords+ "'););out meta qt;";
 
                 facility_url = "http://overpass-api.de/api/interpreter";
@@ -428,10 +440,12 @@ function fetchData() {
                 map.addLayers([college]);
                 layers.push(college);
                 college.events.on({"featuresadded": function(features) {
-                        document.getElementById(college.name + 'Count').innerHTML = college.features.length;
+                        document.getElementById(college.name + 'Count').innerHTML = "colleges: " + college.features.length;
                         populateTagsSelector(college);
+                        guiPanelShowAggregate();
                         //hide loadingimage.gif
-                        document.getElementById('waitForMe').style.display="none";
+                        showLoadingAnim(false); //jedi-code
+                        //document.getElementById('waitForMe').style.display="none";
                     }});
                 break;
         }
@@ -447,12 +461,11 @@ function toggleControl(element) {
         }*/
         
     var control = polygonControl;
-    if (element.value == 'polygon' && element.checked) {
-        if(polygonControlModifier.feature)
-            polygonControlModifier.feature=null;
+    //console.log("logogogogogogo");
+    if ($(element).hasClass("active") && $(element).hasClass("pen")) {
         polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
         polyCoords = "";	//remove old coordinates from polyCoords array
-        document.getElementById('file-input').disabled = true;
+        //document.getElementById('file-input').disabled = true;
         control.activate();
     }
     else if (element.value == "modify" && element.checked) {
@@ -462,13 +475,11 @@ function toggleControl(element) {
          polygonControlModifier.selectFeature(polygonLayer.features[0]);*/
         update();
     }
-    else if (element.value == 'importGeoJSON' && element.checked) {
-        polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
-        polygonLayer.destroyFeatures();
-        polyCoords = "";	//remove old coordinates from polyCoords array
-
+                /**/
+    else if ($(element).hasClass("importPolygon")) {
+        //console.log("hellooooo");
         //activate the file-input
-        document.getElementById('file-input').disabled = false;
+        //document.getElementById('file-input').disabled = false;
         fileInputControl = document.getElementById('file-input');
         fileInputControl.addEventListener("change", function(event) {
             // When the control has changed, there are new files
@@ -484,13 +495,18 @@ function toggleControl(element) {
                 //alert(fileInputControl.files.length);
                 fx(fileInputControl);
             }
+            /*jediKnight: what does this code do??
             document.getElementById('importGeoJSONToggle').checked=false;
             document.getElementById('file-input').disabled="false";
+            */
         }, false);
         fileInputControl.addEventListener("close", function(event) {
             alert("aborted");
             polyCoords = "";
         }, false);
+        /**jedicode**/
+        fileInputControl.click();
+        /****/
     }
 }
 
@@ -697,7 +713,8 @@ function callAJAXCSV(index) {
     //alert(index + "," + layers[index].name + "," + csvs[index]);
     if (index == layers.length){
         //hide loadingimage.gif
-                document.getElementById('waitForMe').style.display="none";
+        showLoadingAnim(false); //jedi-code
+                //document.getElementById('waitForMe').style.display="none";
         return;//do nothing. we are done here.
     }
     //if (csvs[index]==="\n")//this worked before URIEncode was used.
@@ -719,20 +736,26 @@ function callAJAXCSV(index) {
             if (xmlhttp.readyState == 3 || xmlhttp.readyState == 2 || xmlhttp.readyState == 1 || xmlhttp.readyState == 0)
             {
                 //show loadingimage.gif
-                document.getElementById('waitForMe').style.display="block";
+                showLoadingAnim(true); //jedi-code
+                //document.getElementById('waitForMe').style.display="block";
 
             }
             if (xmlhttp.readyState == 4)
             {
+                /*jedi-code*/
+                console.log("callAJAXCSV(): ..now opening saveas dialogue box for: "+xmlhttp.response);
+                window.location = xmlhttp.response;
+                /**/
+                
                 //window.open(xmlhttp.response);
-                myButton = document.createElement("input");
-                myButton.type = "button";
-                myButton.value = xmlhttp.response;
-                myButton.onclick = function() {
-                    window.open(xmlhttp.response)
-                };
-                placeHolder = document.getElementById("exportStatus");
-                placeHolder.appendChild(myButton);
+//                myButton = document.createElement("input");
+//                myButton.type = "button";
+//                myButton.value = xmlhttp.response;
+//                myButton.onclick = function() {
+//                    window.open(xmlhttp.response)
+//                };
+//                placeHolder = document.getElementById("exportStatus");
+//                placeHolder.appendChild(myButton);
                 callAJAXCSV(index + 1);
             }
         }
@@ -747,7 +770,8 @@ function callAJAXCSV(index) {
 function callAJAXGeoJSON(index) {
     if (index == layers.length) {
         //hide loadingimage.gif
-                document.getElementById('waitForMe').style.display="none";
+        showLoadingAnim(false); //jedi-code
+                //document.getElementById('waitForMe').style.display="none";
         return;//do nothing. we are done here.
     }
     if (document.getElementById('tagsIn' + layers[index].name).selectedOptions.length == 0)
@@ -771,15 +795,19 @@ function callAJAXGeoJSON(index) {
             }
             if (xmlhttp.readyState == 4)
             {
+                /*jedi-code*/
+                console.log("callAJAXGeoJSON(): ..now opening saveas dialogue box for: "+xmlhttp.response);
+                window.location = "GeoJSONDownloader.php?file="+xmlhttp.response;
+                /**/
                 //window.open(xmlhttp.response);
-                myButton = document.createElement("input");
-                myButton.type = "button";
-                myButton.value = xmlhttp.response;
-                myButton.onclick = function() {
-                    window.open(xmlhttp.response)
-                };
-                placeHolder = document.getElementById("exportStatus");
-                placeHolder.appendChild(myButton);
+//                myButton = document.createElement("input");
+//                myButton.type = "button";
+//                myButton.value = xmlhttp.response;
+//                myButton.onclick = function() {
+//                    window.open(xmlhttp.response)
+//                };
+//                placeHolder = document.getElementById("exportStatus");
+//                placeHolder.appendChild(myButton);
                 callAJAXGeoJSON(index + 1);
             }
         }
@@ -937,6 +965,7 @@ function customExportToType(type) {
     //get selected 'tags' items
     //remove unselected 'tags' items from this cloned layer in clonedLayers
     //call ExportToCSV() on clonedLayers
+    console.log("customExportToType: type = "+type);
     var selectedHeads = new Array();
     for (key in layers)
         clonedLayers[key] = layers[key].clone();
@@ -981,7 +1010,8 @@ function customExportToType(type) {
     //exportToCSV2();
 
     //determine export type and call appropriate exportTo... function
-    switch (type.id)
+    /**jedicode**/
+    switch(type)
     {
         case "exportToCSV":
             exportToCSV2(selectedHeads);
@@ -1217,91 +1247,91 @@ function exportToGeoJSON2(selectedHeads) {
 
 }
 
-function update() {
-    if (polyCoords == "" || polyCoords == null || !polyCoords){
-        alert("No polygon to edit. Please draw a polygon first.");
-        /*var modes=document.getElementsByName('modifyType');
-        for (key in modes){
-            modes[key].checked=false;
-        }*/
-    }
-    else {
-        //alert("before triggering pL.e.afm");
-        //polygonLayer.events.triggerEvent('afterfeaturemodified');
-        
-        if (polygonControlModifier.active) {
-            polygonControlModifier.deactivate();
-        }
-
-        
-        // reset modification mode
-        polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
-        var rotate = document.getElementById("rotate").checked;
-        if (rotate) {
-            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;//|
-        }
-        var resize = document.getElementById("resize").checked;
-        if (resize) {
-            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;//|
-            var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
-            if (keepAspectRatio) {
-                polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
-            }
-        }
-        var drag = document.getElementById("drag").checked;
-        if (drag) {
-            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;//|
-        }
-        if (rotate || drag) {
-            polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
-        }
-        polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
-        //var sides = parseInt(document.getElementById("sides").value);
-        //sides = Math.max(3, isNaN(sides) ? 0 : sides);
-        //controls.regular.handler.sides = sides;
-        //var irregular =  document.getElementById("irregular").checked;
-        //controls.regular.handler.irregular = irregular;
-        //Those two !buggers are here now
-        polygonControlModifier.activate();
-        polygonControlModifier.selectFeature(polygonLayer.features[0]);
-        
-        /*var modes=document.getElementsByName('type');
-        for (key in modes){
-            modes[key].checked=false;
-        }*/
-
-
-        /* //Backup
-         // reset modification mode
-         polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
-         var rotate = document.getElementById("rotate").checked;
-         if (rotate) {
-         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
-         }
-         var resize = document.getElementById("resize").checked;
-         if (resize) {
-         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
-         var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
-         if (keepAspectRatio) {
-         polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
-         }
-         }
-         var drag = document.getElementById("drag").checked;
-         if (drag) {
-         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;
-         }
-         if (rotate || drag) {
-         polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
-         }
-         polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
-         //var sides = parseInt(document.getElementById("sides").value);
-         //sides = Math.max(3, isNaN(sides) ? 0 : sides);
-         //controls.regular.handler.sides = sides;
-         //var irregular =  document.getElementById("irregular").checked;
-         //controls.regular.handler.irregular = irregular;
-         //Those two !buggers are here now
-         polygonControlModifier.activate();
-         polygonControlModifier.selectFeature(polygonLayer.features[0]);
-         //End of Backup */
-    }
-}
+//function update() {
+//    if (polyCoords == "" || polyCoords == null || !polyCoords){
+//        alert("No polygon to edit. Please draw a polygon first.");
+//        /*var modes=document.getElementsByName('modifyType');
+//        for (key in modes){
+//            modes[key].checked=false;
+//        }*/
+//    }
+//    else {
+//        //alert("before triggering pL.e.afm");
+//        //polygonLayer.events.triggerEvent('afterfeaturemodified');
+//        
+//        if (polygonControlModifier.active) {
+//            polygonControlModifier.deactivate();
+//        }
+//
+//        
+//        // reset modification mode
+//        polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+//        var rotate = document.getElementById("rotate").checked;
+//        if (rotate) {
+//            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;//|
+//        }
+//        var resize = document.getElementById("resize").checked;
+//        if (resize) {
+//            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;//|
+//            var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+//            if (keepAspectRatio) {
+//                polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+//            }
+//        }
+//        var drag = document.getElementById("drag").checked;
+//        if (drag) {
+//            polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;//|
+//        }
+//        if (rotate || drag) {
+//            polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+//        }
+//        polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
+//        //var sides = parseInt(document.getElementById("sides").value);
+//        //sides = Math.max(3, isNaN(sides) ? 0 : sides);
+//        //controls.regular.handler.sides = sides;
+//        //var irregular =  document.getElementById("irregular").checked;
+//        //controls.regular.handler.irregular = irregular;
+//        //Those two !buggers are here now
+//        polygonControlModifier.activate();
+//        polygonControlModifier.selectFeature(polygonLayer.features[0]);
+//        
+//        /*var modes=document.getElementsByName('type');
+//        for (key in modes){
+//            modes[key].checked=false;
+//        }*/
+//
+//
+//        /* //Backup
+//         // reset modification mode
+//         polygonControlModifier.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+//         var rotate = document.getElementById("rotate").checked;
+//         if (rotate) {
+//         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
+//         }
+//         var resize = document.getElementById("resize").checked;
+//         if (resize) {
+//         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
+//         var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+//         if (keepAspectRatio) {
+//         polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+//         }
+//         }
+//         var drag = document.getElementById("drag").checked;
+//         if (drag) {
+//         polygonControlModifier.mode |= OpenLayers.Control.ModifyFeature.DRAG;
+//         }
+//         if (rotate || drag) {
+//         polygonControlModifier.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+//         }
+//         polygonControlModifier.createVertices = document.getElementById("createVertices").checked;
+//         //var sides = parseInt(document.getElementById("sides").value);
+//         //sides = Math.max(3, isNaN(sides) ? 0 : sides);
+//         //controls.regular.handler.sides = sides;
+//         //var irregular =  document.getElementById("irregular").checked;
+//         //controls.regular.handler.irregular = irregular;
+//         //Those two !buggers are here now
+//         polygonControlModifier.activate();
+//         polygonControlModifier.selectFeature(polygonLayer.features[0]);
+//         //End of Backup */
+//    }
+//}
