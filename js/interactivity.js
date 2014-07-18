@@ -219,11 +219,6 @@ $(document).ready(function(){
         var toDownload = [{"id":"schools","value":"school"}, {"id":"colleges","value":"college"}, {"id":"hospitals","value":"hospital"}];
         //a hard-coded json array "toDownload" used for the time being
         $(function() {
-            function log( message ) {
-              $( "<div>" ).text( message ).prependTo( "#log" );
-              $( "#log" ).scrollTop( 0 );
-            }
-
             $( "#selectFrom" ).autocomplete({
                 autoFocus:true,
               //source: "http://jqueryui.com/resources/demos/autocomplete/search.php",
