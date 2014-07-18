@@ -27,7 +27,7 @@ a:focus {
     outline: none;
 }
 h1 {
-    font-size: 34px;
+    font-size: 24px;
     font-family: verdana, helvetica, arial, sans-serif;
     letter-spacing: -2px;
     color: #9FC54E;
@@ -35,15 +35,15 @@ h1 {
     padding: 20px 0 0;
 }
 h2 {
-    font-size: 24px;
-    font-family: verdana, helvetica, arial, sans-serif;
+    font-size: 10pt;
+    font-family: "Verdana", "sans-serif";
     color: #444444;
-    font-weight: 400;
+    font-weight: 700;
     padding: 0 0 10px;
 }
 h3 {
-    font-size: 20px;
-    font-family: verdana, helvetica, arial, sans-serif;
+    font-size: 14pt;
+    font-family: "Verdana", "sans-serif";
     letter-spacing: 1px;
     color: #000000;
     font-weight: 500;
@@ -53,7 +53,7 @@ h3 {
     opacity:1;
     transform: scale(1.57, 1) translateX(6px);
     -webkit-transform: scale(1.57, 1) translateX(6px);
-    text-shadow: rgba(0,0,0,0.4) 0 0 0.5px;
+    text-shadow: rgba(0,0,0,0.4) 0 0 1px;
     -webkit-font-smoothing: antialiased;
     display: block;
     /*float:both;*/
@@ -188,7 +188,9 @@ p {
     border-radius:10px;
 }
 #dragDrawControlPanel>span{
+    font-family:"Verdana","sans-serif";
     font-size:12pt;
+    letter-spacing:1px;
     -moz-user-select:none;
     -webkit-user-select:none;
     -o-user-select:none;
@@ -638,6 +640,9 @@ hr {
     width:300px;
 }
 #tagsSelector h3{
+    font-size:12pt;
+    letter-spacing:initial;
+    text-shadow:none;
     min-width:200px;
 }
 
