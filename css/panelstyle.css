@@ -741,3 +741,9 @@ hr {
     margin-top:15%;
 }
 /****/
+
+/**chrome checkbox size bugfix**/
+input[type="checkbox"]{
+    -webkit-min-logical-width:14px;
+}
+/****/
