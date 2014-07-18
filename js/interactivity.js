@@ -159,7 +159,7 @@ $(document).ready(function(){
                /*make drawControls panel draggable*/
                 $(this).draggable({
                     handle:"div",
-                    grid: [80,40],
+                    /*grid: [80,40],*/
                     snap: ".panel",
                     snapMode: "outer",
                     containment: "#floatPanelsContainer",
