@@ -226,7 +226,7 @@ function init() {
         
         /**jedi-code**/
         $("a.editTool, a.tool, a.trigger").removeClass("disabled");
-        $("a.tool").removeClass("active").addClass("passive");
+        $("a.tool").removeClass("active").addClass("passive confirm");
         $("#expandPanel").click();
         /****/
         
@@ -464,18 +464,15 @@ function toggleControl(element) {
         
     var control = polygonControl;
     //console.log("logogogogogogo");
-    if ($(element).hasClass("active") && $(element).hasClass("pen")) {
+    if ($(element).hasClass("active") && $(element).hasClass("pen")) {  //jedi-code
         polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
         polyCoords = "";	//remove old coordinates from polyCoords array
         //document.getElementById('file-input').disabled = true;
         control.activate();
     }
-    else if (element.value == "modify" && element.checked) {
-        /*polygonControlModifier.activate();
-         alert("inside toggleControl via modify");
-         //debugger;
-         polygonControlModifier.selectFeature(polygonLayer.features[0]);*/
-        update();
+    /*jedi-code*/
+    else if ($(element).hasClass("active") && $(element).hasClass("circle")) {
+        drawRegularPolygon(); 
     }
                 /**/
     else if ($(element).hasClass("importPolygon")) {
