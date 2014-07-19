@@ -42,17 +42,17 @@ h2 {
     padding: 0 0 10px;
 }
 h3 {
-    font-size: 14pt;
+    font-size: 12pt;
     font-family: "Verdana", "sans-serif";
-    letter-spacing: 1px;
+    letter-spacing: 4px;
     color: #000000;
     font-weight: 500;
     /*text-transform: uppercase;*/
-    margin: 0;
-    padding: 8px 0 8px 0;
+    margin: 0px 0px 10px -6px;
+    padding: 0px;
     opacity:1;
-    transform: scale(1.57, 1) translateX(6px);
-    -webkit-transform: scale(1.57, 1) translateX(6px);
+/*    transform: scale(1.27, 1) translateX(3px);
+    -webkit-transform: scale(1.27, 1) translateX(3px);*/
     text-shadow: rgba(0,0,0,0.4) 0 0 1px;
     -webkit-font-smoothing: antialiased;
     display: block;
@@ -120,7 +120,7 @@ p {
     border-bottom-left-radius: 10px;*/
 /*    //width: 330px;
     //height:available;*/
-    padding: 30px 30px 0px 30px;
+    padding: 10px 30px 0px 16px;
     
 }
 
@@ -173,8 +173,9 @@ p {
     padding-top:0px;
 }
 #dragDrawControlPanel{
-    padding:4px 2px 10px 2px;
-    margin-bottom:6px;
+    border-bottom: #cccccc thin solid;
+    /*padding:4px 2px 10px 2px;*/
+    margin-bottom:10px;
     cursor: move;
 }
 #dragDrawControlPanel>div{
@@ -242,7 +243,7 @@ p {
 
 .presets{
     /*//position: relative;*/
-    padding: 10px 20px 20px 20px;
+    padding: 10px;
     box-shadow: 0px 0px 3px rgba(50,50,100,0.2);
     border-radius: 5px;
     background-color: #ffffff;
@@ -304,6 +305,7 @@ div.delItem img{
 
 div.addItem{
     float:right;
+    margin-right:4px;
     margin-top:-15pt;
 }
 div.addItem img{
@@ -318,7 +320,7 @@ div.addItem img{
 
 }
 .panelContent{
-    margin-bottom:25px;
+    margin-bottom:15px;
     max-height: 200pt;
     max-width: none;
     overflow: auto;
@@ -466,7 +468,7 @@ a.trigger .triggerMask{
 }*/
 
 #selectFrom{
-    width:230px;
+    width:260px;
     background-color:rgba(0,0,0,0);
     border-width: 0px;
     border-bottom-width:thin;
@@ -487,7 +489,7 @@ a.trigger .triggerMask{
 
 #selectedPresets{
     /*//width:300px;*/
-    width:230px;
+    width:260px;
     background-color: #ffffff;
 }
 
@@ -530,7 +532,7 @@ a.trigger .triggerMask{
 
 .panelControls{
     position:relative;
-    margin-left:-30px;
+    margin-left:-16px;
     margin-top:0px;
 /*    //float:left;
     //clear:both;*/
@@ -609,25 +611,26 @@ hr {
     flex-wrap:wrap;
     flex-direction: column;
     overflow: hidden;
-    padding:10px;
+    padding:10px 16px 10px 16px;
     box-shadow: 0px 0px 4px rgba(0,0,0,1);
     border-radius:10px;
 }
 .splashContainerBase.active .panel>div{
     max-width:350px;
     max-height:300px;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 .splashContainerBase.active .panel>div.tagsSelector.container{
     background-color:#ffffff;
     /*outline: #dddddd thin solid;*/
     box-shadow: 0px 0px 3px rgba(50, 50, 100, 0.2);
     margin-bottom:10px;
+    overflow: auto;
 }
 .splashContainerBase.active .panel>div>h3{
     transform: none;
-    font-size:12pt;
-    padding-left:5px;
+    /*font-size:12pt;*/
+    /*padding-left:5px;*/
 }
 
 
@@ -644,6 +647,7 @@ hr {
     letter-spacing:initial;
     text-shadow:none;
     min-width:200px;
+    padding-left:5px;
 }
 
 .splashContainerBase div.checkbox{
