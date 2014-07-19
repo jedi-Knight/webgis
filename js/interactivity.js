@@ -55,6 +55,11 @@ $(document).ready(function(){
                 
         
         
+        $("#OpenLayers_Control_MaximizeDiv").attr("title","Show Layer-switcher Panel");
+        $("#OpenLayers_Control_MinimizeDiv").attr("title","Hide Layer-switcher Panel");
+        $("a.olControlZoomIn").attr("title","Zoom In");
+        $("a.olControlZoomOut").attr("title","Zoom Out");
+        
         /**TEMPORARY**/
         /*  kept in comments: in case in-line css is required for these elements;
         
