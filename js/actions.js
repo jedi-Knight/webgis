@@ -225,9 +225,11 @@ function init() {
         //alert(polyCoords);
         
         /**jedi-code**/
-        $("a.editTool, a.tool, a.trigger").removeClass("disabled");
-        $("a.tool").removeClass("active").addClass("passive confirm");
+        $("a.editTool").removeClass("disabled");
+        if($("#selectedPresets").children("li").length) $("#fetchDataTrigger").removeClass("disabled");
+        $("a.tool, #importPolygonTrigger").removeClass("active").addClass("passive confirm");
         $("#expandPanel").click();
+        if(layers.length)$("#fetchDataTrigger").addClass("confirm");
         guiPanelShowPresetSelector();//show presets panel
         /****/
         
@@ -343,9 +345,11 @@ function fetchData(selected) {
                         document.getElementById(school.name + 'Count').innerHTML = "schools: " + school.features.length;
                         //populate selectTagsInLayers
                         populateTagsSelector(school);
+                        /*jedi-code*/
+                        //$("#fetchDataTrigger").addClass("confirm");
                         guiPanelShowAggregate();
                         //hide loadingimage.gif
-                        showLoadingAnim(false); //jedi-code
+                        showLoadingAnim(false); //jedi-code/**/
                         //document.getElementById('waitForMe').style.display="none";
     
                         //Test for 'aggregate'
@@ -412,9 +416,11 @@ function fetchData(selected) {
                 hospital.events.on({"featuresadded": function(features) {
                         document.getElementById(hospital.name + 'Count').innerHTML = "hospitals: " + hospital.features.length;
                         populateTagsSelector(hospital);
+                        /*jedi-code*/
+                        //$("#fetchDataTrigger").addClass("confirm");
                         guiPanelShowAggregate();
                          //hide loadingimage.gif
-                         showLoadingAnim(false); //jedi-code
+                         showLoadingAnim(false); //jedi-code/**/
                         //document.getElementById('waitForMe').style.display="none";
                         
                     }});
@@ -445,6 +451,8 @@ function fetchData(selected) {
                 college.events.on({"featuresadded": function(features) {
                         document.getElementById(college.name + 'Count').innerHTML = "colleges: " + college.features.length;
                         populateTagsSelector(college);
+                        /*jedi-code*/
+                        //$("#fetchDataTrigger").addClass("confirm");
                         guiPanelShowAggregate();
                         //hide loadingimage.gif
                         showLoadingAnim(false); //jedi-code
@@ -462,17 +470,22 @@ function toggleControl(element) {
         for (key in modes){
             modes[key].checked=false;
         }*/
+    if(!$(element).hasClass("active")){
+        polygonControl.deactivate();
+        polygonControlRegular.deactivate();
+        return;
+    }
         
     var control = polygonControl;
     //console.log("logogogogogogo");
-    if ($(element).hasClass("active") && $(element).hasClass("pen")) {  //jedi-code
+    if ($(element).hasClass("pen")) {  //jedi-code
         polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
         polyCoords = "";	//remove old coordinates from polyCoords array
         //document.getElementById('file-input').disabled = true;
         control.activate();
     }
     /*jedi-code*/
-    else if ($(element).hasClass("active") && $(element).hasClass("circle")) {
+    else if ($(element).hasClass("circle")) {
         drawRegularPolygon(); 
     }
                 /**/
@@ -485,7 +498,7 @@ function toggleControl(element) {
             // When the control has changed, there are new files
             var i = 0,
                     files = fileInputControl.files,
-                    len = files.length;
+                    len = files.length;                  
             for (; i < len; i++) {
                 console.log("Filename: " + files[i].name);
                 console.log("Type: " + files[i].type);
@@ -494,17 +507,18 @@ function toggleControl(element) {
             if (fileInputControl.files.length != 0) {
                 //alert(fileInputControl.files.length);
                 fx(fileInputControl);
-            }
+            }   
             /*jediKnight: what does this code do??
             document.getElementById('importGeoJSONToggle').checked=false;
             document.getElementById('file-input').disabled="false";
             */
         }, false);
         fileInputControl.addEventListener("close", function(event) {
-            alert("aborted");
+          //alert("aborted");
             polyCoords = "";
         }, false);
-        /**jedicode**/
+        
+        /**jedi-code**/
         fileInputControl.click();
         /****/
     }
