@@ -392,10 +392,12 @@ a.trigger, a.tool, a.editTool{
 }
 
 a.trigger.disabled, a.tool.disabled, a.editTool.disabled, a.trigger.disabled:hover, a.tool.disabled:hover, a.editTool.disabled:hover{
-    background: rgba(51,51,51,0.2);
+    background: rgba(51,51,51,0.1);
+    opacity:0.4;
+    cursor:default;
 }
 
-a.trigger:hover, a.tool:hover, a.editTool:hover {
+a.trigger:hover, a.tool:hover, a.editTool:hover, a.active {
     /*//position: absolute;*/
     /*size:auto;*/
     text-decoration: none;
