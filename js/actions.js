@@ -251,6 +251,43 @@ function init() {
     });
     
     
+    
+    
+    /**geojson boundary input**/
+    fileInputControl = document.getElementById('file-input');
+        fileInputControl.addEventListener("change", function(event) {
+            // When the control has changed, there are new files
+//            var i = 0,
+//                    files = fileInputControl.files,
+//                    len = files.length;                  
+//            for (; i < len; i++) {
+//                console.log("Filename: " + files[i].name);
+//                console.log("Type: " + files[i].type);
+//                console.log("Size: " + files[i].size + " bytes");
+//            }
+            /*jedi-code*/
+            event.stopPropagation();
+            if(fileInputControl.files[0].type !== "application/json"){
+                alert("Please upload a valid geojson file");
+                return;
+            }
+            
+            if (fileInputControl.files.length != 0) {
+                //alert(fileInputControl.files.length);
+                fx(fileInputControl);
+            }   
+            /*jediKnight: what does this code do??
+            document.getElementById('importGeoJSONToggle').checked=false;
+            document.getElementById('file-input').disabled="false";
+            */
+        }, false);
+        fileInputControl.addEventListener("close", function(event) {
+          //alert("aborted");
+            polyCoords = "";
+        }, false);
+    /****/
+    
+    
 }
 
 function fetchData(selected) {
@@ -493,30 +530,6 @@ function toggleControl(element) {
         //console.log("hellooooo");
         //activate the file-input
         //document.getElementById('file-input').disabled = false;
-        fileInputControl = document.getElementById('file-input');
-        fileInputControl.addEventListener("change", function(event) {
-            // When the control has changed, there are new files
-            var i = 0,
-                    files = fileInputControl.files,
-                    len = files.length;                  
-            for (; i < len; i++) {
-                console.log("Filename: " + files[i].name);
-                console.log("Type: " + files[i].type);
-                console.log("Size: " + files[i].size + " bytes");
-            }
-            if (fileInputControl.files.length != 0) {
-                //alert(fileInputControl.files.length);
-                fx(fileInputControl);
-            }   
-            /*jediKnight: what does this code do??
-            document.getElementById('importGeoJSONToggle').checked=false;
-            document.getElementById('file-input').disabled="false";
-            */
-        }, false);
-        fileInputControl.addEventListener("close", function(event) {
-          //alert("aborted");
-            polyCoords = "";
-        }, false);
         
         /**jedi-code**/
         fileInputControl.click();
