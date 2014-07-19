@@ -266,16 +266,16 @@ function init() {
 //                console.log("Size: " + files[i].size + " bytes");
 //            }
             /*jedi-code*/
-            event.stopPropagation();
             if(fileInputControl.files[0].type !== "application/json"){
-                alert("Please upload a valid geojson file");
+                alert("Please upload a valid GeoJSON file.");
                 return;
             }
+            /**/
             
             if (fileInputControl.files.length != 0) {
                 //alert(fileInputControl.files.length);
                 fx(fileInputControl);
-            }   
+            }
             /*jediKnight: what does this code do??
             document.getElementById('importGeoJSONToggle').checked=false;
             document.getElementById('file-input').disabled="false";
