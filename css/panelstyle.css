@@ -732,6 +732,10 @@ hr {
 
 /**zoom-controls**/
 #OpenLayers_Control_Zoom_2>a.olButton{
+    background-color:rgba(102,102,102,0.6);
+    opacity:1;
+}
+#OpenLayers_Control_Zoom_2>a.olButton:hover,#OpenLayers_Control_Zoom_2>a.olButton:active{
     background-color:#666666;
     opacity:1;
 }
