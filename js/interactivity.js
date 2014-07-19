@@ -1,18 +1,3 @@
-/**obsolete**/
-////global variables:
-//var presets = {"school":{"amenity":["school"]}, "hospital":{"amenity":["hospital"]}, "household":{"building":["yes"],"owner":["*"]}, "government office":{"office":["government"]}};
-
-//var selected = [];
-//
-
-//function initPresetSelectFromList(){
-//	for(var key in presets){
-//			$("#selectFrom").append("<option class='item'>"+key+"</option>");
-//		}
-//}
-/****/
-
-
 
 
 $(document).ready(function(){
@@ -315,14 +300,5 @@ $(document).ready(function(){
         });
         /****/
         
-        
-        
-        
-        
-        
-        
-//	$("#add").click(function(){
-//		$("#selectedPresets").append("<li class='presetItem'>"+$("#selectFrom .item:selected").text()+"</li>");
-//		$("#selectFrom .item:selected").remove();
-//	});
+
 });
