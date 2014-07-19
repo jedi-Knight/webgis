@@ -228,6 +228,7 @@ function init() {
         $("a.editTool, a.tool, a.trigger").removeClass("disabled");
         $("a.tool").removeClass("active").addClass("passive confirm");
         $("#expandPanel").click();
+        guiPanelShowPresetSelector();//show presets panel
         /****/
         
     });

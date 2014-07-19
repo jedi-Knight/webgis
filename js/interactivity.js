@@ -126,13 +126,6 @@ $(document).ready(function(){
         
         /**draw panel**//**draw panel**//**draw panel**//**draw panel**/
         
-        /*draw circle*/
-//        $("#circleToggle").click(function(){
-//           if($(this).hasClass("disabled"))return;
-//           drawRegularPolygon(); 
-//        });
-        /**/
-        
         /*modify vector*/
         $("#drawControls").find(".editTool").not(".pen, .circle").click(function(e){
             if($(this).hasClass("disabled"))return;
@@ -178,7 +171,6 @@ $(document).ready(function(){
         $(".tool").click(function(){
            if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm("This will clear any existing boundary polygon and enable drawing of a new one.")))return;
            $(this).toggleClass("passive active"); //class switch for active/passive state actions and css
-           guiPanelShowPresetSelector();//show 'warning: clears boundary polygon layer,' and show presets panel if user proceeds
            toggleControl(this); //call pen active method
         });
         /**/
