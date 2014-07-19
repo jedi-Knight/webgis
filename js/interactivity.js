@@ -168,8 +168,11 @@ $(document).ready(function(){
         
         
         /*pen toggle*/
-        $(".tool").click(function(){
+        $("a.tool").click(function(){
            if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm("This will clear any existing boundary polygon and enable drawing of a new one.")))return;
+           $(this).add($(this).siblings()).add("#fetchDataTrigger").removeClass("confirm");
+           $(this).siblings(".editTool").addClass("disabled");
+           $(this).siblings().removeClass("active").addClass("passive");
            $(this).toggleClass("passive active"); //class switch for active/passive state actions and css
            toggleControl(this); //call pen active method
         });
@@ -178,8 +181,10 @@ $(document).ready(function(){
         /****//****//****//****//****/
         
         /**import polygon**/
-        $("a.trigger.inputTrigger").click(function(){
-           if($(this).hasClass("disabled"))return;
+        $("#importPolygonTrigger").click(function(e){
+           if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm("This will clear any existing boundary polygon and enable drawing of a new one.")))return;
+           $("a.tool").removeClass("active").addClass("passive").add(this).removeClass("confirm");
+           $(this).toggleClass("passive active");
            toggleControl(this);
         });
         /****/
@@ -202,13 +207,6 @@ $(document).ready(function(){
         });
         /****/
         
-        /**switch off all tools on double-clicking on map**/
-        $(document).dblclick(function(){
-           $(".tool").removeClass("active");
-           $(".tool").addClass("passive");
-        });
-        /****///TODO: need to add event listener on openlayers map/layer
-        
         
 		
 	
@@ -228,7 +226,7 @@ $(document).ready(function(){
                 minLength: 0,
                 select: function( event, ui ) {
                             $("<li class='presetItem' id='listItem_"+ui.item.id+"'>"+ui.item.value+"</li>")
-                            .appendTo($(".presets #selectedPresets"))
+                            .appendTo($("#selectedPresets"))
                             .append($("<div class='delItem'><a title='Remove preset' href='#'><img src='img/minus.png'/></a></div>").click(function(){
                                         var arj = {
                                             "id": $(this).closest("li.presetItem").attr("id").replace("listItem_",""),
@@ -236,8 +234,11 @@ $(document).ready(function(){
                                         };
                                         $("#selectFrom").autocomplete("option","source").push(arj);
                                         $(this).closest("li.presetItem").remove();
+                                        if(!$("#selectedPresets").children("li").length) $("#fetchDataTrigger").addClass("disabled");
                                     }));
                             $("#panelContent").scrollTop(100000);
+                            
+                            if($("#"+polygonLayer.id).find("path").length) $("#fetchDataTrigger").removeClass("disabled");
                             
                             console.log(
                                         $(this).autocomplete("option","source")
@@ -261,7 +262,8 @@ $(document).ready(function(){
         
         /**fetch data from overpass**/
         $("#fetchDataTrigger").click(function(){
-            if($(this).hasClass("disabled"))return;
+            if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm("This will clear all data not saved to disk and download fetch new data for the new boundary.")))return;
+            $(this).removeClass("confirm");
             //check if polyCoords is defined and is not empty
 		if (polyCoords ==="" || !polyCoords){
 			alert ("Please select the area first");
