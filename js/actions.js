@@ -229,7 +229,7 @@ function init() {
         if($("#selectedPresets").children("li").length) $("#fetchDataTrigger").removeClass("disabled");
         $("a.tool, #importPolygonTrigger").removeClass("active").addClass("passive confirm");
         $("#expandPanel").click();
-        if(layers.length)$("#fetchDataTrigger").addClass("confirm");
+        if(layers.length) $("#fetchDataTrigger").addClass("confirm");
         guiPanelShowPresetSelector();//show presets panel
         /****/
         
@@ -470,11 +470,11 @@ function toggleControl(element) {
         for (key in modes){
             modes[key].checked=false;
         }*/
-    if(!$(element).hasClass("active")){
-        polygonControl.deactivate();
-        polygonControlRegular.deactivate();
-        return;
-    }
+    /*jedi-code*/
+    polygonControl.deactivate();
+    polygonControlRegular.deactivate();
+    if(!$(element).hasClass("active")) return;
+    /**/
         
     var control = polygonControl;
     //console.log("logogogogogogo");
