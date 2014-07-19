@@ -16,6 +16,22 @@
 
 
 $(document).ready(function(){
+    
+    /**global error handler**/
+    window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
+        if(url.indexOf("OpenLayers")>-1){
+            alert("Please upload a valid GeoJSON file.");  //in addition to origin-url of script error, try testing against .active/.passive state of #fileInput trigger
+                                                            //or even better serve OpenLayers.js from the same domain as this web-app, then check for error source;
+        }else{
+            console.log('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
+            + ' Column: ' + column + ' StackTrace: ' +  errorObj); //store it in an error-log rather than logging it on console
+                                                                    //..like '<siteroot>/log/errorlog.txt'
+        }
+    };    
+    /****/
+    
+    
+    
         $("div.hiddenOnLoad").hide();
 	init();
 	//initPresetSelectFromList();  obsolete
@@ -147,20 +163,26 @@ $(document).ready(function(){
               
         /*draw panel toggle*/
         $("#drawControlsToggle").click(function(){
+            
            if($(this).hasClass("disabled"))return;
+           
            $("#drawControls").toggle(0,function(){
-               /*make drawControls panel draggable*/
-                $(this).draggable({
-                    handle:"div",
-                    /*grid: [80,40],*/
-                    snap: ".panel",
-                    snapMode: "outer",
-                    containment: "#floatPanelsContainer",
-                    scroll: false
-                    /*,cursorAt: { top: 14, left: 120 }*/
-                });
+               /*make drawControls panel, if not already draggable, draggable*/
+                try{
+                    console.log($(this).draggable("option"));
+                }catch(e){
+                    $(this).draggable({
+                        handle:"div",
+                        /*grid: [80,40],*/
+                        snap: ".panel",
+                        snapMode: "outer",
+                        containment: "#floatPanelsContainer",
+                        scroll: false
+                        /*,cursorAt: { top: 14, left: 120 }*/
+                    });
+                }
                /**/
-           });
+            });
            $(this).toggleClass("passive active"); 
         });
         /**/
