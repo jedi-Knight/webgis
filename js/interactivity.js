@@ -214,6 +214,9 @@ $(document).ready(function(){
         });
         
         $("#splashContainer").find("a.download.trigger.active").click(function(){
+            miti = Date();
+            miti=miti.replace(/ /g,"_");
+            miti=miti.replace(/:/g,"_");
             customExportToType($("#splashContainer").find("div.checkbox>input:checked")[0].value);
             $("#splashContainer").parent(".splashContainerBase").toggleClass("active passive");
         });
