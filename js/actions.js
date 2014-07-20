@@ -17,7 +17,7 @@ var map,
         field,
         text,
         geom,
-        anim;  //jedi-code
+        anim, miti;  //jedi-code
 //var markers = new OpenLayers.Layer.Markers( "Markers",{displayInLayerSwitcher:false} );
 
 var centerX = 85.33141;//491213.721224323//-123.1684986291807;//9497800;
@@ -83,7 +83,7 @@ function init() {
 //    map.addControl(new OpenLayers.Control.LoadingPanel());
     bing = new OpenLayers.Layer.Bing({name: "Bing Aerial Layer", type: "Aerial", key: "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf", });
     osm = new OpenLayers.Layer.OSM("OSM", null, {sphericalMercator: false, attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors (ODbL)"});
-    wmsLayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
+//    wmsLayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
 
     OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '2';
 
@@ -99,7 +99,7 @@ function init() {
     });
 
     map.addLayer(osm);
-    map.addLayer(wmsLayer);
+//    map.addLayer(wmsLayer);
     map.addLayer(bing);
     //map.addLayer(markers);
     map.addLayer(polygonLayer);
@@ -789,7 +789,7 @@ function callAJAXCSV(index) {
         var query = "CSVwriter.php";
         xmlhttp.open("POST", query, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("name=" + layers[index].name + "&payload=" + csvs[index]);
+        xmlhttp.send("name=" + layers[index].name + "&payload=" + csvs[index]+"&date="+miti);
         //alert(layers[i].name + " AJAX sent.\n Current xmlhttp index is: "+i +"\n");
     }
 }
@@ -839,7 +839,7 @@ function callAJAXGeoJSON(index) {
             }
         }
         var query = "GeoJSONwriter.php";
-        var params = "name=" + layers[index].name + "&payload=" + geoJSONs[index];
+        var params = "name=" + layers[index].name + "&payload=" + geoJSONs[index] +"&date="+miti;
         xmlhttp.open("POST", query, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         //xmlhttp.setRequestHeader("Content-length",params.length);
