@@ -440,7 +440,7 @@ function fetchData(selected) {
                             {
                                 if (school.features[i].attributes['isced:level'] == "secondary")
                                 {
-                                    intTotal++
+                                    intTotal++;
                                 }
                             }
                             else
