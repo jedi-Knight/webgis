@@ -352,6 +352,7 @@ function fetchData(selected) {
     }
 
     for (sel in selected) {
+        var numberOfRequests = selected.length;
         //debugger;
         switch (selected[sel]) {
             case 'school':
@@ -375,18 +376,39 @@ function fetchData(selected) {
                     }),
                     projection: new OpenLayers.Projection("EPSG:4326")
                        // styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"green"})})
+                    /*jedi-code*/
+                    ,eventListeners: {
+                        "loadstart": function () {
+                            console.log("overpass query started for: "+selected[sel]);
+                        },
+                        "loadend":function(){
+                            //hide loadingimage.gif
+                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                        }
+                    }
+                    //jedi-code/**/
+                
                 });
                 map.addLayers([school]);
                 layers.push(school);
                 school.events.on({"featuresadded": function(features) {
                         document.getElementById(school.name + 'Count').innerHTML = "schools: " + school.features.length;
                         //populate selectTagsInLayers
+                        /*jedi-code*/
+                        try{
+                            if(!school.features.length)return;
+                        }catch(e){
+                            console.log('Error: ' + e);
+                            return;
+                        }
+                        //jedi-code/**/
                         populateTagsSelector(school);
                         /*jedi-code*/
                         //$("#fetchDataTrigger").addClass("confirm");
                         guiPanelShowAggregate();
                         //hide loadingimage.gif
-                        showLoadingAnim(false); //jedi-code/**/
+                         //showLoadingAnim(false); moved to 'loadend' handler //jedi-code/**/
+                        
                         //document.getElementById('waitForMe').style.display="none";
     
                         //Test for 'aggregate'
@@ -447,17 +469,37 @@ function fetchData(selected) {
                     }),
                     projection: new OpenLayers.Projection("EPSG:4326")
                             //styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"red"})})
+                    /*jedi-code*/
+                    ,eventListeners: {
+                        "loadstart": function () {
+                            console.log("overpass query started for: "+selected[sel]);
+                        },
+                        "loadend":function(){
+                            //hide loadingimage.gif
+                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                        }
+                    }
+                    //jedi-code/**/
+                
                 });
                 map.addLayers([hospital]);
                 layers.push(hospital);
                 hospital.events.on({"featuresadded": function(features) {
                         document.getElementById(hospital.name + 'Count').innerHTML = "hospitals: " + hospital.features.length;
+                        /*jedi-code*/
+                        try{
+                            if(!hospital.features.length)return;
+                        }catch(e){
+                            console.log('Error: ' + e);
+                            return;
+                        }
+                        //jedi-code/**/
                         populateTagsSelector(hospital);
                         /*jedi-code*/
                         //$("#fetchDataTrigger").addClass("confirm");
                         guiPanelShowAggregate();
                          //hide loadingimage.gif
-                         showLoadingAnim(false); //jedi-code/**/
+                         //showLoadingAnim(false); moved to 'loadend' handler //jedi-code/**/
                         //document.getElementById('waitForMe').style.display="none";
                         
                     }});
@@ -482,17 +524,37 @@ function fetchData(selected) {
                     }),
                     projection: new OpenLayers.Projection("EPSG:4326")
                             //styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"green"})})
+                
+                    /*jedi-code*/
+                    ,eventListeners: {
+                        "loadstart": function () {
+                            console.log("overpass query started for: "+selected[sel]);
+                        },
+                        "loadend":function(){
+                            //hide loadingimage.gif
+                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                        }
+                    }
+                    //jedi-code/**/
                 });
                 map.addLayers([college]);
                 layers.push(college);
                 college.events.on({"featuresadded": function(features) {
                         document.getElementById(college.name + 'Count').innerHTML = "colleges: " + college.features.length;
+                        
+                        try{
+                            if(!college.features.length)return;
+                        }catch(e){
+                            console.log('Error: ' + e);
+                            return;
+                        }
+                        
                         populateTagsSelector(college);
                         /*jedi-code*/
                         //$("#fetchDataTrigger").addClass("confirm");
-                        guiPanelShowAggregate();
+                        guiPanelShowAggregate(); 
                         //hide loadingimage.gif
-                        showLoadingAnim(false); //jedi-code
+                        //showLoadingAnim(false); moved to 'loadend' handler //jedi-code
                         //document.getElementById('waitForMe').style.display="none";
                     }});
                 break;
