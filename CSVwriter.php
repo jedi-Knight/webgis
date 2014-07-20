@@ -3,10 +3,11 @@
 	//if(isset($_POST)){
 		//$_POST['name'] = "file";
 //		$date = (string)date("Y-m-d h:i:sa");
-//		$strDate = str_replace(" ","-",$date);
-//		$strDate = str_replace(":","-",$strDate);	//':' is NOT a valid character for a filename. So replace it
+		$strDate = $_POST['date'];
+		$strDate = str_replace(" ","_",$strDate);
+		$strDate = str_replace(":","_",$strDate);	//':' is NOT a valid character for a filename. So replace it
 //		$myFile = $_POST['name'].$strDate.".csv";
-            $myFile = $_POST['name'].$_POST['date'].".csv";  //jedi-code
+                $myFile = $_POST['name']."_".$strDate.".csv";  //jedi-code
 		$fh = fopen($myFile, 'w') or die("can't open file");
 		$stringData = $_POST['payload'];
 		fwrite($fh, $stringData);
