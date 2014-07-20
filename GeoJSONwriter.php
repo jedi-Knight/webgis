@@ -18,7 +18,7 @@
 		header('Pragma: no-cache');
 		readfile("$myFile");
 		print file_get_contents($myFile);
-		//return (string)$myFile;*/
+		//return (string)$myFile;*/                
 		echo (string)$myFile;
 	}
 ?>
