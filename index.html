@@ -20,7 +20,7 @@
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="http://openlayers.org/api/2.13/OpenLayers.js"></script>
         <script type="text/javascript" src="js/OSMMeta.js"></script>
-        
+
         <script type="text/javascript" src="js/actions.js"></script>
         <script type="text/javascript" src="js/guiFunctions.js"></script>
         <script type="text/javascript" src="js/interactivity.js"></script>
@@ -52,32 +52,32 @@
         <div class="panel right-docked" style="z-index:2;"><div id="glass">
                 <h3>Presets</h3>
                 <div class="panelContent" id="panelContent">
-                    
+
                     <div class="presets" id="presetSelector">
                         <ul id="selectedPresets">
                         </ul>
-                                <div><input id="selectFrom" value="Add a preset"/>
-                                    <div class='addItem'><a title='Add a preset'><img src='img/plus.png'/></a></div>
-                                </div>
+                        <div><input id="selectFrom" value="Add a preset"/>
+                            <div class='addItem'><a title='Add a preset'><img src='img/plus.png'/></a></div>
+                        </div>
                     </div>
                     <!--<div style="clear:both;"></div>
                     <div class="columns">
                         <div class="colleft"> </div>
                     </div>-->
-                    
+
                     <div class = "aggregate hiddenOnLoad" id="aggregate">
-                                                            <div id='schoolCount'></div>
-                                                                <div id='hospitalCount'></div>
-                                                                    <div id='collegeCount'></div>
-                                                                    <div id="aggSchool" hidden="hidden">
-                <h2>School</h2>
-                Total Students&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span id="schoolCountStudents"></span></br>
-                No of Secondary Schools: <span id="schoolCountPrimary"></span></br>
-            </div>
-            <div id="aggHospital" hidden="hidden">Hospital</div>
-                                                                        </div>
+                        <div id='schoolCount'></div>
+                        <div id='hospitalCount'></div>
+                        <div id='collegeCount'></div>
+                        <div id="aggSchool" hidden="hidden">
+                            <h2>School</h2>
+                            Total Students&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span id="schoolCountStudents"></span></br>
+                            No of Secondary Schools: <span id="schoolCountPrimary"></span></br>
+                        </div>
+                        <div id="aggHospital" hidden="hidden">Hospital</div>
+                    </div>
                 </div>
-                
+
                 <div class="panelControls">
                     <a class="trigger panelTrigger" id="collapsePanel" title="Hide Control Panel">
                         <img class="icon arrow" src="img/arrow.png" title="Close this panel"/>
@@ -90,27 +90,29 @@
                     <a class="trigger inputTrigger importPolygon passive" id="importPolygonTrigger" title="Import boundary GeoJSON">
 
                         <div class="inputDiv fileInputDiv">
-                            <input type="file" class="fileInput hiddenObjects" id="file-input" name="file-input"/><img class="icon" src="img/geojson.png"/>
+                            <input type="file" class="fileInput hiddenObjects" id="file-input" name="file-input"/>
+                            <img class="icon" src="img/geojson.png"/>
                         </div>
                     </a>
 
                     <a class = "trigger download fetchData passive" id="fetchDataTrigger" title="Fetch data from OSM">
-                        <img class="icon" src="img/fetch.png"</img>
+                        <img class="icon" src="img/fetch.png"/>
                     </a>
 
                     <a class = "trigger exportData passive" id="exportDataTrigger" title="Download data for offline use">
-                        <img class="icon" src = "img/export.png"><img>
-                                </a>
+                        <img class="icon" src = "img/export.png" />
+                    </a>
 
-                                </div>
-                                </div></div>
-                                <a class="trigger panelTrigger right-docked" id="expandPanel" title="Show Control Panel">
-                                    <img class="icon arrow" src="img/arrow.png"/>
-                                </a>
-        
-        
+                </div>
+            </div>
+        </div>
+        <a class="trigger panelTrigger right-docked" id="expandPanel" title="Show Control Panel">
+            <img class="icon arrow" src="img/arrow.png"/>
+        </a>
+
+
         <!--drawing controls panel-->
-        
+
         <div id="drawControls" class="panel floatPanel" toggledBy="drawControlsToggle">
             <div id="dragDrawControlPanel">
                 <div class="icon" class="tool"></div>
@@ -118,58 +120,62 @@
                 <div class="dragHelper"></div>
             </div>
             <div>
-            <a class="tool pen passive" id="penToggle" title="Draw boundary polygon">
-                <img  class="icon" src="img/pen.png"/>
-            </a>
-            <a class="tool circle passive" id="circleToggle" title="Draw boundary cicle">
-                <img  class="icon" src="img/circle.png"/>
-            </a>
-            <a class="editTool addVertex passive" id="addVertexToggle" title="Add vertices to boundary shape">
-                <img  class="icon" src="img/addVertexIcon.png"/>
-            </a>
-            <a class="editTool rotate passive" id="rotateToggle" title="Rotate boundary">
-                <img  class="icon" src="img/rotateHandleIcon.png"/>
-            </a>
-            <a class="editTool resize passive" id="resizeToggle" title="Resize boundary">
-                <img  class="icon" src="img/resizeHandleIcon.png"/>
-                <div><input type="checkbox" value="ratio" checked="true"/>Maintain aspect ratio</div>
-            </a>
-                
-            <a class="editTool drag passive" id="dragToggle" title="Move boundary">
-                <img  class="icon" src="img/moveHandleIcon.png"/>
-            </a>
+                <a class="tool pen passive" id="penToggle" title="Draw boundary polygon">
+                    <img  class="icon" src="img/pen.png"/>
+                </a>
+                <a class="tool circle passive" id="circleToggle" title="Draw boundary cicle">
+                    <img  class="icon" src="img/circle.png"/>
+                </a>
+                <a class="editTool addVertex passive" id="addVertexToggle" title="Add vertices to boundary shape">
+                    <img  class="icon" src="img/addVertexIcon.png"/>
+                </a>
+                <a class="editTool rotate passive" id="rotateToggle" title="Rotate boundary">
+                    <img  class="icon" src="img/rotateHandleIcon.png"/>
+                </a>
+                <a class="editTool resize passive" id="resizeToggle" title="Resize boundary">
+                    <img  class="icon" src="img/resizeHandleIcon.png"/>
+                    <div><input type="checkbox" value="ratio" checked="true"/>Maintain aspect ratio</div>
+                </a>
+
+                <a class="editTool drag passive" id="dragToggle" title="Move boundary">
+                    <img  class="icon" src="img/moveHandleIcon.png"/>
+                </a>
             </div>
         </div>
-            
+
         <!---->
-        
-        
-        
-        
-        
-        
-        
-        
-        
-                                <div class="splashContainerBase passive" toggledBy="exportDataTrigger">
-                                    <div id="splashContainer" class="splashContainer export panel floatPanel">
-                                        <div><h3>Data to Download</h3></div>
-                                        <div class="tagsSelector container">
-                                            <div id="tagsSelector">
-                                            ....
-                                            </div>
-                                        </div>
-                                        <div><div class="label checkbox"><input type="radio" name="exportType" value="exportToCSV">CSV
-                                                <input type="radio" name="exportType" value="exportToGeoJSON">GeoJson</div>
-                                                    <a class="trigger download active" title="Download to Disk">
-                                                        <img src="img/download.png" class="icon"/> 
-                                                    </a></div>
-                                                    </div>
-                                                    </div>
-                                                    
-                                                                        <div class="hiddenObjects" id="exportStatus"></div>
-    
-                                                                        <div id="floatPanelsContainer"></div>
-    
+
+
+
+
+
+
+
+
+
+        <div class="splashContainerBase passive" toggledBy="exportDataTrigger">
+            <div id="splashContainer" class="splashContainer export panel floatPanel">
+                <div><h3>Data to Download</h3></div>
+                <div class="tagsSelector container">
+                    <div id="tagsSelector">
+                        ....
+                    </div>
+                </div>
+                <div>
+                    <div class="label checkbox">
+                        <input type="radio" name="exportType" value="exportToCSV">CSV</input>
+                        <input type="radio" name="exportType" value="exportToGeoJSON">GeoJson</input>
+                    </div>
+                    <a class="trigger download active" title="Download to Disk">
+                        <img src="img/download.png" class="icon"/> 
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hiddenObjects" id="exportStatus"></div>
+
+        <div id="floatPanelsContainer"></div>
+
     </body>
-                                                                        </html>
+</html>
