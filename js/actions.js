@@ -17,7 +17,7 @@ var map,
         field,
         text,
         geom,
-        anim;  //jedi-code
+        anim, miti;  //jedi-code
 //var markers = new OpenLayers.Layer.Markers( "Markers",{displayInLayerSwitcher:false} );
 
 var centerX = 85.33141;//491213.721224323//-123.1684986291807;//9497800;
@@ -83,7 +83,7 @@ function init() {
 //    map.addControl(new OpenLayers.Control.LoadingPanel());
     bing = new OpenLayers.Layer.Bing({name: "Bing Aerial Layer", type: "Aerial", key: "AqTGBsziZHIJYYxgivLBf0hVdrAk9mWO5cQcb8Yux8sW5M8c8opEC2lZqKR1ZZXf", });
     osm = new OpenLayers.Layer.OSM("OSM", null, {sphericalMercator: false, attribution: "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors (ODbL)"});
-    wmsLayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
+//    wmsLayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
 
     OpenLayers.Feature.Vector.style['default']['strokeWidth'] = '2';
 
@@ -99,7 +99,7 @@ function init() {
     });
 
     map.addLayer(osm);
-    map.addLayer(wmsLayer);
+//    map.addLayer(wmsLayer);
     map.addLayer(bing);
     //map.addLayer(markers);
     map.addLayer(polygonLayer);
@@ -354,6 +354,7 @@ function fetchData(selected) {
     }
 
     for (sel in selected) {
+        var numberOfRequests = selected.length;
         //debugger;
         switch (selected[sel]) {
             case 'school':
@@ -376,19 +377,40 @@ function fetchData(selected) {
                         readWithPOST: true
                     }),
                     projection: new OpenLayers.Projection("EPSG:4326")
-                            // styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"green"})})
+                       // styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"green"})})
+                    /*jedi-code*/
+                    ,eventListeners: {
+                        "loadstart": function () {
+                            console.log("overpass query started for: "+selected[sel]);
+                        },
+                        "loadend":function(){
+                            //hide loadingimage.gif
+                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                        }
+                    }
+                    //jedi-code/**/
+                
                 });
                 map.addLayers([school]);
                 layers.push(school);
                 school.events.on({"featuresadded": function(features) {
                         document.getElementById(school.name + 'Count').innerHTML = "schools: " + school.features.length;
                         //populate selectTagsInLayers
+                        /*jedi-code*/
+                        try{
+                            if(!school.features.length)return;
+                        }catch(e){
+                            console.log('Error: ' + e);
+                            return;
+                        }
+                        //jedi-code/**/
                         populateTagsSelector(school);
                         /*jedi-code*/
                         //$("#fetchDataTrigger").addClass("confirm");
                         guiPanelShowAggregate();
                         //hide loadingimage.gif
-                        showLoadingAnim(false); //jedi-code/**/
+                         //showLoadingAnim(false); moved to 'loadend' handler //jedi-code/**/
+                        
                         //document.getElementById('waitForMe').style.display="none";
 
                         //Test for 'aggregate'
@@ -420,7 +442,7 @@ function fetchData(selected) {
                             {
                                 if (school.features[i].attributes['isced:level'] == "secondary")
                                 {
-                                    intTotal++
+                                    intTotal++;
                                 }
                             }
                             else
@@ -449,17 +471,37 @@ function fetchData(selected) {
                     }),
                     projection: new OpenLayers.Projection("EPSG:4326")
                             //styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"red"})})
+                    /*jedi-code*/
+                    ,eventListeners: {
+                        "loadstart": function () {
+                            console.log("overpass query started for: "+selected[sel]);
+                        },
+                        "loadend":function(){
+                            //hide loadingimage.gif
+                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                        }
+                    }
+                    //jedi-code/**/
+                
                 });
                 map.addLayers([hospital]);
                 layers.push(hospital);
                 hospital.events.on({"featuresadded": function(features) {
                         document.getElementById(hospital.name + 'Count').innerHTML = "hospitals: " + hospital.features.length;
+                        /*jedi-code*/
+                        try{
+                            if(!hospital.features.length)return;
+                        }catch(e){
+                            console.log('Error: ' + e);
+                            return;
+                        }
+                        //jedi-code/**/
                         populateTagsSelector(hospital);
                         /*jedi-code*/
                         //$("#fetchDataTrigger").addClass("confirm");
                         guiPanelShowAggregate();
-                        //hide loadingimage.gif
-                        showLoadingAnim(false); //jedi-code/**/
+                         //hide loadingimage.gif
+                         //showLoadingAnim(false); moved to 'loadend' handler //jedi-code/**/
                         //document.getElementById('waitForMe').style.display="none";
 
                     }});
@@ -484,17 +526,37 @@ function fetchData(selected) {
                     }),
                     projection: new OpenLayers.Projection("EPSG:4326")
                             //styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"green"})})
+                
+                    /*jedi-code*/
+                    ,eventListeners: {
+                        "loadstart": function () {
+                            console.log("overpass query started for: "+selected[sel]);
+                        },
+                        "loadend":function(){
+                            //hide loadingimage.gif
+                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                        }
+                    }
+                    //jedi-code/**/
                 });
                 map.addLayers([college]);
                 layers.push(college);
                 college.events.on({"featuresadded": function(features) {
                         document.getElementById(college.name + 'Count').innerHTML = "colleges: " + college.features.length;
+                        
+                        try{
+                            if(!college.features.length)return;
+                        }catch(e){
+                            console.log('Error: ' + e);
+                            return;
+                        }
+                        
                         populateTagsSelector(college);
                         /*jedi-code*/
                         //$("#fetchDataTrigger").addClass("confirm");
-                        guiPanelShowAggregate();
+                        guiPanelShowAggregate(); 
                         //hide loadingimage.gif
-                        showLoadingAnim(false); //jedi-code
+                        //showLoadingAnim(false); moved to 'loadend' handler //jedi-code
                         //document.getElementById('waitForMe').style.display="none";
                     }});
                 break;
@@ -792,7 +854,7 @@ function callAJAXCSV(index) {
         var query = "CSVwriter.php";
         xmlhttp.open("POST", query, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("name=" + layers[index].name + "&payload=" + csvs[index]);
+        xmlhttp.send("name=" + layers[index].name + "&payload=" + csvs[index]+"&date="+miti);
         //alert(layers[i].name + " AJAX sent.\n Current xmlhttp index is: "+i +"\n");
     }
 }
@@ -842,7 +904,7 @@ function callAJAXGeoJSON(index) {
             }
         }
         var query = "GeoJSONwriter.php";
-        var params = "name=" + layers[index].name + "&payload=" + geoJSONs[index];
+        var params = "name=" + layers[index].name + "&payload=" + geoJSONs[index] +"&date="+miti;
         xmlhttp.open("POST", query, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         //xmlhttp.setRequestHeader("Content-length",params.length);

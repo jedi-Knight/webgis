@@ -214,6 +214,7 @@ $(document).ready(function(){
         });
         
         $("#splashContainer").find("a.download.trigger.active").click(function(){
+            miti = Date();
             customExportToType($("#splashContainer").find("div.checkbox>input:checked")[0].value);
             $("#splashContainer").parent(".splashContainerBase").toggleClass("active passive");
         });
