@@ -59,6 +59,18 @@ var polygonControlRegular;
 //var mapProjectionObject;
 var fileInputControl;
 
+function loadendOfData(queryQueue){
+    if(queryQueue) return;
+    showLoadingAnim(false);
+    $("iframe").remove();
+}
+
+
+
+
+
+
+
 function init() {
     //map configuration
     map = new OpenLayers.Map('map', {
@@ -385,7 +397,7 @@ function fetchData(selected) {
                         },
                         "loadend":function(){
                             //hide loadingimage.gif
-                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                            loadendOfData(--numberOfRequests); //jedi-code/**/
                         }
                     }
                     //jedi-code/**/
@@ -478,7 +490,7 @@ function fetchData(selected) {
                         },
                         "loadend":function(){
                             //hide loadingimage.gif
-                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                            loadendOfData(--numberOfRequests); //jedi-code/**/
                         }
                     }
                     //jedi-code/**/
@@ -534,7 +546,7 @@ function fetchData(selected) {
                         },
                         "loadend":function(){
                             //hide loadingimage.gif
-                            if (!--numberOfRequests) showLoadingAnim(false); //jedi-code/**/
+                            loadendOfData(--numberOfRequests); //jedi-code/**/
                         }
                     }
                     //jedi-code/**/
@@ -836,7 +848,8 @@ function callAJAXCSV(index) {
             {
                 /*jedi-code*/
                 console.log("callAJAXCSV(): ..now opening saveas dialogue box for: " + xmlhttp.response);
-                window.location = xmlhttp.response;
+                //window.location = xmlhttp.response;
+                $("body").append("<iframe src='"+xmlhttp.response+"'/>");
                 /**/
 
                 //window.open(xmlhttp.response);
@@ -889,7 +902,8 @@ function callAJAXGeoJSON(index) {
             {
                 /*jedi-code*/
                 console.log("callAJAXGeoJSON(): ..now opening saveas dialogue box for: " + xmlhttp.response);
-                window.location = "GeoJSONDownloader.php?file=" + xmlhttp.response;
+                //window.location = "GeoJSONDownloader.php?file=" + xmlhttp.response;
+                $("body").append("<iframe src='GeoJSONDownloader.php?file=" + xmlhttp.response+"'/>");
                 /**/
                 //window.open(xmlhttp.response);
 //                myButton = document.createElement("input");
