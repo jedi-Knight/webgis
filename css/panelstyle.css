@@ -478,7 +478,7 @@ a.trigger .triggerMask{
     border-color: #cccccc;
 /*    //box-shadow:#666;
     //overflow:hidden;*/
-    text-transform:capitalize;
+    /*text-transform:capitalize;*/
     outline: #cccccc dashed thin;
     outline-offset:-1px;
     font-height: 12pt;
