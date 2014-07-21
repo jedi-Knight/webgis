@@ -260,9 +260,11 @@ $(document).ready(function(){
                                                 return o.value;
                                             }).indexOf(ui.item.value)
                                         ,1)
-                                    );
-                            
-                    }
+                                    );             
+                    },
+                close: function(event, ui) {
+                    this.value="";
+                }
             });
           });
           
