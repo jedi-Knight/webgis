@@ -125,12 +125,12 @@ function init() {
         }
         polygonLayer.events.on({
             /*"beforefeaturemodified": report,
-            "featuremodified": report,
-            "afterfeaturemodified": report,
-            "vertexmodified": report,
-            "sketchmodified": report,
-            "sketchstarted": report,
-            "sketchcomplete": report,*/
+             "featuremodified": report,
+             "afterfeaturemodified": report,
+             "vertexmodified": report,
+             "sketchmodified": report,
+             "sketchstarted": report,
+             "sketchcomplete": report,*/
             "featureunselected": report
         });
     }
@@ -223,16 +223,18 @@ function init() {
         //assign strVerticesInLatLon to global variable polyCoords, which is used in facility_url
         polyCoords = strVerticesInLatLon;
         //alert(polyCoords);
-        
+
         /**jedi-code**/
         $("a.editTool").removeClass("disabled");
-        if($("#selectedPresets").children("li").length) $("#fetchDataTrigger").removeClass("disabled");
+        if ($("#selectedPresets").children("li").length)
+            $("#fetchDataTrigger").removeClass("disabled");
         $("a.tool, #importPolygonTrigger").removeClass("active").addClass("passive confirm");
         $("#expandPanel").click();
-        if(layers.length) $("#fetchDataTrigger").addClass("confirm");
+        if (layers.length)
+            $("#fetchDataTrigger").addClass("confirm");
         guiPanelShowPresetSelector();//show presets panel
         /****/
-        
+
     });
 
     polygonLayer.events.register("afterfeaturemodified", polygonControlModifier, function(obj) {
@@ -249,14 +251,14 @@ function init() {
         //alert("after feature modified");
         polygonControl.events.triggerEvent('featureadded');
     });
-    
-    
-    
-    
+
+
+
+
     /**geojson boundary input**/
     fileInputControl = document.getElementById('file-input');
-        fileInputControl.addEventListener("change", function(event) {
-            // When the control has changed, there are new files
+    fileInputControl.addEventListener("change", function(event) {
+        // When the control has changed, there are new files
 //            var i = 0,
 //                    files = fileInputControl.files,
 //                    len = files.length;                  
@@ -265,29 +267,29 @@ function init() {
 //                console.log("Type: " + files[i].type);
 //                console.log("Size: " + files[i].size + " bytes");
 //            }
-            /*jedi-code*/
+        /*jedi-code*/
 //            if(fileInputControl.files[0].type !== "application/json"){
 //                alert("Please upload a valid GeoJSON file.");
 //                return;
 //            }
-            /**/
-            
-            if (fileInputControl.files.length != 0) {
-                //alert(fileInputControl.files.length);
-                fx(fileInputControl);
-            }
-            /*jediKnight: what does this code do??
-            document.getElementById('importGeoJSONToggle').checked=false;
-            document.getElementById('file-input').disabled="false";
-            */
-        }, false);
-        fileInputControl.addEventListener("close", function(event) {
-          //alert("aborted");
-            polyCoords = "";
-        }, false);
+        /**/
+
+        if (fileInputControl.files.length != 0) {
+            //alert(fileInputControl.files.length);
+            fx(fileInputControl);
+        }
+        /*jediKnight: what does this code do??
+         document.getElementById('importGeoJSONToggle').checked=false;
+         document.getElementById('file-input').disabled="false";
+         */
+    }, false);
+    fileInputControl.addEventListener("close", function(event) {
+        //alert("aborted");
+        polyCoords = "";
+    }, false);
     /****/
-    
-    
+
+
 }
 
 function fetchData(selected) {
@@ -374,7 +376,7 @@ function fetchData(selected) {
                         readWithPOST: true
                     }),
                     projection: new OpenLayers.Projection("EPSG:4326")
-                       // styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"green"})})
+                            // styleMap: new OpenLayers.StyleMap({'default':new OpenLayers.Style({'strokeWidth': 1,fillColor:"green"})})
                 });
                 map.addLayers([school]);
                 layers.push(school);
@@ -388,7 +390,7 @@ function fetchData(selected) {
                         //hide loadingimage.gif
                         showLoadingAnim(false); //jedi-code/**/
                         //document.getElementById('waitForMe').style.display="none";
-    
+
                         //Test for 'aggregate'
                         element = document.getElementById('aggSchool');
                         element.style.display = "block";
@@ -456,10 +458,10 @@ function fetchData(selected) {
                         /*jedi-code*/
                         //$("#fetchDataTrigger").addClass("confirm");
                         guiPanelShowAggregate();
-                         //hide loadingimage.gif
-                         showLoadingAnim(false); //jedi-code/**/
+                        //hide loadingimage.gif
+                        showLoadingAnim(false); //jedi-code/**/
                         //document.getElementById('waitForMe').style.display="none";
-                        
+
                     }});
                 break;
 
@@ -504,15 +506,16 @@ function fetchData(selected) {
 function toggleControl(element) {
     //deselect all options from modifyType
     /*var modes=document.getElementsByName('modifyType');
-        for (key in modes){
-            modes[key].checked=false;
-        }*/
+     for (key in modes){
+     modes[key].checked=false;
+     }*/
     /*jedi-code*/
     polygonControl.deactivate();
     polygonControlRegular.deactivate();
-    if(!$(element).hasClass("active")) return;
+    if (!$(element).hasClass("active"))
+        return;
     /**/
-        
+
     var control = polygonControl;
     //console.log("logogogogogogo");
     if ($(element).hasClass("pen")) {  //jedi-code
@@ -523,14 +526,14 @@ function toggleControl(element) {
     }
     /*jedi-code*/
     else if ($(element).hasClass("circle")) {
-        drawRegularPolygon(); 
+        drawRegularPolygon();
     }
-                /**/
+    /**/
     else if ($(element).hasClass("importPolygon")) {
         //console.log("hellooooo");
         //activate the file-input
         //document.getElementById('file-input').disabled = false;
-        
+
         /**jedi-code**/
         fileInputControl.click();
         /****/
@@ -544,8 +547,8 @@ function drawRegularPolygon() {
     polygonLayer.destroyFeatures();
     //polygonLayer.addFeatures([]);
     polyCoords = "";
-    if(polygonControlModifier.feature)
-            polygonControlModifier.feature=null;
+    if (polygonControlModifier.feature)
+        polygonControlModifier.feature = null;
     polygonControlRegular.activate();
 
 }
@@ -738,10 +741,10 @@ function exportToGeoJSON() {
 
 function callAJAXCSV(index) {
     //alert(index + "," + layers[index].name + "," + csvs[index]);
-    if (index == layers.length){
+    if (index == layers.length) {
         //hide loadingimage.gif
         showLoadingAnim(false); //jedi-code
-                //document.getElementById('waitForMe').style.display="none";
+        //document.getElementById('waitForMe').style.display="none";
         return;//do nothing. we are done here.
     }
     //if (csvs[index]==="\n")//this worked before URIEncode was used.
@@ -770,10 +773,10 @@ function callAJAXCSV(index) {
             if (xmlhttp.readyState == 4)
             {
                 /*jedi-code*/
-                console.log("callAJAXCSV(): ..now opening saveas dialogue box for: "+xmlhttp.response);
+                console.log("callAJAXCSV(): ..now opening saveas dialogue box for: " + xmlhttp.response);
                 window.location = xmlhttp.response;
                 /**/
-                
+
                 //window.open(xmlhttp.response);
 //                myButton = document.createElement("input");
 //                myButton.type = "button";
@@ -798,7 +801,7 @@ function callAJAXGeoJSON(index) {
     if (index == layers.length) {
         //hide loadingimage.gif
         showLoadingAnim(false); //jedi-code
-                //document.getElementById('waitForMe').style.display="none";
+        //document.getElementById('waitForMe').style.display="none";
         return;//do nothing. we are done here.
     }
     if (document.getElementById('tagsIn' + layers[index].name).selectedOptions.length == 0)
@@ -823,8 +826,8 @@ function callAJAXGeoJSON(index) {
             if (xmlhttp.readyState == 4)
             {
                 /*jedi-code*/
-                console.log("callAJAXGeoJSON(): ..now opening saveas dialogue box for: "+xmlhttp.response);
-                window.location = "GeoJSONDownloader.php?file="+xmlhttp.response;
+                console.log("callAJAXGeoJSON(): ..now opening saveas dialogue box for: " + xmlhttp.response);
+                window.location = "GeoJSONDownloader.php?file=" + xmlhttp.response;
                 /**/
                 //window.open(xmlhttp.response);
 //                myButton = document.createElement("input");
@@ -992,7 +995,7 @@ function customExportToType(type) {
     //get selected 'tags' items
     //remove unselected 'tags' items from this cloned layer in clonedLayers
     //call ExportToCSV() on clonedLayers
-    console.log("customExportToType: type = "+type);
+    console.log("customExportToType: type = " + type);
     var selectedHeads = new Array();
     for (key in layers)
         clonedLayers[key] = layers[key].clone();
@@ -1038,7 +1041,7 @@ function customExportToType(type) {
 
     //determine export type and call appropriate exportTo... function
     /**jedicode**/
-    switch(type)
+    switch (type)
     {
         case "exportToCSV":
             exportToCSV2(selectedHeads);
@@ -1259,6 +1262,7 @@ function exportToGeoJSON2(selectedHeads) {
             var geoJSON = new OpenLayers.Format.GeoJSON();
             geoJSON = geoJSON.write(tempLayers[i].features, true);
             geoJSON = encodeURIComponent(geoJSON);
+            
             geoJSONs.push(geoJSON);
         }
         else
