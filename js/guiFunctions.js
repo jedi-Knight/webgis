@@ -114,3 +114,38 @@ $.fn.callPolygonEditorHandles = function(f){
     return this;
     
 }
+
+
+
+/**OpenLayers EVENT LISTENERS**/
+OpenLayers.Event.observe(document, "keydown", function(evt) {
+    var handled = false;
+    switch (evt.keyCode) {
+        case 90: // z
+            if (evt.metaKey || evt.ctrlKey) {
+                polygonControl.undo();
+                polygonControlRegular.undo();
+                //polygonControlModifier.undo();
+                handled = true;
+            }
+            break;
+        case 89: // y
+            if (evt.metaKey || evt.ctrlKey) {
+                polygonControl.redo();
+                polygonControlRegular.redo();
+                //polygonControlModifier.redo();
+                handled = true;
+            }
+            break;
+        case 27: // esc
+            polygonControl.cancel();
+            polygonControlRegular.cancel();
+            //polygonControlModifier.cancel();
+            handled = true;
+            break;
+    }
+    if (handled) {
+        OpenLayers.Event.stop(evt);
+    }
+});
+/****/
