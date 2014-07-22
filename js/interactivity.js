@@ -262,16 +262,44 @@ $(document).ready(function(){
                                         ,1)
                                     );             
                     },
-                close: function(event, ui) {
-                    this.value="";
-                }
+                response: function(event, ui){
+                            console.log(ui.content);
+                            arr=ui;
+                            if(ui.content.length){
+                                $(this).on("autocompleteclose",function(){
+                                    this.value="";
+                                });
+                            }else{
+                                this.select();
+                                $(this).on("autocompleteclose",function(){
+                                    this.select();
+                                });
+                            }
+                        }
+//                ,change: function(event, ui){
+//                    console.log(ui.item.length+";");
+//                            if(ui.item.length){
+//                                this.value="";
+//                            }
+//                        }
+//                ,close: function(event, ui) {
+//                    //console.log(ui.item);
+//                            //this.value=""; //dont do this if form still in focus;
+//                            this.value="";
+//                        }
             });
           });
           
         $("#selectFrom").click(function(){
-           $(this).val("");
+           //this.value="";
            $(this).autocomplete("search");
            $(this).autocomplete("enable"); 
+        });
+        $("#selectFrom").keypress(function(){
+            setTimeout(function(){$(this).click();},3000);
+        });
+        $("#selectFrom").blur(function(){
+            this.value="";
         });
         /****/
         
