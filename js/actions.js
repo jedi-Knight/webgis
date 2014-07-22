@@ -896,7 +896,7 @@ function callAJAXGeoJSON(index) {
         {
             if (xmlhttp.readyState == 3 || xmlhttp.readyState == 2 || xmlhttp.readyState == 1 || xmlhttp.readyState == 0)
             {
-
+                showLoadingAnim(true); //jedi-code
             }
             if (xmlhttp.readyState == 4)
             {
