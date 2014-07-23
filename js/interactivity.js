@@ -26,7 +26,7 @@ $(document).ready(function(){
         $("#floatPanelsContainer").css("width", $(document).outerWidth()-130);
         $("#floatPanelsContainer").css("height", $(document).outerHeight());
         
-        $("#fetchDataTrigger, #exportDataTrigger, .editTool").addClass("disabled");
+        $("#fetchDataTrigger, #exportDataTrigger, .editTool, .trigger.delete, .tool.delete").addClass("disabled");
         
         
         
@@ -181,9 +181,14 @@ $(document).ready(function(){
         
         /*pen toggle*/
         $("a.tool").click(function(){
-           if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm("This will clear any existing boundary polygon and enable drawing of a new one.")))return;
-           $(this).add($(this).siblings()).add("#fetchDataTrigger").removeClass("confirm");
-           $(this).siblings(".editTool").addClass("disabled");
+           if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm(function(element){
+               console.log(element);
+               if($(element).hasClass("delete")) return "This will clear the boundary polygon";
+               else return "This will clear any existing boundary polygon and enable drawing of a new one.";
+           }(this))))return;
+           $(this).parent().children().add("#fetchDataTrigger").removeClass("confirm");
+           $("#fetchDataTrigger").addClass("disabled");
+           $(this).siblings(".editTool, .delete").addClass("disabled");
            $(this).siblings().removeClass("active").addClass("passive");
            $(this).toggleClass("passive active"); //class switch for active/passive state actions and css
            toggleControl(this); //call pen active method
@@ -220,6 +225,13 @@ $(document).ready(function(){
         });
         /****/
         
+        /**Clear all data layers**/
+        $("#deleteAllLayersTrigger").click(function(){
+            if($(this).hasClass("disabled") || !confirm("This will delete all data not saved to disk")) return;
+            $(this).add("#exportDataTrigger").addClass("disabled");
+            purgeData();
+        });
+        /****/
         
 		
 	
@@ -308,26 +320,27 @@ $(document).ready(function(){
             if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm("This will clear all data not saved to disk and download fetch new data for the new boundary.")))return;
             $(this).removeClass("confirm");
             //check if polyCoords is defined and is not empty
-		if (polyCoords ==="" || !polyCoords){
-			alert ("Please select the area first");
-			return;
-		}
-		//check if the layers are selected
-		else if ($("#selectedPresets li").length<=0){
-			alert ("Please select at least one item in the Features List");
-			return;
-		}
-            selected = new Array();
+            if (polyCoords ==="" || !polyCoords){
+                    alert ("Please select the area first");
+                    return;
+            }
+            //check if the layers are selected
+            else if ($("#selectedPresets li").length<=0){
+                    alert ("Please select at least one item in the Features List");
+                    return;
+            }
+            polygonControlModifier.deactivate();
+            var selected = new Array();
 //		var ob = document.getElementById("selectedPresets");
 //		for (var i = 0; i < ob.options.length; i++)
 //			if (ob.options[i].selected){
 //				selected.push(ob.options[i].value);
 //		}
-                $("#selectedPresets li").each(function(i){
-                    selected.push($(this).text());
-                });
-                console.log(selected);
-                fetchData(selected);
+            $("#selectedPresets li").each(function(i){
+                selected.push($(this).text());
+            });
+            console.log(selected);
+            fetchData(selected);
         });
         /****/
         

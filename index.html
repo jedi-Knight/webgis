@@ -27,8 +27,8 @@
         <!--<script type="text/javascript" src="js/basemap.js"></script> -->
 
 
-        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-            <script type='text/javascript' src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+            <script type='text/javascript' src="js/jquery-ui.js"></script>
 
 
 
@@ -102,6 +102,10 @@
                     <a class = "trigger exportData passive" id="exportDataTrigger" title="Download data for offline use">
                         <img class="icon" src = "img/export.png" />
                     </a>
+                    
+                    <a class = "trigger deleteAllLayers delete passive" id="deleteAllLayersTrigger" title="Clear all data fetched">
+                        <img class="icon crapbin" src = "img/crapbin.png" />
+                    </a>
 
                 </div>
             </div>
@@ -136,10 +140,17 @@
                     <img  class="icon" src="img/resizeHandleIcon.png"/>
                     <div><input type="checkbox" value="ratio" checked="true"/>Maintain aspect ratio</div>
                 </a>
-
+                
                 <a class="editTool drag passive" id="dragToggle" title="Move boundary">
                     <img  class="icon" src="img/moveHandleIcon.png"/>
                 </a>
+                
+                <a class="tool delete passive confirm" id="deletePolygonTrigger" title="Delete boundary">
+                    <img  class="icon" src="img/crapbintool.png"/>
+                </a>
+
+                
+                
             </div>
         </div>
 

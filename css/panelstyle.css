@@ -169,7 +169,8 @@ p {
     right:50px;
     left:initial;
     
-    max-width:207px;
+    /*max-width:207px;*/
+    max-width:242px;
     padding-top:0px;
 }
 #dragDrawControlPanel{
@@ -391,7 +392,7 @@ a.trigger, a.tool, a.editTool{
     cursor:pointer;
 }
 
-a.trigger.disabled, a.tool.disabled, a.editTool.disabled, a.trigger.disabled:hover, a.tool.disabled:hover, a.editTool.disabled:hover{
+a.trigger.disabled, a.tool.disabled, a.editTool.disabled, a.trigger.disabled:hover, a.tool.disabled:hover, a.editTool.disabled:hover, a.trigger.delete.disabled:hover,a.trigger.delete.disabled:active{
     background: rgba(51,51,51,0.1);
     opacity:0.4;
     cursor:default;
@@ -422,6 +423,13 @@ a.trigger:hover, a.tool:hover, a.editTool:hover, a.active {
     /*//border-radius-bottomright: 0px;*/
     /*border-bottom-right-radius: 0px;*/
     /*//display: block;*/
+}
+
+a.delete{
+    float:right;
+}
+a.trigger.delete:hover,a.trigger.delete:active{
+    background: rgba(150,34,34,0.7);
 }
 
 a.trigger .triggerMask{

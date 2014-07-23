@@ -62,11 +62,35 @@ var fileInputControl;
 function loadendOfData(queryQueue){
     if(queryQueue) return;
     showLoadingAnim(false);
+    guiPanelShowAggregate();
+    $("#deleteAllLayersTrigger").addClass("confirm").removeClass("disabled");
     $("iframe").remove();
 }
 
 
 
+
+function purgeData(){ /**add code to clear aggregates section and show presets selector**/
+    //clear the tagsSelector section
+    var myTagsSelector = document.getElementById('tagsSelector');
+    while (myTagsSelector.firstChild)
+        myTagsSelector.removeChild(myTagsSelector.firstChild);
+
+    //clear all current layers before fetching new ones
+    for (i = 0; i < layers.length; i++)
+    {
+        document.getElementById(layers[i].name + 'Count').innerHTML = "";
+        map.removeLayer(layers[i]);
+        //Clear the aggregator section as well
+    }
+
+    //empty global arrays
+    layers.length = 0;
+    csvs.length = 0;
+    geoJSONs.length = 0;
+    
+    return myTagsSelector; //handle to populate tagsSelector if purgeData() called from within fetchData();
+}
 
 
 
@@ -237,13 +261,13 @@ function init() {
         //alert(polyCoords);
 
         /**jedi-code**/
-        $("a.editTool").removeClass("disabled");
+        $("a.editTool, a.tool.delete").removeClass("disabled");
         if ($("#selectedPresets").children("li").length)
             $("#fetchDataTrigger").removeClass("disabled");
         $("a.tool, #importPolygonTrigger").removeClass("active").addClass("passive confirm");
         $("#expandPanel").click();
-        if (layers.length)
-            $("#fetchDataTrigger").addClass("confirm");
+//        if (layers.length)
+//            $("#fetchDataTrigger").addClass("confirm");
         guiPanelShowPresetSelector();//show presets panel
         /****/
 
@@ -254,6 +278,8 @@ function init() {
         if (polygonControlModifier.active)
             polygonControlModifier.deactivate();
         //alert("after feature modified");
+        if (layers.length)
+            $("#fetchDataTrigger").addClass("confirm");
         polygonControl.events.triggerEvent('featureadded');
     });
 
@@ -326,23 +352,7 @@ function fetchData(selected) {
     //if(polygonControlModifier.active)
     //polygonLayer.events.triggerEvent("afterfeaturemodified");
 
-    //clear the tagsSelector section
-    var myTagsSelector = document.getElementById('tagsSelector');
-    while (myTagsSelector.firstChild)
-        myTagsSelector.removeChild(myTagsSelector.firstChild);
-
-    //clear all current layers before fetching new ones
-    for (i = 0; i < layers.length; i++)
-    {
-        document.getElementById(layers[i].name + 'Count').innerHTML = "";
-        map.removeLayer(layers[i]);
-        //Clear the aggregator section as well
-    }
-
-    //empty global arrays
-    layers.length = 0;
-    csvs.length = 0;
-    geoJSONs.length = 0;
+    var myTagsSelector = purgeData();  //jedi-code: moved data purge script to function purgeData();
 
 //    selected = new Array();
 //    var ob = document.getElementById('facilityList');
@@ -415,11 +425,11 @@ function fetchData(selected) {
                             console.log('Error: ' + e);
                             return;
                         }
-                        //jedi-code/**/
+                        
                         populateTagsSelector(school);
-                        /*jedi-code*/
-                        //$("#fetchDataTrigger").addClass("confirm");
-                        guiPanelShowAggregate();
+                        
+                        
+                        //jedi-code/**/
                         //hide loadingimage.gif
                          //showLoadingAnim(false); moved to 'loadend' handler //jedi-code/**/
                         
@@ -511,7 +521,7 @@ function fetchData(selected) {
                         populateTagsSelector(hospital);
                         /*jedi-code*/
                         //$("#fetchDataTrigger").addClass("confirm");
-                        guiPanelShowAggregate();
+                        //guiPanelShowAggregate();
                          //hide loadingimage.gif
                          //showLoadingAnim(false); moved to 'loadend' handler //jedi-code/**/
                         //document.getElementById('waitForMe').style.display="none";
@@ -556,6 +566,7 @@ function fetchData(selected) {
                 college.events.on({"featuresadded": function(features) {
                         document.getElementById(college.name + 'Count').innerHTML = "colleges: " + college.features.length;
                         
+                        /*jedi-code*/
                         try{
                             if(!college.features.length)return;
                         }catch(e){
@@ -564,9 +575,9 @@ function fetchData(selected) {
                         }
                         
                         populateTagsSelector(college);
-                        /*jedi-code*/
+                        
                         //$("#fetchDataTrigger").addClass("confirm");
-                        guiPanelShowAggregate(); 
+                        //guiPanelShowAggregate(); 
                         //hide loadingimage.gif
                         //showLoadingAnim(false); moved to 'loadend' handler //jedi-code
                         //document.getElementById('waitForMe').style.display="none";
@@ -611,6 +622,12 @@ function toggleControl(element) {
         /**jedi-code**/
         fileInputControl.click();
         /****/
+    }
+    else if($(element).hasClass("delete")){
+        polygonLayer.removeAllFeatures();
+        polygonLayer.destroyFeatures();
+        polyCoords = "";
+        $(element).removeClass("active").addClass("passive disabled");
     }
 }
 
