@@ -1,4 +1,4 @@
-
+                                  
 
 $(document).ready(function(){
     
@@ -182,7 +182,7 @@ $(document).ready(function(){
         /*pen toggle*/
         $("a.tool").click(function(){
            if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm(function(element){
-               console.log(element);
+               //console.log(element);
                if($(element).hasClass("delete")) return "This will clear the boundary polygon";
                else return "This will clear any existing boundary polygon and enable drawing of a new one.";
            }(this))))return;
@@ -213,12 +213,23 @@ $(document).ready(function(){
                 console.log("no data to export");
                 return;
             }
-            $(".splashContainerBase").toggleClass("passive active");     //class switch for active/passive state actions and css
+            
+            
+            
+            if($(".splashContainerBase").toggleClass("passive active").hasClass("active")){     //class switch for active/passive state actions and css
+                $("#tagsSelector").parent(".container").css({
+                "min-width" : function(){
+                                console.log($("#tagsSelector>div").length);
+                                 return ($("#tagsSelector>div").length-1) ? 650 : 327;
+                             }
+                  });
+            }    
             $(this).toggleClass("passive active"); //class switch for active/passive state actions and css 
             return;
         });
         
-        $("#splashContainer").find("a.download.trigger.active").click(function(){
+        $("#splashContainer").find("a.download.trigger").click(function(){
+            if($(this).hasClass("disabled")) return;
             miti = Date();
             customExportToType($("#splashContainer").find("div.checkbox>input:checked")[0].value);
             $("#splashContainer").parent(".splashContainerBase").toggleClass("active passive");
