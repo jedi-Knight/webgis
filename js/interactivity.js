@@ -340,6 +340,7 @@ $(document).ready(function(){
                     alert ("Please select at least one item in the Features List");
                     return;
             }
+            if($("#exportDataTrigger").hasClass("active")) $("#exportDataTrigger").click();
             polygonControlModifier.deactivate();
             var selected = new Array();
 //		var ob = document.getElementById("selectedPresets");
