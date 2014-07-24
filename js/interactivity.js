@@ -119,14 +119,18 @@ $(document).ready(function(){
 //		
 //		return false;
 //	});
-	
+	var triggerLabel;
 	$("#expandPanel").click(function(){
+                if($(this).hasClass("disabled")) return;
+                $("div.button-group.top-right a.top-docked-trigger").addClass("minified");
                 $(".panel.right-docked").show("fast");
-		$(this).hide();
+		$(this).addClass("disabled");
+                triggerLabel = this.title;
+                this.title="";
 	});
 	$("#collapsePanel").click(function(){
                 $(".panel.right-docked").hide("fast");
-		$("#expandPanel").show();
+		$("#expandPanel").removeClass("disabled")[0].title=triggerLabel;
 	});
         /****/
         
@@ -356,5 +360,30 @@ $(document).ready(function(){
         });
         /****/
         
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        $("div.button-group.top-right a.top-docked-trigger").hover(function(e){
+            if(!$(this).hasClass("minified")) return;
+            if(e.type==="mouseenter"){
+                $(this).siblings(".minified").addClass("siblingHovered");
+                $(this).parent().addClass("top-z");
+                $("#glass").parent(".panel").addClass("transparent");
+            }else{
+                //window.setTimeout(function(){
+                    $(this).siblings(".minified").removeClass("siblingHovered");
+                    $(this).parent().removeClass("top-z");
+                    $("#glass").parent(".panel").removeClass("transparent");
+                //},3000);
+            }
+        });
 });
