@@ -89,7 +89,9 @@ function purgeData(){ /**add code to clear aggregates section and show presets s
     csvs.length = 0;
     geoJSONs.length = 0;
     
-    return myTagsSelector; //handle to populate tagsSelector if purgeData() called from within fetchData();
+    //*obsolete: return myTagsSelector; *//handle to populate tagsSelector if purgeData() called from within fetchData();
+   
+    return;
 }
 
 
@@ -352,7 +354,7 @@ function fetchData(selected) {
     //if(polygonControlModifier.active)
     //polygonLayer.events.triggerEvent("afterfeaturemodified");
 
-    var myTagsSelector = purgeData();  //jedi-code: moved data purge script to function purgeData();
+    purgeData();  //jedi-code: moved data purge script to function purgeData();
 
 //    selected = new Array();
 //    var ob = document.getElementById('facilityList');
@@ -362,7 +364,8 @@ function fetchData(selected) {
 //        }
 
     //create new select boxes for each item in 'selected' array inside 'tagsSelector' div
-    for (key in selected) {
+    /*
+     * for (key in selected) {
         //create and append Amenity Name
         var title = document.createElement("h3");
         title.innerHTML = selected[key];
@@ -373,7 +376,8 @@ function fetchData(selected) {
         selectList.id = "tagsIn" + selected[key];
         selectList.multiple = "multiple";
         myTagsSelector.appendChild(selectList);
-    }
+    }*
+     */
 
     for (sel in selected) {
         var numberOfRequests = selected.length;
@@ -839,7 +843,7 @@ function callAJAXCSV(index) {
         return;//do nothing. we are done here.
     }
     //if (csvs[index]==="\n")//this worked before URIEncode was used.
-    if (document.getElementById('tagsIn' + layers[index].name).selectedOptions.length == 0)
+    if ($(document.getElementById('tagsIn' + layers[index].name)).find("input:checked").length == 0)
         callAJAXCSV(index + 1);	//do not make a csv file if it <del>does not have any data</del> <em>has no tags selected in the corresponding selectBox</em>. move on to the next item in 'csvs' array.
     else
     {
@@ -896,7 +900,7 @@ function callAJAXGeoJSON(index) {
         //document.getElementById('waitForMe').style.display="none";
         return;//do nothing. we are done here.
     }
-    if (document.getElementById('tagsIn' + layers[index].name).selectedOptions.length == 0)
+    if ($(document.getElementById('tagsIn' + layers[index].name)).find("input:checked").length == 0)
         callAJAXGeoJSON(index + 1);	//do not make a csv file if does not have any data. move on to the next item in 'csvs' array.
     else
     {
@@ -1004,7 +1008,106 @@ function fx(fileInputControl) {
 
 }
 
+/*
 function populateTagsSelector(amenity) {
+    var myDiv = document.getElementById("tagsSelector");
+    var heads = new Array();
+
+    for (j = 0; j < amenity.features.length; ++j)
+    {
+        for (key in amenity.features[j].attributes)
+        {
+            //check if each attribute is unique
+            //if it is unique, append it to 'heads' array
+            //else don't add it and move on to check the next attribute
+
+            //set flag for unique. unique = 0. duplicate = 1
+            var flagUnique = 0;
+            for (entry in heads)
+            {
+                if (heads[entry] == key)
+                    flagUnique = 1; //means it is NOT unique. don't add it to 'heads' array
+            }
+            if (flagUnique == 0)
+                //append this 'unique' key to 'heads' array
+                heads.push(key)
+        }
+    }
+    //add these only if there are other keys, i.e. add these only if the current layer is NOT empty
+    if (heads.length > 0)
+    {
+        heads.push("lon"); //to hold x coordinate of the centroid
+        heads.push("lat"); //to hold y coordinate of the centroid
+        heads.push("geometry");	//to hold POLYGON(()) data
+    }
+    /////
+
+    //Create and append the options
+
+    /*	{
+     var text = xmlhttp_tagChanger.responseText;
+     text = text.replace(/\s+(?=([^"]*"[^"]*")*[^"]*$)/g,'');
+     text = text.replace(/\t/g,'');
+     text = text.replace(/\n/g,'');
+     var jsonObj = JSON.parse(text.replace(/\\/g,''));
+     //debugger;\/
+
+    var selectList = document.getElementById("tagsIn" + amenity.name);
+
+    if (!jsonObj[amenity.name]) {
+        for (var i = 0; i < heads.length; i++) {
+            var option = document.createElement("option");
+            option.value = heads[i];
+            option.text = heads[i];
+            var selectList = document.getElementById("tagsIn" + amenity.name);
+            selectList.appendChild(option);
+        }
+    }
+    else {
+        for (var i = 0; i < heads.length; i++) {
+            var option = document.createElement("option");
+            option.value = heads[i];
+            option.text = jsonObj[amenity.name][option.value] ? jsonObj[amenity.name][option.value] : option.value;
+            selectList.appendChild(option);
+        }
+    }
+    //	}			
+
+
+
+    //////////Use these if tags don't need to be changed///////		
+    /*for (var i = 0; i < heads.length; i++) {
+     var option = document.createElement("option");
+     option.value = heads[i];
+     //original => option.text = heads[i];
+     option.text
+     var selectList = document.getElementById("tagsIn"+amenity.name);
+     selectList.appendChild(option);
+     }\/
+    /////Use upto here/////////
+
+}*/
+                
+function populateTagsSelector(amenity) {
+    
+    var myTagsSelector = document.getElementById('tagsSelector');    
+    var title = document.createElement("h3");
+    title.innerHTML = amenity.name;
+    title.style.display = "inline";
+    //myTagsSelector.appendChild(title);
+    //Create and append select list
+    var tagsSelectorGroup = document.createElement("div");
+    tagsSelectorGroup.class="form group";
+    tagsSelectorGroup.appendChild(title);
+    var selectList = document.createElement("form");
+    selectList.id = "tagsIn" + amenity.name;
+    //selectList.multiple = "multiple";
+    tagsSelectorGroup.appendChild(selectList);
+    myTagsSelector.appendChild(tagsSelectorGroup);
+    
+    
+    
+    
     var myDiv = document.getElementById("tagsSelector");
     var heads = new Array();
 
@@ -1047,23 +1150,45 @@ function populateTagsSelector(amenity) {
      var jsonObj = JSON.parse(text.replace(/\\/g,''));
      //debugger;*/
 
-    var selectList = document.getElementById("tagsIn" + amenity.name);
+    //var selectList = document.getElementById("tagsIn" + amenity.name);
 
     if (!jsonObj[amenity.name]) {
         for (var i = 0; i < heads.length; i++) {
-            var option = document.createElement("option");
+            
+            var option = document.createElement("input");
+            option.type="checkbox";
             option.value = heads[i];
-            option.text = heads[i];
+            option.checked=true;
+            //option.text = heads[i];
+            
+            var optionText = heads[i];
+            
+            
             var selectList = document.getElementById("tagsIn" + amenity.name);
-            selectList.appendChild(option);
+            $("<div class='checklist option container'></div>")
+                    .append(option)
+                    .append("<div class='label'>"+optionText+"</div>")
+                    .appendTo(selectList);
+            //selectList.appendChild(option);
         }
     }
     else {
         for (var i = 0; i < heads.length; i++) {
-            var option = document.createElement("option");
+            var option = document.createElement("input");
+            option.type="checkbox";
             option.value = heads[i];
-            option.text = jsonObj[amenity.name][option.value] ? jsonObj[amenity.name][option.value] : option.value;
-            selectList.appendChild(option);
+            option.checked=true;
+            //option.text = jsonObj[amenity.name][option.value] ? jsonObj[amenity.name][option.value] : option.value;
+            
+            var optionText = jsonObj[amenity.name][option.value] ? jsonObj[amenity.name][option.value] : option.value;
+            
+            $("<div class='checklist option container'></div>")
+                    .append(option)
+                    .append("<div class='label'>"+optionText+"</div>")
+                    .appendTo(selectList);
+            
+//            selectList.appendChild(option);
+//            selectList.appendChild($("<div class='label'>"+optionText+"</div>")[0]);
         }
     }
     //	}			
@@ -1083,7 +1208,75 @@ function populateTagsSelector(amenity) {
 
 }
 
+
+
 function customExportToType(type) {
+    //for every 'tagsInAmenity' inside div 'tagsSelector'
+    //get selected 'tags' items
+    //remove unselected 'tags' items from this cloned layer in clonedLayers
+    //call ExportToCSV() on clonedLayers
+    console.log("customExportToType: type = " + type);
+    var selectedHeads = new Array();
+    for (key in layers)
+        clonedLayers[key] = layers[key].clone();
+    var selectBoxes = document.getElementById('tagsSelector').getElementsByTagName('form');
+    for (i = 0; i < selectBoxes.length; ++i)	//for each 'select' element
+    {
+        var currAmenityName = selectBoxes[i].id.replace("tagsIn", "");
+        var currKey;
+        for (key in clonedLayers)
+        {
+            if (clonedLayers[key].name == currAmenityName)
+            {
+                currKey = key;
+                break;
+            }
+        }
+
+        selectedHeads = new Array();
+        var ob = selectBoxes[i];
+
+        for (var j = 0; j < $(ob).find("input").length; j++)	//for each 'heads' in this (current) 'select' box
+        {
+            if ($(ob).find("input")[j].checked)
+            {
+                selectedHeads.push($(ob).find("input")[j].value);
+            }
+        }
+
+        //for each feature in the current (this) amenity in clonedLayers
+        for (var j = 0; j < clonedLayers[currKey].features.length; ++j) {
+            //for each attribute in the current (this) feature in (this) amenity in clonedLayers
+            for (attrKey in clonedLayers[currKey].features[j].attributes) {
+                //delete the key-value pair that is NOT in selectedHeads array
+                if (selectedHeads.indexOf(attrKey) < 0)
+                    delete clonedLayers[currKey].features[j].attributes[attrKey];
+            }
+        }
+        //alert(selectedHeads);
+    }
+
+    //call exportToCSV to work on clonedLayers
+    //exportToCSV2();
+
+    //determine export type and call appropriate exportTo... function
+    /**jedicode**/
+    switch (type)
+    {
+        case "exportToCSV":
+            exportToCSV2(selectedHeads);
+            break;
+        case "exportToGeoJSON":
+            exportToGeoJSON2(selectedHeads);
+            break;
+    }
+}
+
+
+
+
+/*
+*function customExportToType(type) {
     //for every 'tagsInAmenity' inside div 'tagsSelector'
     //get selected 'tags' items
     //remove unselected 'tags' items from this cloned layer in clonedLayers
@@ -1133,7 +1326,7 @@ function customExportToType(type) {
     //exportToCSV2();
 
     //determine export type and call appropriate exportTo... function
-    /**jedicode**/
+    /**jedicode\\/
     switch (type)
     {
         case "exportToCSV":
@@ -1143,9 +1336,11 @@ function customExportToType(type) {
             exportToGeoJSON2(selectedHeads);
             break;
     }
-}
+}*
+*/
 
-function exportToCSV2(selectedHeads) {
+/*
+*function exportToCSV2(selectedHeads) {
     csvs.length = 0;				//empty the 'csvs' array
     for (i = 0; i < clonedLayers.length; ++i)
     {
@@ -1222,7 +1417,7 @@ function exportToCSV2(selectedHeads) {
                 else if (headers[keyHeaders] == 'lon')
                 {
                     /*boundsLon = bounds.getCenterLonLat()['lon'];
-                     csv_text += boundsLon + ",";*/
+                     csv_text += boundsLon + ",";\/
                     csv_text += '\"' + clonedCentroid.x + '\"' + ",";
                     //csv_text += clonedCentroid.x +",";
                     thisfeature += '\"' + clonedCentroid.x + '\"' + ",";
@@ -1231,7 +1426,7 @@ function exportToCSV2(selectedHeads) {
                 else if (headers[keyHeaders] == 'lat')
                 {
                     /*boundsLat = bounds.getCenterLonLat()['lat'];
-                     csv_text += boundsLat + ",";*/
+                     csv_text += boundsLat + ",";\/
                     csv_text += '\"' + clonedCentroid.y + '\"' + ",";
                     //csv_text += clonedCentroid.y +",";
                     thisfeature += '\"' + clonedCentroid.y + '\"' + ",";
@@ -1273,7 +1468,8 @@ function exportToCSV2(selectedHeads) {
         alert("No data to export!");
     //Disengaging MANAUL AJAX 
 
-}
+}*
+*/
 
 function customExportToGeoJSON() {
     //for every 'tagsInAmenity' inside div 'tagsSelector'
@@ -1459,3 +1655,140 @@ function exportToGeoJSON2(selectedHeads) {
 //         //End of Backup */
 //    }
 //}
+
+
+
+
+
+
+
+
+function exportToCSV2(selectedHeads) {
+    csvs.length = 0;				//empty the 'csvs' array
+    for (i = 0; i < clonedLayers.length; ++i)
+    {
+        headers = new Array();			//get all keys from the key=value pairs
+        csv_filename = clonedLayers[i].name; 	//name of CSV file. One CSV will be created per entry in the global 'layer' array
+        csv_text = "";					//csv string. this is the final content of the csv file
+        for (j = 0; j < clonedLayers[i].features.length; ++j)
+        {
+            for (key in clonedLayers[i].features[j].attributes)
+            {
+                //check if each attribute is unique
+                //if it is unique, append it to 'headers' array
+                //else don't add it and move on to check the next attribute
+
+                //set flag for unique. unique = 0. duplicate = 1
+                flagUnique = 0;
+                for (entry in headers)
+                {
+                    if (headers[entry] == key)
+                        flagUnique = 1; //means it is NOT unique. don't add it to 'headers' array
+                }
+                if (flagUnique == 0)
+                    //append this 'unique' key to 'headers' array
+                    headers.push(key)
+            }
+        }
+        //add these only if there are other keys, i.e. add these only if the current layer is NOT empty
+        //if (selectedHeads.length > 0)
+        //////checking with selectedHeads like this does NOT work because selectedHeads only retains the selected items of the last box in the selection boxes region. if that last box is empty, then it won't add 'lat', 'lon', and 'geometry' in previous amenities as well /////////
+        if ($(document.getElementById('tagsIn' + clonedLayers[i].name)).find("input:checked").length > 0)
+        {
+            headers.push("lon"); //to hold x coordinate of the centroid
+            headers.push("lat"); //to hold y coordinate of the centroid
+            headers.push("geometry");	//to hold POLYGON(()) data
+        }
+
+        //write the csv headers to csv_text here
+        csv_text = headers.toString();
+        csv_text += "\n";
+
+        //check if a key or key-value exists for each of the feature
+        for (j = 0; j < clonedLayers[i].features.length; ++j) //for each feature in the current layer...
+        {
+            {
+                //check if each key enlisted in 'headers' array has a corresponding value for this (current) feature
+                //if the value exists, write down this value
+                //if the value does not exist, write down a NULL (or nothing) in its place
+                //at the end of every feature, add a carriage return
+            }
+
+            //for this feature
+            var thisfeature = "";
+
+            //get centroid of this (current) feature and transform it onto EPSG:4326
+            var centroid = clonedLayers[i].features[j].geometry.getCentroid();
+            clonedCentroid = centroid.clone();
+            clonedCentroid = clonedCentroid.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+
+            //get geometry of this (current) feature and transform it onto EPSG:4326
+            var geometry = clonedLayers[i].features[j].geometry;
+            clonedGeometry = geometry.clone();
+            clonedGeometry.transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+
+            for (keyHeaders in headers)
+            {
+                if (clonedLayers[i].features[j].attributes[headers[keyHeaders]])
+                {
+                    //means the value exists in the current Feature. So this value has to be added to the csv file
+                    csv_text += '\"' + clonedLayers[i].features[j].attributes[headers[keyHeaders]] + '\"' + ",";
+                    //csv_text += clonedLayers[i].features[j].attributes[headers[keyHeaders]] +",";
+                    thisfeature += '\"' + clonedLayers[i].features[j].attributes[headers[keyHeaders]] + '\"' + ",";
+                    //thisfeature += clonedLayers[i].features[j].attributes[headers[keyHeaders]] +",";
+                }
+                else if (headers[keyHeaders] == 'lon')
+                {
+                    /*boundsLon = bounds.getCenterLonLat()['lon'];
+                     csv_text += boundsLon + ",";*/
+                    csv_text += '\"' + clonedCentroid.x + '\"' + ",";
+                    //csv_text += clonedCentroid.x +",";
+                    thisfeature += '\"' + clonedCentroid.x + '\"' + ",";
+                    //thisfeature += clonedCentroid.x +",";
+                }
+                else if (headers[keyHeaders] == 'lat')
+                {
+                    /*boundsLat = bounds.getCenterLonLat()['lat'];
+                     csv_text += boundsLat + ",";*/
+                    csv_text += '\"' + clonedCentroid.y + '\"' + ",";
+                    //csv_text += clonedCentroid.y +",";
+                    thisfeature += '\"' + clonedCentroid.y + '\"' + ",";
+                    //thisfeature += clonedCentroid.y +",";
+                }
+                else if (headers[keyHeaders] == 'geometry')
+                {
+                    //var geometry = clonedLayers[i].features[j].geometry.toString();
+                    csv_text += '\"' + clonedGeometry.toString() + '\"';
+                    //csv_text += '\"' + clonedGeometry.toString() + '\"';
+                    //thisfeature += '\"' + clonedGeometry.toString() + '\"';
+                    thisfeature += '\"' + clonedGeometry.toString() + '\"';
+                }
+                else //means the value does not exist in the current Feature. So add a 'nothing' value to the csv file
+                {	//csv_text += ",";
+                    csv_text += ",";
+                    thisfeature += ",";
+                }
+            }
+            csv_text += "\n"; //add a carriage return at the end of each Feature
+            thisfeature += "\n";
+            //alert(csv_text);
+            //alert(thisfeature);
+        }
+        //alert (csv_text);
+        //console.log(csv_text);
+        //Replace all & with &&
+        //csv_text = csv_text.replace(/&/g, "and");
+        csv_text = encodeURIComponent(csv_text);
+        //console.log(csv_text);
+        //add to 'csvs' clonedLayers
+        csvs.push(csv_text);
+    }
+    //Engaging AJAX
+    //call AJAXCSV only if data exists
+    if (csvs.length > 0)
+        callAJAXCSV(0);
+    else
+        alert("No data to export!");
+    //Disengaging MANAUL AJAX 
+
+}
