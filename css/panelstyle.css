@@ -107,7 +107,7 @@ p {
 }
 
 .panel.right-docked{
-    top: 50px;
+    top: 20px;
     right: 0;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -125,10 +125,14 @@ p {
 }
 
 .panel.floatPanel{
-    top:20%;
+    top:10%;
     left:20%;
     padding:5px;
     z-index:10000;
+}
+
+.panel.transparent{
+    opacity:0.1;
 }
 /*.panel.floatPanel>div{
     display:inline-block;
@@ -451,23 +455,93 @@ a.trigger .triggerMask{
     /*margin-left:-10000%*/
 /*}*/
 
-#expandPanel{
+.button-group.top-right{
     position:absolute;
-    top:50px;
-    right:0;
+    top:0px;
+    right:0px;
+    padding:0px;
+}
+
+/*.button-group.top-right a.float-trigger{
+    border-radius:10px;
+}*/
+
+.button-group.top-right a.top-docked-trigger.minified{
+    padding-top:0px;
+}
+.button-group.top-right a.top-docked-trigger, 
+.button-group.top-right a.top-docked-trigger.minified:hover{
+    display:inline-block;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius:10px;
+    top:0px;
+    padding-top:20px;
+    margin-left:5px;
+}
+
+.button-group.top-right a.top-docked-trigger.minified.siblingHovered{
+    padding-top:33px;
+}
+
+
+#expandPanel{
+    position:relative;
+    //top:50px;
+    //right:0;
+    float:right;
+    top:16px;
     /*.trigger class overrides*/
-    padding: 5px 15px 5px 5px;
+    /*padding: 5px 15px 5px 5px;*/
+    padding: 0px 15px 6px 0px;
     background-color:rgba(102,102,102,0.6);
+    opacity:1;
+    margin-left:5px;
     /**/
 }
-#expandPanel:hover, #expandPanel:active{
+#expandPanel:hover, #expandPanel:active,
+.button-group.top-right a.top-docked-trigger:hover, 
+.button-group.top-right a.top-docked-trigger.minified:hover{
     background-color:#666666;
 }
-/*.icon class overrides*/
-#expandPanel .icon{
-    width:22px;
-    height:22px;
+
+#expandPanel.disabled{
+    opacity:0;
+    /*cursor:default;*/
 }
+/*.icon class overrides*/
+.button-group a .icon{
+    width:70px;
+    height:auto;
+    font-family:"Verdana","sans-serif";
+    font-size:22px;
+    letter-spacing:1px;
+    font-weight:400;
+    text-align:center;
+    text-shadow:0px 0px 4px #eeeeee;
+    padding:5px 4px 10px 4px;
+}
+
+.button-group a.minified .icon{
+    font-size:18px;
+    margin-top:-8px;
+    padding:4px;
+}
+.button-group a.minified:hover .icon{
+    font-size:22px;
+    margin-top:initial;
+    padding:5px 4px 10px 4px;
+}
+
+#expandPanel .icon{
+    font-size:26px;
+    padding: 4px 10px;
+}
+
+
+.top-z{
+    z-index:10000;
+}
+
 /**/
 /*#collapsePanel{
 
@@ -629,7 +703,7 @@ hr {
 .splashContainerBase.active .panel>div{
     min-width:327px;
     max-width:650px;
-    max-height:300px;
+    max-height:400px;
     /*overflow: auto;*/
 }
 .splashContainerBase.active .panel>div.tagsSelector.container{
