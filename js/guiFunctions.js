@@ -1,7 +1,5 @@
 function guiPanelShowAggregate(notFirstRun){
     
-    if(!notFirstRun) $("#tagsSelector").find("option").attr("selected",true);
-    
     $("#exportDataTrigger").removeClass("disabled");
     
     $("#presetSelector:visible").add($("#glass>h3").filter(function(){return $("#presetSelector:visible:not(:animated)").length;})).fadeOut({
