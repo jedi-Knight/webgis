@@ -497,8 +497,18 @@ a.trigger .triggerMask{
 }
 #expandPanel:hover, #expandPanel:active,
 .button-group.top-right a.top-docked-trigger:hover, 
-.button-group.top-right a.top-docked-trigger.minified:hover, .button-group.top-right.init-state a.trigger, .button-group.top-right.init-state a#expandPanel{
+.button-group.top-right a.top-docked-trigger.minified:hover{
     background-color:#666666;
+}
+
+.button-group.top-right.init-state a.trigger, .button-group.top-right.init-state a#expandPanel{
+    background-color:#666666;
+/*    border: #cccccc solid thin;
+    border-top:none;*/
+    
+}
+#startButtons a.trigger:hover .icon, #expandPanel:hover .icon{
+    text-shadow:0px 0px 4px #eeeeee;
 }
 
 #expandPanel.disabled{
@@ -514,7 +524,7 @@ a.trigger .triggerMask{
     letter-spacing:1px;
     font-weight:400;
     text-align:center;
-    text-shadow:0px 0px 4px #eeeeee;
+    /*text-shadow:0px 0px 4px #eeeeee;*/
     padding:5px 4px 10px 4px;
 }
 
