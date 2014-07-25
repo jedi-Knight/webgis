@@ -1205,6 +1205,12 @@ function populateTagsSelector(amenity) {
      selectList.appendChild(option);
      }*/
     /////Use upto here/////////
+    
+    /**jedi-code**/
+    $(selectList).find("div.label:contains(':')").text(function(ind, text){
+        return text.replace(/:/g, " ");
+    });
+    /****/
 
 }
 
