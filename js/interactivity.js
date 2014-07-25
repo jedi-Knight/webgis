@@ -240,6 +240,16 @@ $(document).ready(function(){
             customExportToType($("#splashContainer").find("div.checkbox>input:checked")[0].value);
             $("#splashContainer").parent(".splashContainerBase").toggleClass("active passive");
         });
+        
+        /*enable save-to-disk button only if at least one item is selected*/
+        $("#splashContainer").click(function(e){
+            if(!$(e.target).is("input[type='checkbox']")) return;
+            
+            $(this).find(".chooser .trigger")
+                    .toggleClass("disabled", !$(this).find(".container").find("input:checked").length);
+        });
+        /**/    
+        
         /****/
         
         /**Clear all data layers**/
