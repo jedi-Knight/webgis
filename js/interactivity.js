@@ -124,6 +124,7 @@ $(document).ready(function(){
                 if($(this).hasClass("disabled")) return;
                 //$("div.button-group.top-right a.top-docked-trigger").addClass("minified");
                 $(this).siblings().addClass("minified");
+                $(this).parent().removeClass("init-state");
                 $(this).parent().addClass("contains-minified-triggers");
                 $(".panel.right-docked").show("fast");
 		$(this).addClass("disabled");

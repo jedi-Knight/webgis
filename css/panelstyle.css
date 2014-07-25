@@ -497,7 +497,7 @@ a.trigger .triggerMask{
 }
 #expandPanel:hover, #expandPanel:active,
 .button-group.top-right a.top-docked-trigger:hover, 
-.button-group.top-right a.top-docked-trigger.minified:hover{
+.button-group.top-right a.top-docked-trigger.minified:hover, .button-group.top-right.init-state a.trigger, .button-group.top-right.init-state a#expandPanel{
     background-color:#666666;
 }
 
