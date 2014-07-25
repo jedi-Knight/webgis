@@ -132,7 +132,7 @@ p {
 }
 
 .panel.transparent{
-    opacity:0.1;
+    opacity:0.2;
 }
 /*.panel.floatPanel>div{
     display:inline-block;
@@ -477,10 +477,7 @@ a.trigger .triggerMask{
     top:0px;
     padding-top:20px;
     margin-left:5px;
-}
-
-.button-group.top-right a.top-docked-trigger.minified.siblingHovered{
-    padding-top:33px;
+    vertical-align:text-top;
 }
 
 

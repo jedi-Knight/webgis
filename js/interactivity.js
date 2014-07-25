@@ -122,7 +122,9 @@ $(document).ready(function(){
 	var triggerLabel;
 	$("#expandPanel").click(function(){
                 if($(this).hasClass("disabled")) return;
-                $("div.button-group.top-right a.top-docked-trigger").addClass("minified");
+                //$("div.button-group.top-right a.top-docked-trigger").addClass("minified");
+                $(this).siblings().addClass("minified");
+                $(this).parent().addClass("contains-minified-triggers");
                 $(".panel.right-docked").show("fast");
 		$(this).addClass("disabled");
                 triggerLabel = this.title;
@@ -365,25 +367,40 @@ $(document).ready(function(){
         
         
         
+        /**^1 needed if both about and tour triggers are to be maxified on hover on any one;
+        //hoverTimer=0;  //TODO:find alternatives to using global hoverTimer;
         
-        
-        
-        
-        
+        $.fn.delayHandler = function(delay){
+            var obj = this;
+            var timer = setTimeout(function(){
+                console.log(this);
+                console.log($(this));
+                console.log(obj);
+                console.log($(obj));
+//                $(obj).siblings(".minified").removeClass("siblingHovered");
+                $(obj).parent().children(".top-docked-trigger").addClass("minified");
+            },delay);
+            return timer;
+        };
+        *^1*/
         
         
         $("div.button-group.top-right a.top-docked-trigger").hover(function(e){
-            if(!$(this).hasClass("minified")) return;
+            if(!$(this).parent().hasClass("contains-minified-triggers")) return;
+            
             if(e.type==="mouseenter"){
-                $(this).siblings(".minified").addClass("siblingHovered");
+         /* *^1       clearTimeout(hoverTimer);  //TODO:find alternatives to using global hoverTimer;
+          $(this).parent().children(".top-docked-trigger").removeClass("minified"); *^1*/
+
                 $(this).parent().addClass("top-z");
                 $("#glass").parent(".panel").addClass("transparent");
             }else{
-                //window.setTimeout(function(){
-                    $(this).siblings(".minified").removeClass("siblingHovered");
+                
+
+    /**^1      hoverTimer = $(this).delayHandler(1500);*^1*/
                     $(this).parent().removeClass("top-z");
                     $("#glass").parent(".panel").removeClass("transparent");
-                //},3000);
+               
             }
         });
 });
