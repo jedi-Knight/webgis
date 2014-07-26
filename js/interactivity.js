@@ -384,11 +384,6 @@ $(document).ready(function(){
         $.fn.delayHandler = function(delay){
             var obj = this;
             var timer = setTimeout(function(){
-                console.log(this);
-                console.log($(this));
-                console.log(obj);
-                console.log($(obj));
-//                $(obj).siblings(".minified").removeClass("siblingHovered");
                 $(obj).parent().children(".top-docked-trigger").addClass("minified");
             },delay);
             return timer;

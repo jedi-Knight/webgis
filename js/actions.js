@@ -410,6 +410,7 @@ function fetchData(selected) {
                             console.log("overpass query started for: "+selected[sel]);
                         },
                         "loadend":function(){
+                            console.log("loadend: school");
                             //hide loadingimage.gif
                             loadendOfData(--numberOfRequests); //jedi-code/**/
                         }
@@ -503,6 +504,7 @@ function fetchData(selected) {
                             console.log("overpass query started for: "+selected[sel]);
                         },
                         "loadend":function(){
+                            console.log("loadend: hospital");
                             //hide loadingimage.gif
                             loadendOfData(--numberOfRequests); //jedi-code/**/
                         }
@@ -559,6 +561,7 @@ function fetchData(selected) {
                             console.log("overpass query started for: "+selected[sel]);
                         },
                         "loadend":function(){
+                            console.log("loadend: college");
                             //hide loadingimage.gif
                             loadendOfData(--numberOfRequests); //jedi-code/**/
                         }

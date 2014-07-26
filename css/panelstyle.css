@@ -57,6 +57,7 @@ h3 {
     -webkit-font-smoothing: antialiased;
     display: block;
     /*float:both;*/
+    cursor:default;
 
 }
 pic {
@@ -789,6 +790,7 @@ hr {
     margin-right:15px;
     margin-top:4px;
     /*padding:10px;*/
+    cursor:default;
 }
 
 .export.panel.floatPanel{
@@ -825,7 +827,17 @@ div.olControlLayerSwitcher div.layersDiv{
     font-family: "Verdana", "sans-serif";
     font-size:10pt;
     line-height:10pt;
+    /*padding-left:16px;*/
 }
+
+.olControlLayerSwitcher .layersDiv .baseLbl,.olControlLayerSwitcher .layersDiv .dataLbl{
+    margin-top:6px !important;
+    border-bottom: #cccccc solid thin;
+}
+.olControlLayerSwitcher .layersDiv .dataLbl{
+    margin-top:30px !important;
+}
+
 #OpenLayers_Control_MaximizeDiv{
     position:initial !important;
 /*                "margin-left": -220,*/
