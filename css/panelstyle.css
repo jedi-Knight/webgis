@@ -476,7 +476,8 @@ a.trigger .triggerMask{
     border-top-left-radius: 0px;
     border-bottom-right-radius:10px;
     top:0px;
-    padding-top:20px;
+    /*padding-top:20px;*/
+    padding-top:0px;
     margin-left:5px;
     vertical-align:text-top;
 }
@@ -518,15 +519,15 @@ a.trigger .triggerMask{
 }
 /*.icon class overrides*/
 .button-group a .icon{
-    width:70px;
+    width:60px;
     height:auto;
-    font-family:"Verdana","sans-serif";
-    font-size:22px;
+    font-family:"Myriad Pro","Verdana","sans-serif";
+    font-size:20px;
     letter-spacing:1px;
     font-weight:400;
     text-align:center;
     /*text-shadow:0px 0px 4px #eeeeee;*/
-    padding:5px 4px 10px 4px;
+    padding:5px 4px 5px 4px;
 }
 
 .button-group a.minified .icon{
@@ -537,12 +538,12 @@ a.trigger .triggerMask{
 .button-group a.minified:hover .icon{
     font-size:22px;
     margin-top:initial;
-    padding:5px 4px 10px 4px;
+    padding:5px 4px 5px 4px;
 }
 
 #expandPanel .icon{
     font-size:26px;
-    padding: 4px 10px;
+    padding: 0px 6px;
 }
 
 
@@ -746,6 +747,7 @@ hr {
     margin:6px;
     background-color:#ffffff;
     box-shadow: 0px 0px 6px rgba(50, 50, 100, 0.3);
+    padding: 5px 0px;
 }
 #tagsSelector form{
     /*margin:10px 0px 10px 10px;*/
@@ -755,7 +757,7 @@ hr {
 #tagsSelector form>div{
     display:inline-flex;
     width:140px;
-    padding:5px;
+    padding-left:5px;
 }
 
 #tagsSelector div.label{
@@ -764,7 +766,7 @@ hr {
     letter-spacing:initial;
     text-shadow:none;
     max-width:120px;
-    padding-left:2px;
+    /*padding-left:2px;*/
     display:inline-block;
     word-break: break-all;
 }
@@ -776,6 +778,10 @@ hr {
     min-width:200px;
     margin:2px 10px;
     border-bottom: #cccccc solid thin;
+}
+
+#tagsSelector input.select-group{
+    float:right;
 }
 
 .splashContainer .filetype.chooser{
@@ -905,5 +911,10 @@ div.olControlZoom>a.olButton:hover,#OpenLayers_Control_Zoom_2>a.olButton:active{
 /**chrome checkbox size bugfix**/
 input[type="checkbox"]{
     -webkit-min-logical-width:14px;
+}
+
+input[type="checkbox"].checkbox-half-state{
+    outline: #cccccc solid thick;
+    outline-offset: -6px;
 }
 /****/
