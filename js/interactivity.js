@@ -244,12 +244,41 @@ $(document).ready(function(){
         
         /*enable save-to-disk button only if at least one item is selected*/
         $("#splashContainer").click(function(e){
-            if(!$(e.target).is("input[type='checkbox']")) return;
+            
+            if(!$(e.target).is("input:checkbox")) return;
+            
+            console.log($(e.target));
+            
+            if($(e.target).is(".select-group")){
+                $(e.target).parent().siblings("form").find("input:checkbox").prop("checked",$(e.target)[0].checked);
+                $(e.target).removeClass("checkbox-half-state");
+                $(e.target).prop("title", function(){
+                   return $(this)[0].checked 
+                                            ?$(this)[0].title.replace("Select", "De-select") 
+                                            :$(this)[0].title.replace("De-select", "Select");
+                
+                });
+                
+            }else if($(e.target).closest("form").length){
+                $(e.target).closest("form").siblings("h3").children("input:checkbox")
+                        .toggleClass("checkbox-half-state", function(){
+                            return Boolean($(e.target).closest("form").find("input:checkbox:checked").length) & Boolean($(e.target).closest("form").find("input:checkbox:not(:checked)").length);
+                        }())
+                        .prop("checked", $(e.target).closest("form").find("input:checkbox:checked").length);
+                
+            }
+            
+            
+            
             
             $(this).find(".chooser .trigger")
                     .toggleClass("disabled", !$(this).find(".container").find("input:checked").length);
         });
-        /**/    
+        /**/ 
+        
+        /*select/deselect all items checkbox*/
+        
+        /**/
         
         /****/
         
