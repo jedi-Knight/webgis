@@ -1097,11 +1097,12 @@ function populateTagsSelector(amenity) {
     var title = document.createElement("h3");
     title.innerHTML = amenity.name;
     title.style.display = "inline";
+    title.class = "group-header";
     //myTagsSelector.appendChild(title);
     //Create and append select list
     var tagsSelectorGroup = document.createElement("div");
     tagsSelectorGroup.class="form group";
-    tagsSelectorGroup.appendChild(title);
+    tagsSelectorGroup.appendChild($(title).append("<input type='checkbox' class='select-group' title='De-select all tags in "+$(title).text()+"' checked/>")[0]);
     var selectList = document.createElement("form");
     selectList.id = "tagsIn" + amenity.name;
     //selectList.multiple = "multiple";
@@ -1211,7 +1212,7 @@ function populateTagsSelector(amenity) {
     
     /**jedi-code**/
     $(selectList).find("div.label:contains(':')").text(function(ind, text){
-        return text.replace(/:/g, " ");
+        return text.replace(/:/g, " ").replace(/_/g, " ");
     });
     /****/
 
