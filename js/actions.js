@@ -142,6 +142,8 @@ function init() {
     //map.addLayer(markers);
     map.addLayer(polygonLayer);
     map.setCenter(center.transform(proj4326, proj900913), zoom);
+    
+    //map.setOptions({restrictedExtent: new OpenLayers.Bounds(90, -180, -90, 180)});
 
     polygonControl = new OpenLayers.Control.DrawFeature(polygonLayer, OpenLayers.Handler.Polygon);
     map.addControl(polygonControl);
@@ -263,6 +265,8 @@ function init() {
         //alert(polyCoords);
 
         /**jedi-code**/
+        console.log(polygonLayer.events.triggerEvent("geojsonimportadded"));
+        $("#map").removeClass("draw-mode");
         $("a.editTool, a.tool.delete").removeClass("disabled");
         if ($("#selectedPresets").children("li").length)
             $("#fetchDataTrigger").removeClass("disabled");
@@ -274,7 +278,7 @@ function init() {
         /****/
 
     });
-
+    
     polygonLayer.events.register("afterfeaturemodified", polygonControlModifier, function(obj) {
         //alert("feature Modified by polygonControlModifier!!");
         if (polygonControlModifier.active)
@@ -291,6 +295,10 @@ function init() {
         //alert("after feature modified");
         polygonControl.events.triggerEvent('featureadded');
     });
+    
+//    polygonControl.events.register("loadend",polygonLayer, function(e){
+//        map.zoomToExtent(polygonLayer.getDataExtent());
+//    });
 
 
 
@@ -604,21 +612,27 @@ function toggleControl(element) {
     /*jedi-code*/
     polygonControl.deactivate();
     polygonControlRegular.deactivate();
-    if (!$(element).hasClass("active"))
+    if (!$(element).hasClass("active")){
+        $("#map").removeClass("draw-mode");
         return;
+    }
     /**/
 
-    var control = polygonControl;
+    //var control = polygonControl;
     //console.log("logogogogogogo");
     if ($(element).hasClass("pen")) {  //jedi-code
         polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
         polyCoords = "";	//remove old coordinates from polyCoords array
         //document.getElementById('file-input').disabled = true;
-        control.activate();
+        polygonControl.activate();
+        polygonControl.layer.styleMap.styles.temporary.defaultStyle.pointRadius=0;
+        $("#map").addClass("draw-mode");
+        
     }
     /*jedi-code*/
     else if ($(element).hasClass("circle")) {
         drawRegularPolygon();
+        $("#map").addClass("draw-mode");
     }
     /**/
     else if ($(element).hasClass("importPolygon")) {
@@ -961,6 +975,10 @@ function fx(fileInputControl) {
     // send via XHR
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
+        polygonLayer.events.register("geojsonimportadded",polygonLayer, function(){
+            map.zoomToExtent(this.getDataExtent());
+            delete polygonLayer.events.listeners.geojsonimportadded;
+        });
         console.log("Upload complete.");
 
         var reader = new FileReader();
