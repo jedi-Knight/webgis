@@ -262,7 +262,7 @@ $(document).ready(function(){
             }else if($(e.target).closest("form").length){
                 $(e.target).closest("form").siblings("h3").children("input:checkbox")
                         .toggleClass("checkbox-half-state", function(){
-                            return Boolean($(e.target).closest("form").find("input:checkbox:checked").length) & Boolean($(e.target).closest("form").find("input:checkbox:not(:checked)").length);
+                            return Boolean($(e.target).closest("form").find("input:checkbox:checked").length) && Boolean($(e.target).closest("form").find("input:checkbox:not(:checked)").length);
                         }())
                         .prop("checked", $(e.target).closest("form").find("input:checkbox:checked").length);
                 
