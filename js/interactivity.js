@@ -35,7 +35,7 @@ $(document).ready(function(){
             .click(function(){
                 $("#"+
                     $(this).closest("[toggledBy]").attr("toggledBy")
-                        ).click();
+                        ).addClass("no-dialogue").click();
         });
                 
         
@@ -214,15 +214,15 @@ $(document).ready(function(){
         /****/
         
         /**export data**/
-        $("a.trigger.exportData").click(function(){
-            if($(this).hasClass("disabled"))return;
+        $("#exportDataTrigger").click(function(){
+            if(!$(this).hasClass("no-dialogue") && ($(this).hasClass("disabled") || ($(this).hasClass("old-data-warn") && !confirm("Data inside previously used boundary will be downloaded. If you want to download data for new boundary, click 'Cancel' on this message window and click 'Fetch Data' button on the Start Panel."))))return;
+            $(this).removeClass("no-dialogue");
+            
             if(!$("#tagsSelector").children().length){
-                console.log("no data to export");
+                alert("no data to export");
                 return;
             }
-            
-            
-            
+                        
             if($(".splashContainerBase").toggleClass("passive active").hasClass("active")){     //class switch for active/passive state actions and css
                 $("#tagsSelector").parent(".container").css({
                 "min-width" : function(){
@@ -376,6 +376,7 @@ $(document).ready(function(){
         $("#fetchDataTrigger").click(function(){
             if($(this).hasClass("disabled") || ($(this).hasClass("confirm") && !confirm("This will clear all data not saved to disk and download fetch new data for the new boundary.")))return;
             $(this).removeClass("confirm");
+            
             //check if polyCoords is defined and is not empty
             if (polyCoords ==="" || !polyCoords){
                     alert ("Please select the area first");

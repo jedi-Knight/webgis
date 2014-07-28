@@ -61,6 +61,7 @@ var fileInputControl;
 
 function loadendOfData(queryQueue){
     if(queryQueue) return;
+    $("#exportDataTrigger").removeClass("old-data-warn");
     showLoadingAnim(false);
     guiPanelShowAggregate();
     $("#deleteAllLayersTrigger").addClass("confirm").removeClass("disabled");
@@ -271,6 +272,7 @@ function init() {
         if ($("#selectedPresets").children("li").length)
             $("#fetchDataTrigger").removeClass("disabled");
         $("a.tool, #importPolygonTrigger").removeClass("active").addClass("passive confirm");
+        if($("#tagsSelector").find("form").length) $("#exportDataTrigger").addClass("old-data-warn");
         $("#expandPanel").click();
 //        if (layers.length)
 //            $("#fetchDataTrigger").addClass("confirm");
