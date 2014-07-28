@@ -144,6 +144,9 @@ p {
     max-width:32px;
     max-height:32px;
 }
+.panel.floatPanel>div a.delete{
+    float:initial;
+}
 .panel.floatPanel>div a.active>div{
     position: absolute;
     display: inline-flex;
@@ -171,7 +174,7 @@ p {
 #drawControls.panel.floatPanel{
     
     top:380px;
-    right:50px;
+    right:80px;
     left:initial;
     
     /*max-width:207px;*/
@@ -433,9 +436,9 @@ a.trigger:hover, a.tool:hover, a.editTool:hover, a.active {
 a.delete{
     float:right;
 }
-a.trigger.delete:hover,a.trigger.delete:active{
+/*a.trigger.delete:hover,a.trigger.delete:active{
     background: rgba(150,34,34,0.7);
-}
+}*/
 
 a.trigger .triggerMask{
 /*    //position:relative;
@@ -858,6 +861,11 @@ div.olControlLayerSwitcher div.layersDiv{
     border-bottom-left-radius:10px;*/
     border-top-right-radius:10px;
     border-bottom-right-radius:10px;
+    background-image: url("../img/layers.png");
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-origin: content-box;
+    background-position: center;
 }
 #OpenLayers_Control_MaximizeDiv:hover, #OpenLayers_Control_MaximizeDiv:active{
     background-color:#666666;
@@ -866,9 +874,9 @@ div.olControlLayerSwitcher div.layersDiv{
 #OpenLayers_Control_MaximizeDiv>img{
     opacity:0;
 }
-#OpenLayers_Control_MaximizeDiv:before{
+/*#OpenLayers_Control_MaximizeDiv:before{
     content: "+";
-}
+}*/
 #OpenLayers_Control_MinimizeDiv{
     position:initial !important;
     float:right;

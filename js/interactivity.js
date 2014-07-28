@@ -23,7 +23,7 @@ $(document).ready(function(){
         
 //        $("#glass h3").css("max-width", $("#glass").outerWidth());
         
-        $("#floatPanelsContainer").css("width", $(document).outerWidth()-130);
+        $("#floatPanelsContainer").css("width", $(document).outerWidth()-160);
         $("#floatPanelsContainer").css("height", $(document).outerHeight());
         
         $("#fetchDataTrigger, #exportDataTrigger, .editTool, .trigger.delete, .tool.delete").addClass("disabled");
