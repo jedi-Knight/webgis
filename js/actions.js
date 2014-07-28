@@ -416,9 +416,11 @@ function fetchData(selected) {
                     ,eventListeners: {
                         "loadstart": function () {
                             console.log("overpass query started for: "+selected[sel]);
+                            school.events.listeners.loadstart = function(){};
                         },
                         "loadend":function(){
                             console.log("loadend: school");
+                            school.events.listeners.loadend = function(){};
                             //hide loadingimage.gif
                             loadendOfData(--numberOfRequests); //jedi-code/**/
                         }
@@ -432,6 +434,7 @@ function fetchData(selected) {
                         document.getElementById(school.name + 'Count').innerHTML = "schools: " + school.features.length;
                         //populate selectTagsInLayers
                         /*jedi-code*/
+                        school.events.listeners.featuresadded = function(){};
                         try{
                             if(!school.features.length)return;
                         }catch(e){
@@ -510,9 +513,11 @@ function fetchData(selected) {
                     ,eventListeners: {
                         "loadstart": function () {
                             console.log("overpass query started for: "+selected[sel]);
+                            hospital.events.listeners.loadstart = function(){};
                         },
                         "loadend":function(){
                             console.log("loadend: hospital");
+                            hospital.events.listeners.loadend = function(){};
                             //hide loadingimage.gif
                             loadendOfData(--numberOfRequests); //jedi-code/**/
                         }
@@ -525,6 +530,7 @@ function fetchData(selected) {
                 hospital.events.on({"featuresadded": function(features) {
                         document.getElementById(hospital.name + 'Count').innerHTML = "hospitals: " + hospital.features.length;
                         /*jedi-code*/
+                        hospital.events.listeners.featuresadded = function(){};
                         try{
                             if(!hospital.features.length)return;
                         }catch(e){
@@ -567,9 +573,11 @@ function fetchData(selected) {
                     ,eventListeners: {
                         "loadstart": function () {
                             console.log("overpass query started for: "+selected[sel]);
+                            college.events.listeners.loadstart = function(){};
                         },
                         "loadend":function(){
                             console.log("loadend: college");
+                            college.events.listeners.loadend = function(){};
                             //hide loadingimage.gif
                             loadendOfData(--numberOfRequests); //jedi-code/**/
                         }
@@ -582,6 +590,7 @@ function fetchData(selected) {
                         document.getElementById(college.name + 'Count').innerHTML = "colleges: " + college.features.length;
                         
                         /*jedi-code*/
+                        college.events.listeners.featuresadded = function(){};
                         try{
                             if(!college.features.length)return;
                         }catch(e){
