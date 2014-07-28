@@ -908,6 +908,12 @@ div.olControlZoom>a.olButton:hover,#OpenLayers_Control_Zoom_2>a.olButton:active{
 /**/
 /****/
 
+/**map-mouse-pointers**/
+#map.draw-mode{
+    cursor: crosshair;
+}
+/****/
+
 /**chrome checkbox size bugfix**/
 input[type="checkbox"]{
     -webkit-min-logical-width:14px;
