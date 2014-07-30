@@ -223,6 +223,7 @@ function init() {
     //get the polygon vertices when the polygon is complete
     polygonControl.events.register("featureadded", polygonControl, function(obj) {
         //alert("inside polygonControl.events.featureadded()");
+        eobj=obj;
         if (!polygonLayer)
             alert("No polygonLayer found");
         //deactivate polygon drawing control
@@ -629,6 +630,11 @@ function toggleControl(element) {
     /*jedi-code*/
     polygonControl.deactivate();
     polygonControlRegular.deactivate();
+    polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
+        polyCoords = "";	//remove old coordinates from polyCoords array
+        //document.getElementById('file-input').disabled = true;
+    
+    
     if (!$(element).hasClass("active")){
         $("#map").removeClass("draw-mode");
         return;
@@ -638,9 +644,6 @@ function toggleControl(element) {
     //var control = polygonControl;
     //console.log("logogogogogogo");
     if ($(element).hasClass("pen")) {  //jedi-code
-        polygonLayer.removeAllFeatures();	//remove all features from the polygonLayer
-        polyCoords = "";	//remove old coordinates from polyCoords array
-        //document.getElementById('file-input').disabled = true;
         polygonControl.activate();
         polygonControl.layer.styleMap.styles.temporary.defaultStyle.pointRadius=0;
         $("#map").addClass("draw-mode");

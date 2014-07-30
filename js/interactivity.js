@@ -197,6 +197,7 @@ $(document).ready(function(){
            $("#fetchDataTrigger").addClass("disabled");
            $(this).siblings(".editTool, .delete").addClass("disabled");
            $(this).siblings().removeClass("active").addClass("passive");
+           polygonControlModifier.deactivate();
            $(this).toggleClass("passive active"); //class switch for active/passive state actions and css
            toggleControl(this); //call pen active method
         });
