@@ -933,3 +933,16 @@ input[type="checkbox"].checkbox-half-state{
     outline-offset: -6px;
 }
 /****/
+
+/**webkit start-button-group fix**/
+@media(-webkit-min-device-pixel-ratio:0){
+    .button-group.top-right{
+        padding-right:99px;
+    }
+    #expandPanel{
+        position:absolute;
+        top:16px;
+        right:0px;
+    }
+}
+/****/
