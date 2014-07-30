@@ -6,7 +6,7 @@ function guiPanelShowAggregate(notFirstRun){
         duration: 200,
         queue: false,
         done: function(){
-            $($("#aggregate:hidden").add($("#glass>h3").text("Aggregate"))).fadeIn({
+            $($("#aggregate:hidden").add($("#glass>h3").text("Summary"))).fadeIn({
                 duration: 500,
                 queue: false,
                 done: function(){

@@ -90,6 +90,12 @@ function purgeData(){ /**add code to clear aggregates section and show presets s
     csvs.length = 0;
     geoJSONs.length = 0;
     
+    guiPanelShowPresetSelector();
+    //$("#aggregate").text("");
+    
+    
+    
+    
     //*obsolete: return myTagsSelector; *//handle to populate tagsSelector if purgeData() called from within fetchData();
    
     return;
@@ -433,7 +439,7 @@ function fetchData(selected) {
                 map.addLayers([school]);
                 layers.push(school);
                 school.events.on({"featuresadded": function(features) {
-                        document.getElementById(school.name + 'Count').innerHTML = "schools: " + school.features.length;
+                        document.getElementById(school.name + 'Count').innerHTML = "Number of Schools: " + school.features.length;
                         //populate selectTagsInLayers
                         /*jedi-code*/
                         school.events.listeners.featuresadded = function(){};
@@ -470,7 +476,7 @@ function fetchData(selected) {
                             else
                                 intIgnored++;
                         }
-                        document.getElementById('schoolCountStudents').innerHTML = "<b>" + intTotal + "</b> with <b> " + intIgnored + "</b> schools without required data.";
+                        document.getElementById('schoolCountStudents').innerHTML = "<b>" + intTotal ;//+ "</b>Schools with missing student-count data <b> " + intIgnored;
 
                         //Count total number primary schools
                         strTotal = "";
@@ -488,7 +494,7 @@ function fetchData(selected) {
                             else
                                 intIgnored++;
                         }
-                        document.getElementById('schoolCountPrimary').innerHTML = "<b>" + intTotal + "</b> with <b> " + intIgnored + "</b> schools with unknown level.";
+                        document.getElementById('schoolCountPrimary').innerHTML = "<b>" + intTotal ;//+ "</b> Schools with missing level data <b> " + intIgnored + "</b>";
                     }});
                 break;
 
@@ -530,7 +536,7 @@ function fetchData(selected) {
                 map.addLayers([hospital]);
                 layers.push(hospital);
                 hospital.events.on({"featuresadded": function(features) {
-                        document.getElementById(hospital.name + 'Count').innerHTML = "hospitals: " + hospital.features.length;
+                        document.getElementById(hospital.name + 'Count').innerHTML = "Number of Hospitals: " + hospital.features.length;
                         /*jedi-code*/
                         hospital.events.listeners.featuresadded = function(){};
                         try{
@@ -589,7 +595,7 @@ function fetchData(selected) {
                 map.addLayers([college]);
                 layers.push(college);
                 college.events.on({"featuresadded": function(features) {
-                        document.getElementById(college.name + 'Count').innerHTML = "colleges: " + college.features.length;
+                        document.getElementById(college.name + 'Count').innerHTML = "Number of Colleges: " + college.features.length;
                         
                         /*jedi-code*/
                         college.events.listeners.featuresadded = function(){};
