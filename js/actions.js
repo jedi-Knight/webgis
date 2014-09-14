@@ -810,7 +810,7 @@ function exportToCSV() {
         //console.log(csv_text);
         //Replace all & with &&
         //csv_text = csv_text.replace(/&/g, "and");
-        csv_text = encodeURIComponent(csv_text);
+        //csv_text = encodeURIComponent(csv_text);
         //console.log(csv_text);
         //add to 'csvs' layers
         csvs.push(csv_text);
@@ -884,7 +884,7 @@ function callAJAXCSV(index) {
         callAJAXCSV(index + 1);	//do not make a csv file if it <del>does not have any data</del> <em>has no tags selected in the corresponding selectBox</em>. move on to the next item in 'csvs' array.
     else
     {
-        var xmlhttp;
+        /*var xmlhttp;
         if (window.XMLHttpRequest)
         {// code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
@@ -904,11 +904,11 @@ function callAJAXCSV(index) {
             }
             if (xmlhttp.readyState == 4)
             {
-                /*jedi-code*/
+                /*jedi-code*\/
                 console.log("callAJAXCSV(): ..now opening saveas dialogue box for: " + xmlhttp.response);
                 //window.location = xmlhttp.response;
                 $("body").append("<iframe src='"+xmlhttp.response+"'/>");
-                /**/
+                /**\/
 
                 //window.open(xmlhttp.response);
 //                myButton = document.createElement("input");
@@ -925,7 +925,19 @@ function callAJAXCSV(index) {
         var query = "CSVwriter.php";
         xmlhttp.open("POST", query, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("name=" + layers[index].name + "&payload=" + csvs[index]+"&date="+miti);
+        xmlhttp.send("name=" + layers[index].name + "&payload=" + csvs[index]+"&date="+miti);*/
+        
+        var fileBlob = new Blob([csvs[index]], {type: "application/binary"});
+
+        var fileURL = window.URL.createObjectURL(fileBlob);
+        var link = document.createElement("a");
+        link.href = fileURL;
+        link.download = layers[index].name+".csv";
+        link.click();
+        //console.log(mapFeatureURL);
+
+        
+        
         //alert(layers[i].name + " AJAX sent.\n Current xmlhttp index is: "+i +"\n");
     }
 }
@@ -1826,7 +1838,7 @@ function exportToCSV2(selectedHeads) {
         //console.log(csv_text);
         //Replace all & with &&
         //csv_text = csv_text.replace(/&/g, "and");
-        csv_text = encodeURIComponent(csv_text);
+        //csv_text = encodeURIComponent(csv_text);
         //console.log(csv_text);
         //add to 'csvs' clonedLayers
         csvs.push(csv_text);
